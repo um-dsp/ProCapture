@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
+from utils import get_folder_name
+
 class Activations : 
   
     def __init__(self,index,label,prediction,activation_set,attack):
@@ -15,9 +17,9 @@ class Activations :
     
     
 
-    def save_csv(self):
+    def save_csv(self,dataset):
         if(not self.activations_set):
-            raise ValueError('Activations parameters are not defined, cannot save')
+            raise ValueError('Activations parameters are  undefined, cannot save')
  
         DF = pd.DataFrame(self.activations_set[0][0],columns=["Layer_0"]) 
         for i,out in enumerate(self.activations_set):
@@ -27,10 +29,9 @@ class Activations :
             # save the dataframe as a csv file
             #Fill in layer 1 information (node values) in a column in the CSV 
         filename = str(self.label) + "_"+ str(self.prediction) +"-"+str(self.index)
-        if (self.attack):
-            folder_name = "./adversarial/"+self.attack
-        else :
-            folder_name = "./begnign"
+
+        folder_name = get_folder_name(self.attack,dataset)
+       
         DF.to_csv(folder_name +"/"+filename +".csv", index=False)
 
 
@@ -78,9 +79,6 @@ class Activations :
 
 
             
-
-
-
 
    
     def print(self):

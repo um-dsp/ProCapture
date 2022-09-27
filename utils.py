@@ -8,13 +8,14 @@ from keras import backend as K
 
 from keras.datasets import mnist
 from keras.datasets import cifar10
-import torch
+import os
 
 from keras.utils import to_categorical
 from keras.models import load_model
 import matplotlib.pyplot as plt
 
 
+#Generate fgsm attack 
 def generate_fgsm(image,label,model,epsilon=0.05):
 
     logits_model = tf.keras.Model(model.input,model.layers[-1].output)
@@ -27,15 +28,8 @@ def generate_fgsm(image,label,model,epsilon=0.05):
     return adv_example_untargeted_label
 
 
-def generate_carlini_wagner(image,label,model):
-    image = torch.tensor(image)
-    label = torch.tensor(np.reshape(label, (1,)).astype('int64')) # Give label proper shape and type for cleverhans
-    logits_model = tf.keras.Model(model.input,model.layers[-1].output)
-    image = carlini_wagner_l2(logits_model, image, 10,label,targeted = False)
 
-    return image
-
-
+#Returns model according to provided dataset 'this imlementation considers one model per dataset'
 def get_model(dataset):
     predfined_model = ['mnist']
     if( dataset not in predfined_model):
@@ -43,6 +37,8 @@ def get_model(dataset):
     
     return load_model("./models/"+dataset+".h5")
 
+
+# Returns dataset and applies transformation according to parameters
 def get_dataset(dataset_name, normalize = True, categorical=False,reshape=False):
     if(dataset_name == "mnist"):
         (X_train, Y_train), (X_test, Y_test)  = mnist.load_data()
@@ -64,36 +60,39 @@ def get_dataset(dataset_name, normalize = True, categorical=False,reshape=False)
 
     # Print iterations progress
 def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):
-    """
-    Call in a loop to create terminal progress bar
-    @params:
-        iteration   - Required  : current iteration (Int)
-        total       - Required  : total iterations (Int)
-        prefix      - Optional  : prefix string (Str)
-        suffix      - Optional  : suffix string (Str)
-        decimals    - Optional  : positive number of decimals in percent complete (Int)
-        length      - Optional  : character length of bar (Int)
-        fill        - Optional  : bar fill character (Str)
-        printEnd    - Optional  : end character (e.g. "\r", "\r\n") (Str)
-    """
+
     percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
     filledLength = int(length * iteration // total)
     bar = fill * filledLength + '-' * (length - filledLength)
     print(f'\r{prefix} |{bar}| {percent}% {suffix}', end = printEnd)
-    # Print New Line on Complete
     if iteration == total: 
         print()
 
   
-def get_folder_name(attack):
+
+# returns folder name given attack and dataset  
+def get_folder_name(attack,dataset):
+
     if(attack):
-        folder = "./adversarial/"+attack
+        folder = "./adversarial/"+dataset
     else: 
-        folder = "./begnign"
+        folder = "./begnign/"+dataset
+
+    # Create the folder if it doeasnt exist
+    if not os.path.exists(folder):
+        os.mkdir(folder)
+    
+    if(attack):
+        folder += "/"+attack
+    
+    # Create the folder if it doeasnt exist
+    if not os.path.exists(folder):
+        os.mkdir(folder)
+    
     return folder
 
 
-   
+# return the activations of each mlayer of the mdel  
 def get_layers_activations(model,input):
     input = np.reshape(input,(-1,28,28))
     inp = model.input                                           

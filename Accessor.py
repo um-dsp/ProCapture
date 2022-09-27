@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 from keras import backend as K
 from utils import *
-class Loader :
+class Accessor :
 
     # for all class attack param selects whether to get adersarial activations or begnign activations
 
@@ -25,7 +25,7 @@ class Loader :
             # checking if it is a file
             if filename.startswith(str(label) +"_"+ str(prediction)):
                 index = filename[filename.index("-")+1:filename.index(".")] 
-                activations_set = pd.read_csv(f)
+                activations_set = self.parse_csv_to_set(pd.read_csv(f))
                 print('Loaded Activations of image labeled %s predicted %s under attack %s' % (label,prediction,attack))
                 return  Activations(index,label,prediction,activations_set,attack)
 
@@ -40,7 +40,7 @@ class Loader :
             if filename.startswith(str(label)):
                 index = filename[filename.index("-")+1:filename.index(".")] 
                 predicted = filename[filename.index("_"):filename.index("-")] 
-                activations_set = pd.read_csv(f)
+                activations_set = self.parse_csv_to_set(pd.read_csv(f))
                 container.append(Activations(index,label,predicted,activations_set,None))
         if( len(container) ==0):
             print('No File was found for label %s'%(label))
@@ -58,7 +58,7 @@ class Loader :
             if (index ==i) :
                 predicted = filename[filename.index("_"):filename.index("-")] 
                 label = filename[0:filename.index("_")] 
-                activations_set = pd.read_csv(f)
+                activations_set = self.parse_csv_to_set(pd.read_csv(f))
                 container.append(Activations(index,label,predicted,activations_set,None))
                 print("Loaded instance indexed %s labeled %s predicted %s under "%(index,label,predicted,attack))
         if( len(folder) == 0) :
@@ -68,15 +68,25 @@ class Loader :
 
 
     #Generates acivations for a given model and input and saves in corresponding folder
-    def generate_and_save_activations(self,model,input,index,label,attack):
+    def generate_and_save_activations(self,model,input,index,label,attack,dataset):
         ac =  get_layers_activations(model,input)
         input = np.reshape(input,(-1,28,28))
         prediction =np.argmax(model.predict(input,verbose=0)[0])
         activations = [item for sublist in ac for item in sublist]
         a = Activations(index,label,prediction,activations,attack)
-        a.save_csv()
+        a.save_csv(dataset)
         return a
 
-
+    #todo
     #implement get adv and begnign per sammple
     # IMPLEMENT GET smaller dataset containing 1,2,... or n classes only
+
+    def parse_csv_to_set(self,file_content):
+        set = []
+        for col in file_content:
+            set.append(file_content[col])
+
+        return set
+
+
+    
