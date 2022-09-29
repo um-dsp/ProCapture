@@ -13,6 +13,7 @@ import os
 from keras.utils import to_categorical
 from keras.models import load_model
 import matplotlib.pyplot as plt
+from Activations import Activations
 
 
 #Generate fgsm attack 
@@ -100,6 +101,20 @@ def get_layers_activations(model,input):
     functors = [K.function([inp], [out]) for out in outputs]    
     layer_outs = [func([input]) for func in functors]
     return layer_outs
+
+
+#Generates acivations for a given model and input and saves in corresponding folder
+def generate_and_save_activations(model,input,index,label,folder_name):
+    ac =  get_layers_activations(model,input)
+    input = np.reshape(input,(-1,28,28))
+    prediction =np.argmax(model.predict(input,verbose=0)[0])
+    activations = [item for sublist in ac for item in sublist]
+    a = Activations(index,label,prediction,activations)
+    a.save_csv(folder_name)
+    return a
+
+
+
 
 
 

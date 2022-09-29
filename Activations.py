@@ -1,23 +1,19 @@
-from re import I
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import os
 
-from utils import get_folder_name
-
 class Activations : 
   
-    def __init__(self,index,label,prediction,activation_set,attack):
+    def __init__(self,index,label,prediction,activation_set):
         self.index= index
         self.label = label
         self.prediction =prediction
         self.activations_set = activation_set
-        self.attack=attack
     
     
-
-    def save_csv(self,dataset):
+    #Saves activations a csv in corresponding folder
+    def save_csv(self,folder_name):
         if(not self.activations_set):
             raise ValueError('Activations parameters are  undefined, cannot save')
  
@@ -29,13 +25,11 @@ class Activations :
             # save the dataframe as a csv file
             #Fill in layer 1 information (node values) in a column in the CSV 
         filename = str(self.label) + "_"+ str(self.prediction) +"-"+str(self.index)
-
-        folder_name = get_folder_name(self.attack,dataset)
        
         DF.to_csv(folder_name +"/"+filename +".csv", index=False)
 
 
-    
+    #Generates dot file and saves it in dfault folder  
     def as_dot(self,start_layer =1,end_layer=3):
         file1 = open("graph.txt","w")
         L = ["digraph G {\n", "rankdir = LR;\n", "splines=line;\n","ranksep= 1.4;\n","node [fixedsize=true, label=\"\"];\n"]  
@@ -77,8 +71,36 @@ class Activations :
         os.system("dot -Tpng -O graph.txt")
         print('Generated graph dot code and saved in graph.txt, can see graph in graph.txt.png')
 
+     # returns actication set as binary 
+    def get_binary(self):
+        aux = []
+        for i,s in enumerate(self.activations_set) :
+            aux.append([])
+            for a in s :
+                if a >1 :
+                    aux[i].append(1)
+                else :
+                    aux[i].append(0)
+        return aux
 
+    def hamilton_index (self,reference_activations,start_layer,end_layer) :
+        #given two binary activations set computes how simialr they are
+        # ; how any bits need ti be changed to transform one to the other
+        binar_actiovation_set = self.get_binary()
+        binary_reference_set = reference_activations.get_binary()
+        index = 0
+        for i,x in enumerate(binar_actiovation_set):
+            if( i <start_layer or i>end_layer):
+                continue
             
+            for j,y in enumerate(x) :
+                if(y != binary_reference_set[i][j]):
+                    index += 1
+            
+        return index
+
+
+             
 
    
     def print(self):

@@ -1,0 +1,5 @@
+Limit = 10 samplescomparing adv activations and begnign activations 
+to the train activations using hamilton index
+
+For Adv samples, Hamilton distance avg 119.75102040816327
+For begnign samples, Hamilton distance avg 73.03367346938775
