@@ -3,3 +3,374 @@ to the train activations using hamilton index
 
 For Adv samples, Hamilton distance avg 119.75102040816327
 For begnign samples, Hamilton distance avg 73.03367346938775
+
+model details :
+
+1. mnist.h5 : 
+    model = Sequential()
+    model.add(Dense(350, input_shape=input_shape, activation='relu')) #takes 784 inputs, has 30 neurons - activated using rectified linear unit
+    model.add(Dense(50, activation='relu'))# 20 neurons - input from previous 30 neurons
+    model.add(Dense(num_classes, activation='softmax')) #output layer - has 10 output neurons # multiclass probability distribution
+
+2. mnist_2.h5 
+    model = Sequential()
+    model.add(Dense(256, input_shape=(784,), activation="sigmoid"))
+    model.add(Dense(128, activation="sigmoid"))
+    model.add(Dense(10, activation="softmax"))
+Test results - Loss: 0.10523388534784317 - Accuracy: 0.9677000045776367%
+
+Experiment 2 :
+Mnist , FGSM , mnist.h5 feedforward
+
+        Adversarial  activations present higher Median and average
+        Begnign and Ground truth activations average and median are quite similar
+        => Adversarial input drive more nodes to activate for this setup
+
+
+        LABEL : 0 AVG : BEGN: 128.24285714285713 ADV : 158.25102040816327 GT: 126.85289144403112
+        LABEL :0 MEDIAN : BEGN: 124.0 ADV : 156.5 GT: 124.0
+
+        LABEL : 1 AVG : BEGN: 88.60616740088106 ADV : 97.15242290748898 GT: 87.64182656552134
+        LABEL :1 MEDIAN : BEGN: 86.0 ADV : 96.0 GT: 86.0
+
+        LABEL : 2 AVG : BEGN: 125.07461240310077 ADV : 149.40406976744185 GT: 122.09643217771794
+        LABEL :2 MEDIAN : BEGN: 123.0 ADV : 148.0 GT: 121.0
+
+        LABEL : 3 AVG : BEGN: 124.35544554455446 ADV : 144.86732673267326 GT: 122.59834710743802
+        LABEL :3 MEDIAN : BEGN: 122.0 ADV : 145.0 GT: 122.0
+
+        LABEL : 4 AVG : BEGN: 108.5244399185336 ADV : 126.55906313645622 GT: 108.62870434183321
+        LABEL :4 MEDIAN : BEGN: 107.5 ADV : 124.0 GT: 108.0
+
+        LABEL : 5 AVG : BEGN: 114.53026905829596 ADV : 132.2219730941704 GT: 110.36568002997377
+        LABEL :5 MEDIAN : BEGN: 113.0 ADV : 131.0 GT: 110.0
+
+        LABEL : 6 AVG : BEGN: 115.75991649269311 ADV : 137.47807933194156 GT: 112.01984732824427
+        LABEL :6 MEDIAN : BEGN: 113.0 ADV : 136.0 GT: 111.0
+
+        LABEL : 7 AVG : BEGN: 110.11186770428016 ADV : 125.34533073929961 GT: 109.46989697359949
+        LABEL :7 MEDIAN : BEGN: 109.0 ADV : 126.0 GT: 109.0
+
+        LABEL : 8 AVG : BEGN: 120.21355236139631 ADV : 146.69096509240245 GT: 118.40375667758056
+        LABEL :8 MEDIAN : BEGN: 118.0 ADV : 144.0 GT: 117.0
+
+        LABEL : 9 AVG : BEGN: 105.93458870168483 ADV : 128.08622398414272 GT: 104.28501353179973
+        LABEL :9 MEDIAN : BEGN: 105.0 ADV : 128.0 GT: 103.0
+
+Mnist , PGD , mnist.h5 feedforward
+LABEL : 0 AVG : BEGN: 128.24285714285713 ADV : 154.40408163265306 GT: 126.85289144403112
+LABEL :0 MEDIAN : BEGN: 124.0 ADV : 154.0 GT: 124.0
+
+LABEL : 1 AVG : BEGN: 88.60616740088106 ADV : 101.1374449339207 GT: 87.64182656552134
+LABEL :1 MEDIAN : BEGN: 86.0 ADV : 100.0 GT: 86.0
+
+LABEL : 2 AVG : BEGN: 125.07461240310077 ADV : 149.23546511627907 GT: 122.09643217771794
+LABEL :2 MEDIAN : BEGN: 123.0 ADV : 150.0 GT: 121.0
+
+LABEL : 3 AVG : BEGN: 124.35544554455446 ADV : 144.42970297029703 GT: 122.59834710743802
+LABEL :3 MEDIAN : BEGN: 122.0 ADV : 144.0 GT: 122.0
+
+LABEL : 4 AVG : BEGN: 108.5244399185336 ADV : 127.08961303462321 GT: 108.62870434183321
+LABEL :4 MEDIAN : BEGN: 107.5 ADV : 126.0 GT: 108.0
+
+LABEL : 5 AVG : BEGN: 114.53026905829596 ADV : 133.9304932735426 GT: 110.36568002997377
+LABEL :5 MEDIAN : BEGN: 113.0 ADV : 133.5 GT: 110.0
+
+LABEL : 6 AVG : BEGN: 115.75991649269311 ADV : 138.18371607515658 GT: 112.01984732824427
+LABEL :6 MEDIAN : BEGN: 113.0 ADV : 138.0 GT: 111.0
+
+LABEL : 7 AVG : BEGN: 110.11186770428016 ADV : 128.08560311284046 GT: 109.46989697359949
+LABEL :7 MEDIAN : BEGN: 109.0 ADV : 129.0 GT: 109.0
+
+LABEL : 8 AVG : BEGN: 120.21355236139631 ADV : 149.741273100616 GT: 118.40375667758056
+LABEL :8 MEDIAN : BEGN: 118.0 ADV : 148.0 GT: 117.0
+
+LABEL : 9 AVG : BEGN: 105.93458870168483 ADV : 131.05450941526263 GT: 104.28501353179973
+LABEL :9 MEDIAN : BEGN: 105.0 ADV : 131.0 GT: 103.0
+
+
+
+Experiment 3 :
+Same as experiment 2 but for each prediction
+Since given a unkown input we can only compute it's prediction(without knowing its truth value)
+and the activations it generate when going throught the nn .
+Therefore our analysis should be focused on comapring adv ,begnign and train for each prediction
+Mnist , PGD , mnist.h5 feedforward
+
+    Avg of active nodes for prediction : 0 Gt : 126.85289144403148   Begnign : 128.37448559670779  Adversarial : 148.62310030395147
+    Avg of active nodes for prediction : 1 Gt : 87.64182656552192   Begnign : 88.41014234875463  Adversarial : 125.83236994219654
+    Avg of active nodes for prediction : 2 Gt : 122.09643217771814   Begnign : 125.32576505429553  Adversarial : 136.616652211622
+    Avg of active nodes for prediction : 3 Gt : 122.59834710743748   Begnign : 124.58961303462318  Adversarial : 143.79192273924497
+    Avg of active nodes for prediction : 4 Gt : 108.62870434183323   Begnign : 108.53008298755176  Adversarial : 129.56336725254388
+    Avg of active nodes for prediction : 5 Gt : 110.36568002997367   Begnign : 114.83197199533241  Adversarial : 137.9805013927576
+    Avg of active nodes for prediction : 6 Gt : 112.0198473282443   Begnign : 115.94036208732695  Adversarial : 138.60941828254846
+    Avg of active nodes for prediction : 7 Gt : 109.46989697360125   Begnign : 110.40240240240256  Adversarial : 115.93267326732678
+    Avg of active nodes for prediction : 8 Gt : 118.40375667758084   Begnign : 120.07732497387676  Adversarial : 126.01507537688455
+    Avg of active nodes for prediction : 9 Gt : 104.28501353179875   Begnign : 106.28744939271253  Adversarial : 131.6089354660784
+Mnist , FGSM , mnist.h5 feedforward
+
+    Avg of active nodes for prediction : 0 Gt : 126.85289144403148   Begnign : 128.37448559670779  Adversarial : 144.2848101265823
+    Avg of active nodes for prediction : 1 Gt : 87.64182656552192   Begnign : 88.41014234875463  Adversarial : 120.45664739884388
+    Avg of active nodes for prediction : 2 Gt : 122.09643217771814   Begnign : 125.32576505429553  Adversarial : 132.48108632395736
+    Avg of active nodes for prediction : 3 Gt : 122.59834710743748   Begnign : 124.58961303462318  Adversarial : 138.60717658168065
+    Avg of active nodes for prediction : 4 Gt : 108.62870434183323   Begnign : 108.53008298755176  Adversarial : 126.03941908713699
+    Avg of active nodes for prediction : 5 Gt : 110.36568002997367   Begnign : 114.83197199533241  Adversarial : 133.6265822784811
+    Avg of active nodes for prediction : 6 Gt : 112.0198473282443   Begnign : 115.94036208732695  Adversarial : 132.98058252427188
+    Avg of active nodes for prediction : 7 Gt : 109.46989697360125   Begnign : 110.40240240240256  Adversarial : 110.32415902140674
+    Avg of active nodes for prediction : 8 Gt : 118.40375667758084   Begnign : 120.07732497387676  Adversarial : 121.77321981424173
+    Avg of active nodes for prediction : 9 Gt : 104.28501353179875   Begnign : 106.28744939271253  Adversarial : 127.95299145299211
+
+
+
+
+
+Experiment 4: 
+Compute average weight of activation
+Mnist , FGSM , mnist.h5 feedforward
+Label : %s 0
+    Average activation weights of Ben : 0.9237761549631464  Adv : 1.0306582727975315  GT : 0.9188313856662761
+Label : %s 1
+    Average activation weights of Ben : 1.0508969443680152  Adv : 1.0941788217769552  GT : 1.0374312090644944
+Label : %s 2
+    Average activation weights of Ben : 1.1140128230687156  Adv : 1.1366393745159258  GT : 1.090533759118052
+Label : %s 3
+    Average activation weights of Ben : 1.1028462425460657  Adv : 1.264490966667513  GT : 1.1168336968977801
+Label : %s 4
+    Average activation weights of Ben : 1.3663007924756536  Adv : 1.3339964576169203  GT : 1.351695730688672
+Label : %s 5
+    Average activation weights of Ben : 1.0139087684281167  Adv : 1.0651572753052683  GT : 0.9890325420958528
+Label : %s 6
+    Average activation weights of Ben : 1.1152687487091162  Adv : 1.1512956238110217  GT : 1.0852194808159212
+Label : %s 7
+    Average activation weights of Ben : 1.4648876838431877  Adv : 1.3434760433947286  GT : 1.4475931607979917
+Label : %s 8
+    Average activation weights of Ben : 1.7427195421953823  Adv : 1.4420054653878238  GT : 1.7272116839314515
+ Label : %s 9
+    Average activation weights of Ben : 1.3003584742122967  Adv : 1.2331077574003064  GT : 1.2684734410463727
+
+
+
+
+
+ Experiment 5 : 
+Mnist , FGSM , mnist.h5 feedforward
+ Purpose is determine the always acrive nodes for a particular prediction fro begning adv and Groud truth
+
+ Prediction : 0
+    Always active Begnign : 21 
+    [8, 51, 57, 68, 89, 173, 204, 300, 340, 353, 357, 366, 367, 368, 376, 380, 384, 387, 391, 396, 397]
+    Always active Adv : 9 
+    [68, 143, 173, 328, 340, 357, 367, 368, 391]
+    Always active GT : 12
+    [8, 68, 89, 340, 356, 357, 367, 368, 376, 391, 396, 397]
+
+    Number of common nodes betwen Always_active_begnign and always_active_gt : 11
+    Numver of common nodes betwen always_active_adv and always_active_gt : 6
+Prediction 1 :
+    Always active Begnign : 35 
+    [0, 52, 68, 69, 81, 90, 102, 110, 111, 114, 118, 126, 151, 162, 173, 192, 204, 207, 222, 224, 249, 314, 328, 347, 357, 358, 359, 363, 364, 378, 379, 383, 388, 390, 399]
+    Always active Adv : 14 
+    [0, 52, 68, 114, 173, 192, 347, 357, 358, 363, 364, 378, 379, 383]
+    Always active GT : 17
+    [0, 69, 114, 173, 204, 207, 224, 347, 351, 357, 358, 359, 363, 364, 378, 379, 383]
+    
+    Number of common nodes betwen Always_active_begnign and always_active_gt : 16
+    Numver of common nodes betwen always_active_adv and always_active_gt : 11
+Prediction 2 :
+    Always active Begnign : 13 
+    [0, 68, 110, 114, 173, 224, 356, 357, 359, 366, 369, 382, 392]
+    Always active Adv : 8 
+    [0, 68, 69, 173, 328, 356, 357, 359]
+    Always active GT : 5
+    [0, 173, 357, 359, 369]
+    Number of common nodes betwen Always_active_begnign and always_active_gt : 5
+    Numver of common nodes betwen always_active_adv and always_active_gt : 4
+Prediction 3 : 
+    Always active Begnign : 21 
+    [0, 68, 69, 111, 114, 126, 173, 204, 224, 300, 328, 357, 369, 378, 380, 382, 387, 390, 391, 392, 393]
+    Always active Adv : 14 
+    [0, 68, 69, 114, 126, 173, 204, 328, 357, 369, 378, 380, 393, 397]
+    Always active GT : 16
+    [0, 68, 69, 114, 126, 173, 204, 328, 357, 369, 371, 378, 380, 390, 391, 397]
+    Number of common nodes betwen Always_active_begnign and always_active_gt : 14
+    Numver of common nodes betwen always_active_adv and always_active_gt : 13
+Prediction 4 :
+    Always active Begnign : 23 
+    [0, 18, 68, 69, 102, 130, 162, 173, 300, 328, 351, 352, 357, 361, 364, 365, 368, 371, 379, 381, 386, 391, 394]
+    Always active Adv : 10 
+    [68, 162, 173, 351, 364, 371, 379, 381, 386, 394]
+    Always active GT : 17
+    [18, 68, 69, 162, 173, 219, 309, 352, 357, 361, 364, 371, 379, 381, 386, 391, 394]
+    Number of common nodes betwen Always_active_begnign and always_active_gt : 15
+    Numver of common nodes betwen always_active_adv and always_active_gt : 9
+Prediction 5 :
+    Always active Begnign : 16 
+    [68, 89, 126, 173, 224, 328, 357, 363, 368, 369, 371, 380, 390, 393, 396, 397]
+    Always active Adv : 15 
+    [68, 89, 126, 204, 207, 224, 266, 328, 353, 357, 371, 380, 393, 396, 397]
+    Always active GT : 8
+    [68, 173, 357, 369, 371, 380, 396, 397]
+    Number of common nodes betwen Always_active_begnign and always_active_gt : 8
+    Numver of common nodes betwen always_active_adv and always_active_gt : 6
+
+Prediction 6 :
+    Always active Begnign : 25 
+    [0, 48, 68, 69, 89, 110, 112, 130, 134, 173, 300, 340, 350, 351, 357, 368, 374, 378, 379, 381, 382, 383, 384, 396, 399]
+    Always active Adv : 15 
+    [89, 110, 112, 173, 300, 350, 357, 368, 374, 378, 379, 381, 382, 383, 384]
+    Always active GT : 17
+    [0, 48, 68, 69, 110, 130, 173, 300, 340, 357, 368, 374, 378, 381, 382, 383, 384]
+    Number of common nodes betwen Always_active_begnign and always_active_gt : 17
+    Numver of common nodes betwen always_active_adv and always_active_gt : 11
+
+Prediction 7 :
+Always active bennign : 22
+    [0, 18, 68, 69, 102, 126, 162, 173, 204, 246, 309, 328, 352, 357, 369, 371, 378, 386, 390, 391, 394, 397]
+    Always active Adv : 11 
+    [0, 68, 69, 126, 173, 352, 357, 364, 371, 378, 386]
+    Always active GT : 12
+    [68, 69, 126, 352, 357, 371, 378, 386, 390, 391, 394, 397]
+    Number of common nodes betwen Always_active_begnign and always_active_gt : 12
+    Numver of common nodes betwen always_active_adv and always_active_gt : 8
+Prediction 8 :
+    Always active Begnign : 25 
+    [48, 68, 69, 89, 126, 173, 207, 224, 249, 300, 328, 350, 357, 359, 368, 369, 371, 378, 380, 382, 383, 390, 391, 396, 397]
+    Always active Adv : 15 
+    [0, 68, 69, 114, 173, 207, 224, 249, 328, 357, 368, 369, 380, 383, 391]
+    Always active GT : 19
+    [0, 68, 69, 173, 207, 224, 249, 328, 347, 357, 359, 368, 369, 378, 380, 382, 383, 391, 396]
+    Number of common nodes betwen Always_active_begnign and always_active_gt : 17
+    Numver of common nodes betwen always_active_adv and always_active_gt : 14
+
+
+Mnist , PGD , mnist.h5 feedforward :
+Prediction 0:
+    Number of common nodes betwen Always_active_begnign and always_active_gt : 11
+    Numver of common nodes betwen always_active_adv and always_active_gt : 6
+Prediction 1 :
+    Number of common nodes betwen Always_active_begnign and always_active_gt : 16
+    Numver of common nodes betwen always_active_adv and always_active_gt : 11
+Preidction 2 : 
+    Number of common nodes betwen Always_active_begnign and always_active_gt : 5
+    Numver of common nodes betwen always_active_adv and always_active_gt : 4
+Prediction 3 :
+    Number of common nodes betwen Always_active_begnign and always_active_gt : 14
+    Numver of common nodes betwen always_active_adv and always_active_gt : 13
+Prediction 4 :
+    Number of common nodes betwen Always_active_begnign and always_active_gt : 15
+    Numver of common nodes betwen always_active_adv and always_active_gt : 9
+Prediction 5 :
+    Number of common nodes betwen Always_active_begnign and always_active_gt : 8
+    Numver of common nodes betwen always_active_adv and always_active_gt : 6
+Prediction 6 :
+    Number of common nodes betwen Always_active_begnign and always_active_gt : 17
+    Numver of common nodes betwen always_active_adv and always_active_gt : 11
+Prediction 7 :
+    Number of common nodes betwen Always_active_begnign and always_active_gt : 12
+    Numver of common nodes betwen always_active_adv and always_active_gt : 11
+Prediction 8 :
+    Number of common nodes betwen Always_active_begnign and always_active_gt : 17
+    Numver of common nodes betwen always_active_adv and always_active_gt : 14
+Prediction 9 :
+    Number of common nodes betwen Always_active_begnign and always_active_gt : 15
+    Numver of common nodes betwen always_active_adv and always_active_gt : 10
+
+
+
+
+experiment 6:
+
+A   Determine frequency of nodes activity (% of times node is active)
+MNIST FGSM mnist.h5
+Prediction : 0
+    percentage of nodes more active in begnign then adv : 0.435
+Prediction 1 :
+    percentage of nodes more active in begnign then adv : 0.4825 
+Prediction 2 :
+    percentage of nodes more active in begnign then adv : 0.41 
+Prediction 3 :
+    percentage of nodes more active in begnign then adv : 0.42 
+Prediction 4 :
+    percentage of nodes more active in begnign then adv : 0.4825 
+Prediction 5 :
+    percentage of nodes more active in begnign then adv : 0.475
+Prediction 6 :
+    percentage of nodes more active in begnign then adv : 0.47 
+Prediction 7 :
+    percentage of nodes more active in begnign then adv : 0.4575
+Prediction 8 :
+    percentage of nodes more active in begnign then adv : 0.4875 
+Prediction 9 :
+    percentage of nodes more active in begnign then adv : 0.525 
+
+B .Compute distance between each node frequency in begnign-Gt and Adv-gt to determine if begnign frequencies are closer to Gt frequencies than Adv
+A threhhold could be xtracted
+MNIST FGSM mnist.h5
+
+    (Chart : frequencies_distance_1)
+Prediction 0 :
+    distance between Benign and Gt: 0.013739585575062633
+    distance between Adversarial and Gt: 0.04358972540720032 
+Prediction 1 :
+    distance between Benign and Gt: 0.009616477451302228
+    distance between Adversarial and Gt: 0.124099810548199 
+Prediction 2 :
+   distance between Benign and Gt: 0.015034835946204679
+    distance between Adversarial and Gt: 0.07741772253549051 
+Prediction 3 :
+   distance between Benign and Gt: 0.01620310434402517
+    distance between Adversarial and Gt: 0.08575131747566221 
+Prediction 4 :
+   distance between Benign and Gt: 0.012210638224041483
+    distance between Adversarial and Gt: 0.08606310228769004 
+Prediction 5 :
+    distance between Benign and Gt: 0.015457813957460806
+    distance between Adversarial and Gt: 0.055006383226060024 
+Prediciton 6:
+    distance between Benign and Gt: 0.024747034055350125
+    distance between Adversarial and Gt: 0.0569347527814968 
+Prediciton 7:
+    distance between Benign and Gt: 0.012372455297437827
+    distance between Adversarial and Gt: 0.14168313687355405 
+Prediciton 8:
+    distance between Benign and Gt: 0.019863635698352377
+    distance between Adversarial and Gt: 0.06914735484084603 
+Prediciton 9:
+    distance between Benign and Gt: 0.015605640540439097
+    distance between Adversarial and Gt: 0.07768099777121601 
+
+
+MNIST PGD mnist.h5
+
+    chart: distance_frequencies_2
+Prediction 0:
+    distance between Benign and Gt: 0.013739585575062633
+    distance be :tween Adversarial and Gt: 0.04358972540720032 
+Prediciton 1 :
+    distance between Benign and Gt: 0.009616477451302228
+    distance between Adversarial and Gt: 0.124099810548199 
+Prediciton 2 :
+    distance between Benign and Gt: 0.015034835946204679
+    distance between Adversarial and Gt: 0.07741772253549051 
+Prediciton 3 :
+    distance between Benign and Gt: 0.01620310434402517
+    distance between Adversarial and Gt: 0.08575131747566221 
+Prediciton 4 :
+    distance between Benign and Gt: 0.012210638224041483
+    distance between Adversarial and Gt: 0.08606310228769004 
+Prediciton 5 :
+    distance between Benign and Gt: 0.015457813957460806
+    distance between Adversarial and Gt: 0.055006383226060024 
+Prediciton 6 :
+    distance between Benign and Gt: 0.024747034055350125
+    distance between Adversarial and Gt: 0.0569347527814968 
+Prediciton 7 :
+    distance between Benign and Gt: 0.012372455297437827
+    distance between Adversarial and Gt: 0.14168313687355405 
+Prediciton 8 :
+    distance between Benign and Gt: 0.019863635698352377
+    distance between Adversarial and Gt: 0.06914735484084603 
+Prediciton 9:
+    distance between Benign and Gt: 0.015605640540439097
+    distance between Adversarial and Gt: 0.07768099777121601 
+

@@ -10,8 +10,12 @@ class Activations :
         self.label = label
         self.prediction =prediction
         self.activations_set = activation_set
+        # start and end  layer state what subset of layers in activations to consider
+        self.start_layer = -1
+        self.end_layer = 100
     
-    
+    def get_activations_set(self):
+        return self.activations_set   
     #Saves activations a csv in corresponding folder
     def save_csv(self,folder_name):
         if(not self.activations_set):
@@ -98,16 +102,43 @@ class Activations :
                     index += 1
             
         return index
-
-
-             
-
-   
+         
     def print(self):
         print('label :', self.label)
         print('prediction :' , self.prediction)
         print('index :',self.index)
-        print('attack :',self.attack)
+    
+    def compute_nb_active_nodes(self):
+        nb = 0
+        for i,x in enumerate(self.activations_set):
+            if(i<self.start_layer & i>self.end_layer):
+                continue
+            for j,y in enumerate(x):
+                if y > 0:
+                    nb +=1
+        return nb
+    def flatten(self):
+        slice_list = self.activations_set[self.start_layer:self.end_layer+1]
+        flat_list = [item for sublist in slice_list for item in sublist]
+        return flat_list
+
+    def set_layer_range(self,start_layer,end_layer):
+        self.start_layer =start_layer
+        self.end_layer = end_layer
+        return self
+
+    def get_truth_value(self):
+        return self.prediction == self.label
+
+    def get_average_weight(self,nonZero = True):
+        res = 0
+        for i,x in enumerate(self.activations_set):
+            if( i <self.start_layer or i > self.end_layer):
+                continue
+            res+= np.average(np.array(x))
+        return res / self.end_layer-self.start_layer
+
+
 
   
    

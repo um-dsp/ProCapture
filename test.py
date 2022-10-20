@@ -1,7 +1,12 @@
 from Activations import Activations
 from Accessor import Accessor
-A = Accessor('./begnign/mnist')
-activation_ = A.get_instance_by_index(3,None)
-activation1 = A.get_instance_by_index(4,None)
+from utils import * 
+from numpy import *
 
-print(activation_.hamilton_index(activation1,1,3))
+
+
+
+
+if __name__ == '__main__':
+  print(tf.test.is_built_with_cuda())
+  print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))

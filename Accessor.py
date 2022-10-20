@@ -25,6 +25,25 @@ class Accessor :
                 print('Loaded Activations of image labeled %s predicted %s ' % (label,prediction))
                 return  Activations(index,label,prediction,activations_set)
 
+
+    def get_label_by_prediction(self,target_prediction):
+        container = []
+        for filename in os.listdir(self.folder):
+            f = os.path.join(self.folder, filename)
+            predicted = filename[filename.index("_")+1:filename.index("-")] 
+         
+            if int(predicted) == target_prediction:
+                index = filename[filename.index("-")+1:filename.index(".")] 
+                activations_set = self.parse_csv_to_set(pd.read_csv(f))
+                label = filename[0:filename.index("_")] 
+                container.append(Activations(index,label,predicted,activations_set))
+        if( len(container) ==0):
+            print('No File was found for prediction %s'%(target_prediction))
+            raise Exception()
+        print('Loaded '+str(len(container))+' Activations for Prediction : '+str(target_prediction))
+        return container
+    
+
   
 
     #gets activations for a given class [0,1,...]
