@@ -19,138 +19,628 @@ model details :
     model.add(Dense(10, activation="softmax"))
 Test results - Loss: 0.10523388534784317 - Accuracy: 0.9677000045776367%
 
-Experiment 2 :
-Mnist , FGSM , mnist.h5 feedforward
 
-        Adversarial  activations present higher Median and average
-        Begnign and Ground truth activations average and median are quite similar
-        => Adversarial input drive more nodes to activate for this setup
-
-
-        LABEL : 0 AVG : BEGN: 128.24285714285713 ADV : 158.25102040816327 GT: 126.85289144403112
-        LABEL :0 MEDIAN : BEGN: 124.0 ADV : 156.5 GT: 124.0
-
-        LABEL : 1 AVG : BEGN: 88.60616740088106 ADV : 97.15242290748898 GT: 87.64182656552134
-        LABEL :1 MEDIAN : BEGN: 86.0 ADV : 96.0 GT: 86.0
-
-        LABEL : 2 AVG : BEGN: 125.07461240310077 ADV : 149.40406976744185 GT: 122.09643217771794
-        LABEL :2 MEDIAN : BEGN: 123.0 ADV : 148.0 GT: 121.0
-
-        LABEL : 3 AVG : BEGN: 124.35544554455446 ADV : 144.86732673267326 GT: 122.59834710743802
-        LABEL :3 MEDIAN : BEGN: 122.0 ADV : 145.0 GT: 122.0
-
-        LABEL : 4 AVG : BEGN: 108.5244399185336 ADV : 126.55906313645622 GT: 108.62870434183321
-        LABEL :4 MEDIAN : BEGN: 107.5 ADV : 124.0 GT: 108.0
-
-        LABEL : 5 AVG : BEGN: 114.53026905829596 ADV : 132.2219730941704 GT: 110.36568002997377
-        LABEL :5 MEDIAN : BEGN: 113.0 ADV : 131.0 GT: 110.0
-
-        LABEL : 6 AVG : BEGN: 115.75991649269311 ADV : 137.47807933194156 GT: 112.01984732824427
-        LABEL :6 MEDIAN : BEGN: 113.0 ADV : 136.0 GT: 111.0
-
-        LABEL : 7 AVG : BEGN: 110.11186770428016 ADV : 125.34533073929961 GT: 109.46989697359949
-        LABEL :7 MEDIAN : BEGN: 109.0 ADV : 126.0 GT: 109.0
-
-        LABEL : 8 AVG : BEGN: 120.21355236139631 ADV : 146.69096509240245 GT: 118.40375667758056
-        LABEL :8 MEDIAN : BEGN: 118.0 ADV : 144.0 GT: 117.0
-
-        LABEL : 9 AVG : BEGN: 105.93458870168483 ADV : 128.08622398414272 GT: 104.28501353179973
-        LABEL :9 MEDIAN : BEGN: 105.0 ADV : 128.0 GT: 103.0
-
-Mnist , PGD , mnist.h5 feedforward
-LABEL : 0 AVG : BEGN: 128.24285714285713 ADV : 154.40408163265306 GT: 126.85289144403112
-LABEL :0 MEDIAN : BEGN: 124.0 ADV : 154.0 GT: 124.0
-
-LABEL : 1 AVG : BEGN: 88.60616740088106 ADV : 101.1374449339207 GT: 87.64182656552134
-LABEL :1 MEDIAN : BEGN: 86.0 ADV : 100.0 GT: 86.0
-
-LABEL : 2 AVG : BEGN: 125.07461240310077 ADV : 149.23546511627907 GT: 122.09643217771794
-LABEL :2 MEDIAN : BEGN: 123.0 ADV : 150.0 GT: 121.0
-
-LABEL : 3 AVG : BEGN: 124.35544554455446 ADV : 144.42970297029703 GT: 122.59834710743802
-LABEL :3 MEDIAN : BEGN: 122.0 ADV : 144.0 GT: 122.0
-
-LABEL : 4 AVG : BEGN: 108.5244399185336 ADV : 127.08961303462321 GT: 108.62870434183321
-LABEL :4 MEDIAN : BEGN: 107.5 ADV : 126.0 GT: 108.0
-
-LABEL : 5 AVG : BEGN: 114.53026905829596 ADV : 133.9304932735426 GT: 110.36568002997377
-LABEL :5 MEDIAN : BEGN: 113.0 ADV : 133.5 GT: 110.0
-
-LABEL : 6 AVG : BEGN: 115.75991649269311 ADV : 138.18371607515658 GT: 112.01984732824427
-LABEL :6 MEDIAN : BEGN: 113.0 ADV : 138.0 GT: 111.0
-
-LABEL : 7 AVG : BEGN: 110.11186770428016 ADV : 128.08560311284046 GT: 109.46989697359949
-LABEL :7 MEDIAN : BEGN: 109.0 ADV : 129.0 GT: 109.0
-
-LABEL : 8 AVG : BEGN: 120.21355236139631 ADV : 149.741273100616 GT: 118.40375667758056
-LABEL :8 MEDIAN : BEGN: 118.0 ADV : 148.0 GT: 117.0
-
-LABEL : 9 AVG : BEGN: 105.93458870168483 ADV : 131.05450941526263 GT: 104.28501353179973
-LABEL :9 MEDIAN : BEGN: 105.0 ADV : 131.0 GT: 103.0
+3. model_3.h5
+    model = Sequential()
+    model.add(Dense(256, input_shape=(784,), activation="relu"))
+    model.add(Dense(128, activation="relu"))
+    model.add(Dense(10, activation="softmax"))
+Test results - Loss: 0.07706296443939209 - Accuracy: 0.9787999987602234%
 
 
+4. Cuckoo_1
+ model = Sequential()
+    model.add(Dense(32, input_shape=(1549,), activation="relu"))
+    model.add(Dense(18, activation="relu"))
+    model.add(Dense(12, activation="relu"))
+    model.add(Dense(2, activation="softmax"))
+Test results - Loss: 0.14285679161548615 - Accuracy: 0.951556384563446%
 
-Experiment 3 :
+
+5. cifar_10_1
+
+model.add(Conv2D(64,(4,4),input_shape=(32,32,3),activation='relu'))
+    model.add(Conv2D(64,(4,4),input_shape=(32,32,3),activation='relu'))
+    model.add(MaxPooling2D(pool_size=(2,2)))
+    model.add(Dropout(0.4))
+    model.add(Conv2D(128,(4,4),input_shape=(32,32,3),activation='relu'))
+    model.add(Conv2D(128,(4,4),input_shape=(32,32,3),activation='relu'))
+    model.add(MaxPooling2D(pool_size=(2,2)))
+    model.add(Dropout(0.4))
+    model.add(Flatten())
+    model.add(Dense(1024,activation='relu'))
+    model.add(Dense(1024,activation='relu'))
+    model.add(Dense(10 , activation = 'softmax'))
+    Test results - Loss: 0.8268140554428101 - Accuracy: 0.7110000252723694%
+    Test results - Loss: 3.1866707801818848 - Accuracy: 0.17299999296665192% FGSM
+    Test results - Loss: 9.260448455810547 - Accuracy: 0.11860000342130661% PGD
+
+6. Ember 
+dense_98 (Dense)            (None, 4608)              10976256
+ batch_normalization_90 (Bat  (None, 4608)             18432
+ chNormalization)
+ dropout_90 (Dropout)        (None, 4608)              0
+ dense_99 (Dense)            (None, 4096)              18878464
+ batch_normalization_91 (Bat  (None, 4096)             16384
+ chNormalization)
+ dropout_91 (Dropout)        (None, 4096)              0
+ dense_100 (Dense)           (None, 3584)              14683648
+ batch_normalization_92 (Bat  (None, 3584)             14336
+ chNormalization)
+ dropout_92 (Dropout)        (None, 3584)              0
+ dense_101 (Dense)           (None, 3072)              11013120
+ batch_normalization_93 (Bat  (None, 3072)             12288
+ chNormalization)
+ dropout_93 (Dropout)        (None, 3072)              0
+ dense_102 (Dense)           (None, 2560)              7866880   
+ batch_normalization_94 (Bat  (None, 2560)             10240
+ chNormalization)
+ dropout_94 (Dropout)        (None, 2560)              0
+ dense_103 (Dense)           (None, 2048)              5244928
+ batch_normalization_95 (Bat  (None, 2048)             8192
+ chNormalization)
+ dropout_95 (Dropout)        (None, 2048)              0
+ dense_104 (Dense)           (None, 1536)              3147264
+ batch_normalization_96 (Bat  (None, 1536)             6144
+ chNormalization)
+ dropout_96 (Dropout)        (None, 1536)              0
+ dense_105 (Dense)           (None, 1024)              1573888
+ batch_normalization_97 (Bat  (None, 1024)             4096      
+ chNormalization)
+ dropout_97 (Dropout)        (None, 1024)              0
+ dense_106 (Dense)           (None, 512)               524800
+ batch_normalization_98 (Bat  (None, 512)              2048
+ chNormalization)
+ dropout_98 (Dropout)        (None, 512)               0
+ dense_107 (Dense)           (None, 128)               65664
+ batch_normalization_99 (Bat  (None, 128)              512       
+ chNormalization)
+ dropout_99 (Dropout)        (None, 128)               0
+ dense_108 (Dense)           (None, 2)                 258
+
+Experiment 1 :
 Same as experiment 2 but for each prediction
-Since given a unkown input we can only compute it's prediction(without knowing its truth value)
-and the activations it generate when going throught the nn .
-Therefore our analysis should be focused on comapring adv ,begnign and train for each prediction
-Mnist , PGD , mnist.h5 feedforward
+Average Number of active nodes
+Mnist , PGD , mnist_1.h5 feedforward threshhold 0 
 
-    Avg of active nodes for prediction : 0 Gt : 126.85289144403148   Begnign : 128.37448559670779  Adversarial : 148.62310030395147
-    Avg of active nodes for prediction : 1 Gt : 87.64182656552192   Begnign : 88.41014234875463  Adversarial : 125.83236994219654
-    Avg of active nodes for prediction : 2 Gt : 122.09643217771814   Begnign : 125.32576505429553  Adversarial : 136.616652211622
-    Avg of active nodes for prediction : 3 Gt : 122.59834710743748   Begnign : 124.58961303462318  Adversarial : 143.79192273924497
-    Avg of active nodes for prediction : 4 Gt : 108.62870434183323   Begnign : 108.53008298755176  Adversarial : 129.56336725254388
-    Avg of active nodes for prediction : 5 Gt : 110.36568002997367   Begnign : 114.83197199533241  Adversarial : 137.9805013927576
-    Avg of active nodes for prediction : 6 Gt : 112.0198473282443   Begnign : 115.94036208732695  Adversarial : 138.60941828254846
-    Avg of active nodes for prediction : 7 Gt : 109.46989697360125   Begnign : 110.40240240240256  Adversarial : 115.93267326732678
-    Avg of active nodes for prediction : 8 Gt : 118.40375667758084   Begnign : 120.07732497387676  Adversarial : 126.01507537688455
-    Avg of active nodes for prediction : 9 Gt : 104.28501353179875   Begnign : 106.28744939271253  Adversarial : 131.6089354660784
-Mnist , FGSM , mnist.h5 feedforward
-
-    Avg of active nodes for prediction : 0 Gt : 126.85289144403148   Begnign : 128.37448559670779  Adversarial : 144.2848101265823
-    Avg of active nodes for prediction : 1 Gt : 87.64182656552192   Begnign : 88.41014234875463  Adversarial : 120.45664739884388
-    Avg of active nodes for prediction : 2 Gt : 122.09643217771814   Begnign : 125.32576505429553  Adversarial : 132.48108632395736
-    Avg of active nodes for prediction : 3 Gt : 122.59834710743748   Begnign : 124.58961303462318  Adversarial : 138.60717658168065
-    Avg of active nodes for prediction : 4 Gt : 108.62870434183323   Begnign : 108.53008298755176  Adversarial : 126.03941908713699
-    Avg of active nodes for prediction : 5 Gt : 110.36568002997367   Begnign : 114.83197199533241  Adversarial : 133.6265822784811
-    Avg of active nodes for prediction : 6 Gt : 112.0198473282443   Begnign : 115.94036208732695  Adversarial : 132.98058252427188
-    Avg of active nodes for prediction : 7 Gt : 109.46989697360125   Begnign : 110.40240240240256  Adversarial : 110.32415902140674
-    Avg of active nodes for prediction : 8 Gt : 118.40375667758084   Begnign : 120.07732497387676  Adversarial : 121.77321981424173
-    Avg of active nodes for prediction : 9 Gt : 104.28501353179875   Begnign : 106.28744939271253  Adversarial : 127.95299145299211
+    Avg Number of active nodes for prediction : 0 Gt : 126.85289144403148   Begnign : 128.37448559670779  Adversarial : 148.62310030395147
+    Avg Number of active nodes for prediction : 1 Gt : 87.64182656552192   Begnign : 88.41014234875463  Adversarial : 125.83236994219654
+    Avg Number of active nodes for prediction : 2 Gt : 122.09643217771814   Begnign : 125.32576505429553  Adversarial : 136.616652211622
+    Avg Number of active nodes for prediction : 3 Gt : 122.59834710743748   Begnign : 124.58961303462318  Adversarial : 143.79192273924497
+    Avg Number of active nodes for prediction : 4 Gt : 108.62870434183323   Begnign : 108.53008298755176  Adversarial : 129.56336725254388
+    Avg Number of active nodes for prediction : 5 Gt : 110.36568002997367   Begnign : 114.83197199533241  Adversarial : 137.9805013927576
+    Avg Number of active nodes for prediction : 6 Gt : 112.0198473282443   Begnign : 115.94036208732695  Adversarial : 138.60941828254846
+    Avg Number of active nodes for prediction : 7 Gt : 109.46989697360125   Begnign : 110.40240240240256  Adversarial : 115.93267326732678
+    Avg Number of active nodes for prediction : 8 Gt : 118.40375667758084   Begnign : 120.07732497387676  Adversarial : 126.01507537688455
+    Avg Number of active nodes for prediction : 9 Gt : 104.28501353179875   Begnign : 106.28744939271253  Adversarial : 131.6089354660784
 
 
 
+    Avg of active nodes for prediction : 0 layer: 1 Gt : 172.25361344537862   Begnign : 172.5564435564433  Adversarial : 174.4078282828286
+    Avg of active nodes for prediction : 0 layer: 2 Gt : 40.48705882352958    Begnign : 40.475524475524416 Adversarial : 40.77525252525285
+    Avg of active nodes for prediction : 1 layer: 1 Gt : 190.83086273347243   Begnign : 190.9251760563381  Adversarial : 189.0164835164837
+    Avg of active nodes for prediction : 1 layer: 2 Gt : 40.89060183812583    Begnign : 40.937499999999915 Adversarial : 41.307692307692314
+    Avg of active nodes for prediction : 2 layer: 1 Gt : 181.7743922743962    Begnign : 181.86826923076907 Adversarial : 186.26331582895764
+    Avg of active nodes for prediction : 2 layer: 2 Gt : 37.56227106226797    Begnign : 37.73365384615434  Adversarial : 39.14178544636171
+    Avg of active nodes for prediction : 3 layer: 1 Gt : 186.807407407406     Begnign : 186.7777777777778  Adversarial : 190.048
+    Avg of active nodes for prediction : 3 layer: 2 Gt : 39.214156378600926   Begnign : 39.28128128128137  Adversarial : 38.8479999999998
+    Avg of active nodes for prediction : 4 layer: 1 Gt : 190.25415310840881   Begnign : 190.19328585961344 Adversarial : 191.13487133984023
+    Avg of active nodes for prediction : 4 layer: 2 Gt : 39.602329165954046   Begnign : 39.70905391658183  Adversarial : 39.078083407275976
+    Avg of active nodes for prediction : 5 layer: 1 Gt : 191.3054518297246    Begnign : 191.7784222737838  Adversarial : 190.34722222222229
+    Avg of active nodes for prediction : 5 layer: 2 Gt : 38.415048543688634   Begnign : 38.23085846867756  Adversarial : 38.37500000000003
+    Avg of active nodes for prediction : 6 layer: 1 Gt : 183.61940928269985   Begnign : 182.82352941176464 Adversarial : 182.40142095914746
+    Avg of active nodes for prediction : 6 layer: 2 Gt : 38.31729957805909    Begnign : 38.2647058823531   Adversarial : 39.065719360568444
+    Avg of active nodes for prediction : 7 layer: 1 Gt : 187.70747753530057   Begnign : 188.68441814595633 Adversarial : 191.7821497120923
+    Avg of active nodes for prediction : 7 layer: 2 Gt : 37.75866495507085    Begnign : 37.91124260355034  Adversarial : 39.88483685220735
+    Avg of active nodes for prediction : 8 layer: 1 Gt : 192.49054997445793   Begnign : 193.169868554095   Adversarial : 190.58234885337015
+    Avg of active nodes for prediction : 8 layer: 2 Gt : 40.099438106589396   Begnign : 40.0960566228513   Adversarial : 39.950660180680664
+    Avg of active nodes for prediction : 9 layer: 2 Gt : 39.56868956318758    Begnign : 39.724609375       Adversarial : 38.415760869564664
+
+
+Mnist , FGSM , mnist_1.h5 feedforward threshhold 0 
+
+    Avg Number of active nodes for prediction : 0 Gt : 126.85289144403148   Begnign : 128.37448559670779  Adversarial : 144.2848101265823
+    Avg Number of active nodes for prediction : 1 Gt : 87.64182656552192   Begnign : 88.41014234875463    Adversarial : 120.45664739884388
+    Avg Number of active nodes for prediction : 2 Gt : 122.09643217771814   Begnign : 125.32576505429553  Adversarial : 132.48108632395736
+    Avg Numberof active nodes for prediction : 3 Gt : 122.59834710743748   Begnign : 124.58961303462318   Adversarial : 138.60717658168065
+    Avg Number of active nodes for prediction : 4 Gt : 108.62870434183323   Begnign : 108.53008298755176  Adversarial : 126.03941908713699
+    Avg Number of active nodes for prediction : 5 Gt : 110.36568002997367   Begnign : 114.83197199533241  Adversarial : 133.6265822784811
+    Avg Number of active nodes for prediction : 6 Gt : 112.0198473282443   Begnign : 115.94036208732695   Adversarial : 132.98058252427188
+    Avg Numberof active nodes for prediction : 7 Gt : 109.46989697360125   Begnign : 110.40240240240256   Adversarial : 110.32415902140674
+    Avg Number of active nodes for prediction : 8 Gt : 118.40375667758084   Begnign : 120.07732497387676  Adversarial : 121.77321981424173
+    Avg Numberof active nodes for prediction : 9 Gt : 104.28501353179875   Begnign : 106.28744939271253   Adversarial : 127.95299145299211
+
+    Avg of active nodes for prediction : 0 layer: 1 Gt : 172.25361344537862   Begnign : 172.5564435564433  Adversarial : 171.69540873460247
+    Avg of active nodes for prediction : 0 layer: 2 Gt : 40.48705882352958   Begnign : 40.475524475524416  Adversarial : 39.80179171332592
+    Avg of active nodes for prediction : 1 layer: 1 Gt : 190.83086273347243   Begnign : 190.9251760563381  Adversarial : 185.7456140350875
+    Avg of active nodes for prediction : 1 layer: 2 Gt : 40.89060183812583   Begnign : 40.937499999999915  Adversarial : 40.62719298245609
+    Avg of active nodes for prediction : 2 layer: 1 Gt : 181.7743922743962   Begnign : 181.86826923076907  Adversarial : 182.86910197869088
+    Avg of active nodes for prediction : 2 layer: 2 Gt : 37.56227106226797   Begnign : 37.73365384615434   Adversarial : 38.68340943683399
+    Avg of active nodes for prediction : 3 layer: 1 Gt : 186.807407407406   Begnign : 186.7777777777778    Adversarial : 186.29351265822794
+    Avg of active nodes for prediction : 3 layer: 2 Gt : 39.214156378600926   Begnign : 39.28128128128137  Adversarial : 38.54746835443051
+    Avg of active nodes for prediction : 4 layer: 1 Gt : 190.25415310840881   Begnign : 190.19328585961344 Adversarial : 187.0636942675153
+    Avg of active nodes for prediction : 4 layer: 2 Gt : 39.602329165954046   Begnign : 39.70905391658183  Adversarial : 39.08826205641475
+    Avg of active nodes for prediction : 5 layer: 1 Gt : 191.3054518297246   Begnign : 191.7784222737838   Adversarial : 187.14508928571445
+    Avg of active nodes for prediction : 5 layer: 2 Gt : 38.415048543688634   Begnign : 38.23085846867756  Adversarial : 37.94419642857138
+    Avg of active nodes for prediction : 6 layer: 1 Gt : 183.61940928269985   Begnign : 182.82352941176464 Adversarial : 179.26470588235316
+    Avg of active nodes for prediction : 6 layer: 2 Gt : 38.31729957805909   Begnign : 38.2647058823531    Adversarial : 38.30065359477135
+    Avg of active nodes for prediction : 7 layer: 1 Gt : 187.70747753530057   Begnign : 188.68441814595633 Adversarial : 187.51409135082602
+    Avg of active nodes for prediction : 7 layer: 2 Gt : 37.75866495507085   Begnign : 37.91124260355034   Adversarial : 39.387755102041034
+    Avg of active nodes for prediction : 8 layer: 1 Gt : 192.49054997445793   Begnign : 193.169868554095   Adversarial : 187.80537862703488
+    Avg of active nodes for prediction : 8 layer: 2 Gt : 40.099438106589396   Begnign : 40.0960566228513   Adversarial : 39.709129511677105
+    Avg of active nodes for prediction : 9 layer: 1 Gt : 196.44331443814715   Begnign : 197.66015625       Adversarial : 187.50941176470667
+    Avg of active nodes for prediction : 9 layer: 2 Gt : 39.56868956318758   Begnign : 39.724609375        Adversarial : 38.34000000000012
+
+
+MNIST , PGD, mnist_2.h5  threshhold 0.5
+
+    Avg of active nodes for prediction : 0 Gt : 177.04694523056443   Begnign : 176.49128205128198 Adversarial : 174.25714285714298
+    Avg of active nodes for prediction : 1 Gt : 180.6999270605417    Begnign : 180.4991134751779  Adversarial : 176.55769230769226
+    Avg of active nodes for prediction : 2 Gt : 180.94583470530245   Begnign : 181.2068965517242  Adversarial : 176.759241706161
+    Avg of active nodes for prediction : 3 Gt : 175.45900308491875   Begnign : 174.39778449144288 Adversarial : 174.32366512854296
+    Avg of active nodes for prediction : 4 Gt : 182.28499832943285   Begnign : 182.4344685242521  Adversarial : 179.3094170403588
+    Avg of active nodes for prediction : 5 Gt : 177.62955502654813   Begnign : 178.02995391704968 Adversarial : 176.46054181389812
+    Avg of active nodes for prediction : 6 Gt : 176.38200738502155   Begnign : 176.8861702127657  Adversarial : 175.08720930232556
+    Avg of active nodes for prediction : 7 Gt : 178.1989289651903    Begnign : 178.05544554455395 Adversarial : 179.0054347826088
+    Avg of active nodes for prediction : 8 Gt : 176.56319180571657   Begnign : 176.68366285119632 Adversarial : 175.8373527762206
+    Avg of active nodes for prediction : 9 Gt : 183.03142573602506   Begnign : 184.39029322547992 Adversarial : 181.42946219797338
+
+Avg of active nodes for prediction : 0 layer: 0 Gt : 255.4793539793883    Begnign : 254.64292779426242  Adversarial : 256.00000000000256
+Avg of active nodes for prediction : 0 layer: 1 Gt : 128.3320013320184    Begnign : 128.71513353115697  Adversarial : 128.00000000000128
+Avg of active nodes for prediction : 1 layer: 0 Gt : 254.79008023342521   Begnign : 254.63636363636797  Adversarial : 256.00000000000057
+Avg of active nodes for prediction : 1 layer: 1 Gt : 128.58978847557478   Begnign : 128.7220779220801   Adversarial : 128.00000000000028
+Avg of active nodes for prediction : 2 layer: 0 Gt : 254.51350016465037   Begnign : 253.89587242026786  Adversarial : 255.9999999999945
+Avg of active nodes for prediction : 2 layer: 1 Gt : 128.81692459664862   Begnign : 129.1669793621038   Adversarial : 127.99999999999724
+Avg of active nodes for prediction : 3 layer: 0 Gt : 253.50397791850008   Begnign : 253.0644850818086   Adversarial : 255.99999999999855
+Avg of active nodes for prediction : 3 layer: 1 Gt : 129.45185906803397   Begnign : 129.74975938402287  Adversarial : 127.99999999999928
+Avg of active nodes for prediction : 4 layer: 0 Gt : 254.0108586702213    Begnign : 253.14726368158708  Adversarial : 256.0000000000029
+Avg of active nodes for prediction : 4 layer: 1 Gt : 129.07684597393526   Begnign : 129.59402985074377  Adversarial : 128.00000000000145
+Avg of active nodes for prediction : 5 layer: 0 Gt : 254.1552829151953    Begnign : 254.4877505567897   Adversarial : 255.99999999999724
+Avg of active nodes for prediction : 5 layer: 1 Gt : 129.02600256362203   Begnign : 129.10913140311644  Adversarial : 127.99999999999862
+Avg of active nodes for prediction : 6 layer: 0 Gt : 254.53121852971444   Begnign : 253.55854922280315  Adversarial : 256.00000000000017
+Avg of active nodes for prediction : 6 layer: 1 Gt : 128.86673380329307   Begnign : 129.33056994818924  Adversarial : 128.00000000000009
+Avg of active nodes for prediction : 7 layer: 0 Gt : 254.2883918727059    Begnign : 253.56583969466098  Adversarial : 256.0000000000034
+Avg of active nodes for prediction : 7 layer: 1 Gt : 128.8443849424959    Begnign : 129.1698473282465   Adversarial : 128.0000000000017
+Avg of active nodes for prediction : 8 layer: 0 Gt : 254.60019824877327   Begnign : 252.6990196078423   Adversarial : 256.00000000000836
+Avg of active nodes for prediction : 8 layer: 1 Gt : 128.80257723441449   Begnign : 129.7499999999996   Adversarial : 128.00000000000418
+Avg of active nodes for prediction : 9 layer: 0 Gt : 252.99239166392098   Begnign : 250.78790786948676  Adversarial : 255.99999999999463
+Avg of active nodes for prediction : 9 layer: 1 Gt : 129.6860734369875    Begnign : 131.53166986564517  Adversarial : 127.99999999999731
+
+
+MNIST , FGSM, mnist_2.h5  threshhold 0.5
+    Avg nb of active nodes for prediction : 0 Gt : 177.04694523056443   Benign : 176.49128205128198  Adversarial : 176.24675324675326
+    Avg of active nodes for prediction : 0 Gt : 177.04694523056443   Benign : 176.49128205128198  Adversarial : 176.24675324675326
+    Avg of active nodes for prediction : 1 Gt : 180.6999270605417    Benign : 180.4991134751779   Adversarial : 176.4608695652173
+    Avg of active nodes for prediction : 2 Gt : 180.94583470530245   Benign : 181.2068965517242   Adversarial : 176.91106290672414
+    Avg of active nodes for prediction : 3 Gt : 175.45900308491875   Benign : 174.39778449144288  Adversarial : 174.83205038488381
+    Avg of active nodes for prediction : 4 Gt : 182.28499832943285   Benign : 182.4344685242521   Adversarial : 179.1039999999997
+    Avg of active nodes for prediction : 5 Gt : 17790.62955502654813   Benign : 178.02995391704968  Adversarial : 175.19359145527358
+    Avg of active nodes for prediction : 6 Gt : 176.38200738502155   Benign : 176.8861702127657   Adversarial : 175.15972222222226
+    Avg of active nodes for prediction : 7 Gt : 178.1989289651903    Benign : 178.05544554455395  Adversarial : 179.61965811965814
+    Avg of active nodes for prediction : 8 Gt : 176.56319180571657   Benign : 176.68366285119632  Adversarial : 175.17760385310018
+    Avg of active nodes for prediction : 9 Gt : 183.03142573602506   Benign : 184.39029322547992  Adversarial : 180.4298908480258
+
+
+
+Avg of active nodes for prediction : 0 layer: 0 Gt : 255.4793539793883   Begnign : 254.64292779426242  Adversarial : 255.99999999999892
+Avg of active nodes for prediction : 0 layer: 1 Gt : 128.3320013320184   Begnign : 128.71513353115697  Adversarial : 127.99999999999946
+Avg of active nodes for prediction : 1 layer: 0 Gt : 254.79008023342521   Begnign : 254.63636363636797 Adversarial : 255.99999999999932
+Avg of active nodes for prediction : 1 layer: 1 Gt : 128.58978847557478   Begnign : 128.7220779220801  Adversarial : 127.99999999999966
+Avg of active nodes for prediction : 2 layer: 0 Gt : 254.51350016465037   Begnign : 253.89587242026786 Adversarial : 255.99999999999648
+Avg of active nodes for prediction : 2 layer: 1 Gt : 128.81692459664862   Begnign : 129.1669793621038  Adversarial : 127.99999999999824
+Avg of active nodes for prediction : 3 layer: 0 Gt : 253.50397791850008   Begnign : 253.0644850818086  Adversarial : 255.99999999999062
+Avg of active nodes for prediction : 3 layer: 1 Gt : 129.45185906803397   Begnign : 129.74975938402287 Adversarial : 127.99999999999531
+Avg of active nodes for prediction : 4 layer: 0 Gt : 254.0108586702213   Begnign : 253.14726368158708  Adversarial : 255.99999999999596
+Avg of active nodes for prediction : 4 layer: 1 Gt : 129.07684597393526   Begnign : 129.59402985074377 Adversarial : 127.99999999999798
+Avg of active nodes for prediction : 5 layer: 0 Gt : 254.1552829151953   Begnign : 254.4877505567897   Adversarial : 255.99999999999488
+Avg of active nodes for prediction : 5 layer: 1 Gt : 129.02600256362203   Begnign : 129.10913140311644 Adversarial : 127.99999999999744
+Avg of active nodes for prediction : 6 layer: 0 Gt : 254.53121852971444   Begnign : 253.55854922280315 Adversarial : 255.99999999999682
+Avg of active nodes for prediction : 6 layer: 1 Gt : 128.86673380329307   Begnign : 129.33056994818924 Adversarial : 127.99999999999841
+Avg of active nodes for prediction : 7 layer: 0 Gt : 254.2883918727059   Begnign : 253.56583969466098  Adversarial : 255.9999999999968
+Avg of active nodes for prediction : 7 layer: 1 Gt : 128.8443849424959   Begnign : 129.1698473282465   Adversarial : 127.9999999999984
+Avg of active nodes for prediction : 8 layer: 8 Gt : 254.60019824877327   Begnign : 252.6990196078423  Adversarial : 256.000000000005
+Avg of active nodes for prediction : 8 layer: 8 Gt : 128.80257723441449   Begnign : 129.7499999999996  Adversarial : 128.0000000000025
+Avg of active nodes for prediction : 9 layer: 9 Gt : 252.99239166392098   Begnign : 250.78790786948676 Adversarial : 256.0000000000067
+Avg of active nodes for prediction : 9 layer: 9 Gt : 129.6860734369875   Begnign : 131.53166986564517  Adversarial : 128.00000000000335
+
+Mnist FGSM, MNIST_3
+    Avg of active nodes for prediction : 0 Gt : 212.6940500338025    Begnign : 212.82226762002074  Adversarial : 211.91651542649726
+    Avg of active nodes for prediction : 1 Gt : 248.48355555555887   Begnign : 248.48412698412687  Adversarial : 236.09836065573768
+    Avg of active nodes for prediction : 2 Gt : 228.64398866099532   Begnign : 229.11904761904756  Adversarial : 232.32453316162227
+    Avg of active nodes for prediction : 3 Gt : 236.48480867137508   Begnign : 236.51302605210424  Adversarial : 238.30794923179693
+    Avg of active nodes for prediction : 4 Gt : 241.28944206008615   Begnign : 241.43672199170123  Adversarial : 236.29227323628223
+    Avg of active nodes for prediction : 5 Gt : 230.97751980836722   Begnign : 231.54878048780435  Adversarial : 229.48144104803504
+    Avg of active nodes for prediction : 6 Gt : 227.9577559986391    Begnign : 227.47040169133194  Adversarial : 220.96641791044775
+    Avg of active nodes for prediction : 7 Gt : 242.29101968945065   Begnign : 243.59844054580972  Adversarial : 245.78927773641146
+    Avg of active nodes for prediction : 8 Gt : 241.0025720164608    Begnign : 242.15608740894947  Adversarial : 238.80544354838722
+    Avg of active nodes for prediction : 9 Gt : 248.06501083513922   Begnign : 248.9711538461546   Adversarial : 237.47902316843908
+
+
+Avg of active nodes for prediction : 0 layer: 0 Gt : 123.09347532116693   Begnign : 123.10214504596517  Adversarial : 121.20508166969131
+Avg of active nodes for prediction : 0 layer: 1 Gt : 79.60057471264204   Begnign : 79.72012257405517  Adversarial : 80.71143375680566
+Avg of active nodes for prediction : 1 layer: 0 Gt : 146.00844444444436   Begnign : 146.0846560846563  Adversarial : 138.39344262295083
+Avg of active nodes for prediction : 1 layer: 1 Gt : 92.47511111111109   Begnign : 92.3994708994709  Adversarial : 87.70491803278689
+Avg of active nodes for prediction : 2 layer: 0 Gt : 131.99533099883467   Begnign : 132.67047619047617  Adversarial : 135.05859626529315
+Avg of active nodes for prediction : 2 layer: 1 Gt : 86.64865766216234   Begnign : 86.4485714285714  Adversarial : 87.26593689632928
+Avg of active nodes for prediction : 3 layer: 0 Gt : 139.28099852192426   Begnign : 139.50701402805618  Adversarial : 140.7895791583168
+Avg of active nodes for prediction : 3 layer: 1 Gt : 87.20381014944894   Begnign : 87.00601202404795  Adversarial : 87.51837007348001
+Avg of active nodes for prediction : 4 layer: 0 Gt : 143.47811158798189   Begnign : 143.71161825726122  Adversarial : 140.8409854423294
+Avg of active nodes for prediction : 4 layer: 1 Gt : 87.81133047210267   Begnign : 87.72510373444008  Adversarial : 85.45128779395313
+Avg of active nodes for prediction : 5 layer: 0 Gt : 136.79399299797277   Begnign : 137.46674057649696  Adversarial : 134.75218340611363
+Avg of active nodes for prediction : 5 layer: 1 Gt : 84.18352681039279   Begnign : 84.08203991130813  Adversarial : 84.72925764192145
+Avg of active nodes for prediction : 6 layer: 0 Gt : 130.42142615748182   Begnign : 130.59513742071874  Adversarial : 125.07649253731356
+Avg of active nodes for prediction : 6 layer: 1 Gt : 87.5363298411647   Begnign : 86.87526427061289  Adversarial : 85.88992537313419
+Avg of active nodes for prediction : 7 layer: 0 Gt : 147.59708660156875   Begnign : 148.63742690058572  Adversarial : 144.85256887565149
+Avg of active nodes for prediction : 7 layer: 1 Gt : 84.69393308788229   Begnign : 84.96101364522549  Adversarial : 90.93670886075935
+Avg of active nodes for prediction : 8 layer: 0 Gt : 142.16495198902564   Begnign : 143.22580645161267  Adversarial : 139.14616935483875
+Avg of active nodes for prediction : 8 layer: 1 Gt : 88.83762002743481   Begnign : 88.93028095733617  Adversarial : 89.65927419354847
+Avg of active nodes for prediction : 9 layer: 0 Gt : 150.71678613102296   Begnign : 151.3615384615394  Adversarial : 142.58296806512246
+Avg of active nodes for prediction : 9 layer: 1 Gt : 87.34822470411648   Begnign : 87.60961538461618  Adversarial : 84.89605510331837
+
+Mnist pgd Mnist_3
+    Avg of active nodes for prediction : 0 Gt : 212.6940500338025    Begnign : 212.82226762002074  Adversarial : 214.25178147268426
+    Avg of active nodes for prediction : 1 Gt : 248.48355555555887   Begnign : 248.48412698412687  Adversarial : 238.99999999999997
+    Avg of active nodes for prediction : 2 Gt : 228.64398866099532   Begnign : 229.11904761904756  Adversarial : 235.78314028313918
+    Avg of active nodes for prediction : 3 Gt : 236.48480867137508   Begnign : 236.51302605210424  Adversarial : 242.6886024423347
+    Avg of active nodes for prediction : 4 Gt : 241.28944206008615   Begnign : 241.43672199170123  Adversarial : 239.51666666666665
+    Avg of active nodes for prediction : 5 Gt : 230.97751980836722   Begnign : 231.54878048780435  Adversarial : 233.6758183738118
+    Avg of active nodes for prediction : 6 Gt : 227.9577559986391    Begnign : 227.47040169133194  Adversarial : 224.56124721603527
+    Avg of active nodes for prediction : 7 Gt : 242.29101968945065   Begnign : 243.59844054580972  Adversarial : 249.10118168389934
+    Avg of active nodes for prediction : 8 Gt : 241.0025720164608    Begnign : 242.15608740894947  Adversarial : 240.94417238001992
+    Avg of active nodes for prediction : 9 Gt : 248.06501083513922   Begnign : 248.9711538461546   Adversarial : 240.01651982378908
+
+Avg of active nodes for prediction : 0 layer: 0 Gt : 123.09347532116693   Begnign : 123.10214504596517  Adversarial : 122.83135391923986
+Avg of active nodes for prediction : 0 layer: 0 Gt : 79.60057471264204   Begnign : 79.72012257405517  Adversarial : 81.42042755344424
+Avg of active nodes for prediction : 1 layer: 1 Gt : 146.00844444444436   Begnign : 146.0846560846563  Adversarial : 140.9596774193548
+Avg of active nodes for prediction : 1 layer: 1 Gt : 92.47511111111109   Begnign : 92.3994708994709  Adversarial : 88.0403225806452
+Avg of active nodes for prediction : 2 layer: 2 Gt : 131.99533099883467   Begnign : 132.67047619047617  Adversarial : 137.5482625482626
+Avg of active nodes for prediction : 2 layer: 2 Gt : 86.64865766216234   Begnign : 86.4485714285714  Adversarial : 88.23487773487803
+Avg of active nodes for prediction : 3 layer: 3 Gt : 139.28099852192426   Begnign : 139.50701402805618  Adversarial : 143.8466757123472
+Avg of active nodes for prediction : 3 layer: 3 Gt : 87.20381014944894   Begnign : 87.00601202404795  Adversarial : 88.84192672998677
+Avg of active nodes for prediction : 4 layer: 4 Gt : 143.47811158798189   Begnign : 143.71161825726122  Adversarial : 143.19523809523815
+Avg of active nodes for prediction : 4 layer: 4 Gt : 87.81133047210267   Begnign : 87.72510373444008  Adversarial : 86.32142857142836
+Avg of active nodes for prediction : 5 layer: 5 Gt : 136.79399299797277   Begnign : 137.46674057649696  Adversarial : 137.66842661034846
+Avg of active nodes for prediction : 5 layer: 5 Gt : 84.18352681039279   Begnign : 84.08203991130813  Adversarial : 86.00739176346353
+Avg of active nodes for prediction : 6 layer: 6 Gt : 130.42142615748182   Begnign : 130.59513742071874  Adversarial : 127.24721603563466
+Avg of active nodes for prediction : 6 layer: 6 Gt : 87.5363298411647   Begnign : 86.87526427061289  Adversarial : 87.3140311804009
+Avg of active nodes for prediction : 7 layer: 7 Gt : 147.59708660156875   Begnign : 148.63742690058572  Adversarial : 147.98153618906937
+Avg of active nodes for prediction : 7 layer: 7 Gt : 84.69393308788229   Begnign : 84.96101364522549  Adversarial : 91.11964549483012
+Avg of active nodes for prediction : 8 layer: 8 Gt : 142.16495198902564   Begnign : 143.22580645161267  Adversarial : 140.95396669931415
+Avg of active nodes for prediction : 8 layer: 8 Gt : 88.83762002743481   Begnign : 88.93028095733617  Adversarial : 89.9902056807051
+Avg of active nodes for prediction : 9 layer: 9 Gt : 150.71678613102296   Begnign : 151.3615384615394  Adversarial : 145.08810572687233
+Avg of active nodes for prediction : 9 layer: 9 Gt : 87.34822470411648   Begnign : 87.60961538461618  Adversarial : 84.92841409691714
+
+
+
+
+
+Cuckoo , Cuckoo_1, CKO threshhold 0 :
+    Avg nb of active nodes for prediction : 0 Gt : 41.978110721496826   Benign : 41.88604943443686  Adversarial : 51.671670515783
+    Avg of active nodes for prediction : 1 Gt : 43.65822404645188   Begnign : 43.646509740259766  Adversarial : 52.75366178428848
+per layer :
+    Avg of active nodes for prediction : 0 layer: 0 Gt : 20.785357560301403   Begnign : 20.777126099706894  Adversarial : 27.792147806003516
+    Avg of active nodes for prediction : 0 layer: 1 Gt : 10.733822123047451   Begnign : 10.715123586091233  Adversarial : 12.086605080831022
+    Avg of active nodes for prediction : 0 layer: 2 Gt : 8.458931038146764   Begnign : 8.393799748638349  Adversarial : 9.79291762894513
+    Avg of active nodes for prediction : 0 layer: 3 Gt : 2.0000000000002056   Begnign : 1.9999999999999478  Adversarial : 1.99999999999991
+
+    Avg of active nodes for prediction : 1 layer: 0 Gt : 23.361297427169816   Begnign : 23.353490259740223  Adversarial : 27.952507767420613
+    Avg of active nodes for prediction : 1 layer: 1 Gt : 10.77305035539207   Begnign : 10.74310064935069  Adversarial : 11.987572126054648
+    Avg of active nodes for prediction : 1 layer: 2 Gt : 7.523876263889373   Begnign : 7.549918831168762  Adversarial : 10.813581890811946
+    Avg of active nodes for prediction : 1 layer: 3 Gt : 1.9999999999996192   Begnign : 1.9999999999998792  Adversarial : 1.9999999999999225
+
+
+
+Cfiar 10 fgsm
+Avg of active nodes for prediction : 0  Gt : 921.5279999999977   Begnign : 920.8367952522416  Adversarial : 921.1129441624353
+Avg of active nodes for prediction : 1  Gt : 962.6003022289393   Begnign : 962.0108184383804  Adversarial : 962.6988148753558
+Avg of active nodes for prediction : 2  Gt : 870.2010582010579   Begnign : 868.0000000000006  Adversarial : 868.4906832298135
+Avg of active nodes for prediction : 3  Gt : 869.0666666666667   Begnign : 880.9000000000001  Adversarial : 866.3846153846154
+Avg of active nodes for prediction : 4  Gt : 918.1428571428568   Begnign : 905.4333333333332  Adversarial : 906.4117647058824
+Avg of active nodes for prediction : 5  Gt : 898.1313035204581   Begnign : 897.3552465233886  Adversarial : 897.1672203765233
+Avg of active nodes for prediction : 6  Gt : 923.4248366013069   Begnign : 909.3445378151263  Adversarial : 909.5579710144921
+Avg of active nodes for prediction : 7  Gt : 926.6170316301708   Begnign : 925.6666666666666  Adversarial : 926.3289920724798
+Avg of active nodes for prediction : 8  Gt : 945.3738317757008   Begnign : 944.6020066889635  Adversarial : 942.9028571428566
+Avg of active nodes for prediction : 9  Gt : 977.0826525708786   Begnign : 978.0314861460963  Adversarial : 978.8470394736852
 
 
 Experiment 4: 
 Compute average weight of activation
-Mnist , FGSM , mnist.h5 feedforward
-Label : %s 0
-    Average activation weights of Ben : 0.9237761549631464  Adv : 1.0306582727975315  GT : 0.9188313856662761
-Label : %s 1
-    Average activation weights of Ben : 1.0508969443680152  Adv : 1.0941788217769552  GT : 1.0374312090644944
-Label : %s 2
-    Average activation weights of Ben : 1.1140128230687156  Adv : 1.1366393745159258  GT : 1.090533759118052
-Label : %s 3
-    Average activation weights of Ben : 1.1028462425460657  Adv : 1.264490966667513  GT : 1.1168336968977801
-Label : %s 4
-    Average activation weights of Ben : 1.3663007924756536  Adv : 1.3339964576169203  GT : 1.351695730688672
-Label : %s 5
-    Average activation weights of Ben : 1.0139087684281167  Adv : 1.0651572753052683  GT : 0.9890325420958528
-Label : %s 6
-    Average activation weights of Ben : 1.1152687487091162  Adv : 1.1512956238110217  GT : 1.0852194808159212
-Label : %s 7
-    Average activation weights of Ben : 1.4648876838431877  Adv : 1.3434760433947286  GT : 1.4475931607979917
-Label : %s 8
-    Average activation weights of Ben : 1.7427195421953823  Adv : 1.4420054653878238  GT : 1.7272116839314515
- Label : %s 9
-    Average activation weights of Ben : 1.3003584742122967  Adv : 1.2331077574003064  GT : 1.2684734410463727
+Mnist , FGSM , mnist_1.h5 feedforward
+Prediction :  0
+ Average activation weights of Ben : 0.8591960746178599  Adv : 0.8436689067657485  GT : 0.8665314478283991
+Prediction :  1
+ Average activation weights of Ben : 0.27101586308259656  Adv : 0.4009922194535302  GT : 0.2628687429444649
+Prediction :  2
+ Average activation weights of Ben : 0.7142306646665268  Adv :v 0.6351644290915447  GT : 0.6839357530394696
+Prediction :  3
+ Average activation weights of Ben : 0.7810454868612957  Adv : 0.7078122415970775  GT : 0.7534816995389375
+Prediction :  4
+ Average activation weights of Ben : 0.5497806255528821  Adv : 0.5755593838878313  GT : 0.5424814982408149
+Prediction :  5
+ Average activation weights of Ben : 0.587734219599901  Adv : 0.6490784745866491  GT : 0.5386793057719994
+Prediction :  6
+ Average activation weights of Ben : 0.5826136531530971  Adv : 0.6268047647609518  GT : 0.5350546062684225
+Prediction :  7
+ Average activation weights of Ben : 0.575335017090082  Adv : 0.39719818733303575  GT : 0.5617972076024685
+Prediction :  8
+ Average activation weights of Ben : 0.6598671253280286  Adv : 0.4841863335437252  GT : 0.6396638029328235
+Prediction :  9
+ Average activation weights of Ben : 0.5049185559318893  Adv : 0.5134935901279375  GT : 0.4690546687645957
+
+Prediction : 0  layer : 1 Average activation weights of Ben : 0.5526943241326808  Adv : 0.5550939466973954  GT : 0.5542076969010971
+Prediction : 0  layer : 2 Average activation weights of Ben : 3.165697825103039  Adv : 3.132243866834099  GT : 3.1788551987556977
+Prediction : 1  layer : 1 Average activation weights of Ben : 0.386429659672982  Adv : 0.43323526897863984  GT : 0.3845490627927893
+Prediction : 1  layer : 2 Average activation weights of Ben : 2.155602066492209  Adv : 2.36874916992842  GT : 2.1411884230961395
+Prediction : 2  layer : 1 Average activation weights of Ben : 0.5419963435563121  Adv : 0.5040581505858632  GT : 0.5339764893123378
+Prediction : 2  layer : 2 Average activation weights of Ben : 2.886464985776745  Adv : 2.7662707075972293  GT : 2.8338950167666037
+Prediction : 3  layer : 1 Average activation weights of Ben : 0.5337833716205119  Adv : 0.5200315001826961  GT : 0.5284712759107243
+Prediction : 3  layer : 2 Average activation weights of Ben : 3.0283076021020827  Adv : 2.895592983011459  GT : 2.9784921231671517
+Prediction : 4  layer : 1 Average activation weights of Ben : 0.4670936391528008  Adv : 0.4666409120791776  GT : 0.4649081761317745
+Prediction : 4  layer : 2 Average activation weights of Ben : 2.63246761195297  Adv : 2.6844778556964872  GT : 2.620054820349859
+Prediction : 5  layer : 1 Average activation weights of Ben : 0.5017027841782146  Adv : 0.5148391067933497  GT : 0.48769813166584375
+Prediction : 5  layer : 2 Average activation weights of Ben : 2.6737656550215867  Adv : 2.7833178423799465  GT : 2.5896604798781473
+Prediction : 6  layer : 1 Average activation weights of Ben : 0.5045714151266595  Adv : 0.509265547509615  GT : 0.48824979461657486
+Prediction : 6  layer : 2 Average activation weights of Ben : 2.660655891179535  Adv : 2.7443439820122877  GT : 2.581859417920273
+Prediction : 7  layer : 1 Average activation weights of Ben : 0.4781730797169838  Adv : 0.4211171625753754  GT : 0.47475501868232967
+Prediction : 7  layer : 2 Average activation weights of Ben : 2.6724969544631785  Adv : 2.3732792120907007  GT : 2.6488393965226056
+Prediction : 8  layer : 1 Average activation weights of Ben : 0.508035403380247  Adv : 0.45911899304004666  GT : 0.5044155413482635
+Prediction : 8  layer : 2 Average activation weights of Ben : 2.811698847275813  Adv : 2.5092536740474007  GT : 2.7749120645173853
+Prediction : 9  layer : 1 Average activation weights of Ben : 0.47054913452237307  Adv : 0.47552485497383357  GT : 0.4591049808960503
+Prediction : 9  layer : 2 Average activation weights of Ben : 2.5392879773414054  Adv : 2.551462325282045  GT : 2.479004356633135
+
+
+Mnist , PGD , mnist_1.h5 feedforward :
+Prediction : 0
+ Average activation weights of Ben : 0.8591960746178599  Adv : 0.836161219353528  GT : 0.8665314478283991 
+Prediction 1 :
+ Average activation weights of Ben : 0.27101586308259656  Adv : 0.4752436025809732  GT : 0.2628687429444649  
+Prediction 2 :
+ Average activation weights of Ben : 0.7142306646665268  Adv : 0.6358442933942251  GT : 0.6839357530394696
+Prediction 3 :
+ Average activation weights of Ben : 0.7810454868612957  Adv : 0.7256740319195851  GT : 0.7534816995389375
+Prediction 4 :
+ Average activation weights of Ben : 0.5497806255528821  Adv : 0.5883319182109903  GT : 0.5424814982408149
+Prediction 5 :
+ Average activation weights of Ben : 0.587734219599901  Adv : 0.6282276101321101  GT : 0.5386793057719994
+Prediction 6 :
+ Average activation weights of Ben : 0.5826136531530971  Adv : 0.633076592066647  GT : 0.5350546062684225
+Prediction 7 :
+ Average activation weights of Ben : 0.575335017090082  Adv : 0.4428447478505972  GT : 0.5617972076024685
+Prediction 8 :
+ Average activation weights of Ben : 0.6598671253280286  Adv : 0.5043454486463133  GT : 0.6396638029328235
+Prediction 9 :
+ Average activation weights of Ben : 0.5049185559318893  Adv : 0.5451402547638936  GT : 0.4690546687645957
+
+
+Prediction : 0  layer : 1 Average activation weights of Ben : 0.5526943241326808  Adv : 0.5563513580328242  GT : 0.5542076969010971
+Prediction : 0  layer : 2 Average activation weights of Ben : 3.165697825103039  Adv : 3.115971080674231  GT : 3.1788551987556977
+Prediction : 1  layer : 1 Average activation weights of Ben : 0.386429659672982  Adv : 0.45863718644165574  GT : 0.3845490627927893
+Prediction : 1  layer : 2 Average activation weights of Ben : 2.155602066492209  Adv : 2.4918500187202905  GT : 2.1411884230961395
+Prediction : 2  layer : 1 Average activation weights of Ben : 0.5419963435563121  Adv : 0.5052498886538707  GT : 0.5339764893123378
+Prediction : 2  layer : 2 Average activation weights of Ben : 2.886464985776745  Adv : 2.766438698134578  GT : 2.8338950167666037
+Prediction : 3  layer : 1 Average activation weights of Ben : 0.5337833716205119  Adv : 0.5273678230464908  GT : 0.5284712759107243
+Prediction : 3  layer : 2 Average activation weights of Ben : 3.0283076021020827  Adv : 2.9239802407926856  GT : 2.9784921231671517
+Prediction : 4  layer : 1 Average activation weights of Ben : 0.4670936391528008  Adv : 0.4708213966395857  GT : 0.4649081761317745
+Prediction : 4  layer : 2 Average activation weights of Ben : 2.63246761195297  Adv : 2.705842439782397  GT : 2.620054820349859
+Prediction : 5  layer : 1 Average activation weights of Ben : 0.5017027841782146  Adv : 0.5116374553301845  GT : 0.48769813166584375
+Prediction : 5  layer : 2 Average activation weights of Ben : 2.6737656550215867  Adv : 2.74481776493404  GT : 2.5896604798781473
+Prediction : 6  layer : 1 Average activation weights of Ben : 0.5045714151266595  Adv : 0.5138611417161485  GT : 0.48824979461657486
+Prediction : 6  layer : 2 Average activation weights of Ben : 2.660655891179535  Adv : 2.7522920424171455  GT : 2.581859417920273
+Prediction : 7  layer : 1 Average activation weights of Ben : 0.4781730797169838  Adv : 0.43780867506521337  GT : 0.47475501868232967
+Prediction : 7  layer : 2 Average activation weights of Ben : 2.6724969544631785  Adv : 2.4478808206359792  GT : 2.6488393965226056
+Prediction : 8  layer : 1 Average activation weights of Ben : 0.508035403380247  Adv : 0.46736967059961104  GT : 0.5044155413482635
+Prediction : 8  layer : 2 Average activation weights of Ben : 2.811698847275813  Adv : 2.5413212266930167  GT : 2.7749120645173853
+Prediction : 9  layer : 1 Average activation weights of Ben : 0.47054913452237307  Adv : 0.48800713418854746  GT : 0.4591049808960503
+Prediction : 9  layer : 2 Average activation weights of Ben : 2.5392879773414054  Adv : 2.602273375339248  GT : 2.479004356633135
+
+MNIST,FGSM, mnist_2.h5
+Prediction : 0
+    Average activation weights of Ben : 1.010679812019977  Adv : 1.0104510059874698  GT : 1.0105648587202711
+Prediction : 1
+    Average activation weights of Ben : 1.010915723041173  Adv : 1.0105007998528006  GT : 1.0108279177698885
+Prediction : 2
+    Average activation weights of Ben : 1.0110528892324484  Adv : 1.0105414072953072  GT : 1.0109511364266126
+Prediction : 3
+    Average activation weights of Ben : 1.0112068547520887  Adv : 1.010485279264946  GT : 1.0110434288568029
+Prediction : 4
+    Average activation weights of Ben : 1.011272121965692  Adv : 1.0106128642862866  GT : 1.0110854587791231
+Prediction : 5
+    Average activation weights of Ben : 1.010896068372698  Adv : 1.0104290351411447  GT : 1.010815534711048
+Prediction : 6
+    Average activation weights of Ben : 1.0107432111848895  Adv : 1.0104430176628334  GT : 1.0107179484469657
+Prediction : 7
+    Average activation weights of Ben : 1.0110343851262706  Adv : 1.010602945614844  GT : 1.0109375554125402
+Prediction : 8
+    Average activation weights of Ben : 1.0112629739981676  Adv : 1.0104841266499733  GT : 1.0108380177164993
+Prediction : 9
+    Average activation weights of Ben : 1.0122806354924532  Adv : 1.0106573506298637  GT : 1.0113565192933953
+
+per layer analaysis:
+Prediction : 0  layer : 0 Average activation weight  of Ben : 0.4394579896818299  Adv : 0.4431053708925024  GT : 0.4423791883304855
+Prediction : 0  layer : 1 Average activation weights of Ben : 0.4956593849702302  Adv : 0.5019952276048208  GT : 0.49587647859271833
+Prediction : 1  layer : 0 Average activation weights of Ben : 0.4415567874752629  Adv : 0.4315522973204465  GT : 0.44252326429262245
+Prediction : 1  layer : 1 Average activation weights of Ben : 0.5126079713382573  Adv : 0.5185276874964717  GT : 0.5127815243286732
+Prediction : 2  layer : 0 Average activation weights of Ben : 0.43151944577737456  Adv : 0.43267604915309754  GT : 0.43476492375696163
+Prediction : 2  layer : 1 Average activation weights of Ben : 0.5220600412955618  Adv : 0.5214646800439968  GT : 0.5220472294908746
+Prediction : 3  layer : 0 Average activation weights of Ben : 0.3998808074566861  Adv : 0.4193294454633183  GT : 0.4048969815214729
+Prediction : 3  layer : 1 Average activation weights of Ben : 0.531439707440894  Adv : 0.5291984809805771  GT : 0.5309520667508691
+Prediction : 4  layer : 0 Average activation weights of Ben : 0.44568041961061533  Adv : 0.44915773837475675  GT : 0.448255900051887
+Prediction : 4  layer : 1 Average activation weights of Ben : 0.5086599381694691  Adv : 0.5121286900096043  GT : 0.509114400238171
+Prediction : 5  layer : 0 Average activation weights of Ben : 0.4225604277742631  Adv : 0.42539398318206245  GT : 0.42322172593781965
+Prediction : 5  layer : 1 Average activation weights of Ben : 0.5172049924020009  Adv : 0.5175095308963585  GT : 0.5161086312100166
+Prediction : 6  layer : 0 Average activation weights of Ben : 0.43142780092432276  Adv : 0.4408280706927259  GT : 0.4312502032343093
+Prediction : 6  layer : 1 Average activation weights of Ben : 0.4989028329428972  Adv : 0.503473695733662  GT : 0.5009151633302156
+Prediction : 7  layer : 0 Average activation weights of Ben : 0.4354003435287115  Adv : 0.4434928456480405  GT : 0.4385048866872883
+Prediction : 7  layer : 1 Average activation weights of Ben : 0.5093610180152329  Adv : 0.5168017162015173  GT : 0.5100889464978903
+Prediction : 8  layer : 0 Average activation weights of Ben : 0.4106255519429013  Adv : 0.42872071395594524  GT : 0.4167398197909536
+Prediction : 8  layer : 1 Average activation weights of Ben : 0.5204964498411041  Adv : 0.5196919512377979  GT : 0.5227823588072529
+Prediction : 9  layer : 0 Average activation weights of Ben : 0.42860291588790667  Adv : 0.44463401663882773  GT : 0.43768759192841766
+Prediction : 9  layer : 1 Average activation weights of Ben : 0.5195583963398874  Adv : 0.5211010462294996  GT : 0.5194774930307114
 
 
 
+MNIST PGD mnist_2.h5
+Prediction : 0
+ Average activation weights of Ben : 1.010679812019977  Adv : 1.0104191206551358  GT : 1.0105648587202711
+Prediction : 1
+ Average activation weights of Ben : 1.010915723041173  Adv : 1.0105085914228455  GT : 1.0108279177698885
+Prediction : 2
+ Average activation weights of Ben : 1.0110528892324484  Adv : 1.0105364032104973  GT : 1.0109511364266126
+Prediction : 3
+ Average activation weights of Ben : 1.0112068547520887  Adv : 1.0104809738442693  GT : 1.0110434288568029
+Prediction : 4
+ Average activation weights of Ben : 1.011272121965692  Adv : 1.010595569004226  GT : 1.0110854587791231
+Prediction : 5
+ Average activation weights of Ben : 1.010896068372698  Adv : 1.0104465464009391  GT : 1.010815534711048
+Prediction : 6
+ Average activation weights of Ben : 1.0107432111848895  Adv : 1.0104259153096415  GT : 1.0107179484469657
+Prediction : 7
+ Average activation weights of Ben : 1.0110343851262706  Adv : 1.0105858018992437  GT : 1.0109375554125402
+Prediction : 8
+ Average activation weights of Ben : 1.0112629739981676  Adv : 1.010493920427213  GT : 1.0108380177164993
+Prediction : 9
+ Average activation weights of Ben : 1.0122806354924532  Adv : 1.010679215707773  GT : 1.0113565192933953
 
+per layer analysis :
+Prediction : 0  layer : 0 Average activation weights of Ben : 0.4394579896818299  Adv : 0.44128732947589916  GT : 0.4423791883304855
+Prediction : 0  layer : 1 Average activation weights of Ben : 0.4956593849702302  Adv : 0.5006247361434736  GT : 0.49587647859271833
+Prediction : 1  layer : 0 Average activation weights of Ben : 0.4415567874752629  Adv : 0.43582050868928585  GT : 0.44252326429262245
+Prediction : 1  layer : 1 Average activation weights of Ben : 0.5126079713382573  Adv : 0.5150386338956258  GT : 0.5127815243286732
+Prediction : 2  layer : 0 Average activation weights of Ben : 0.43151944577737456  Adv : 0.4321829517358312  GT : 0.43476492375696163
+Prediction : 2  layer : 1 Average activation weights of Ben : 0.5220600412955618  Adv : 0.5214573696587652  GT : 0.5220472294908746
+Prediction : 3  layer : 0 Average activation weights of Ben : 0.3998808074566861  Adv : 0.41746958078291935  GT : 0.4048969815214729
+Prediction : 3  layer : 1 Average activation weights of Ben : 0.531439707440894  Adv : 0.5306278039080038  GT : 0.5309520667508691
+Prediction : 4  layer : 0 Average activation weights of Ben : 0.44568041961061533  Adv : 0.4478285718765396  GT : 0.448255900051887
+Prediction : 4  layer : 1 Average activation weights of Ben : 0.5086599381694691  Adv : 0.5117283286434561  GT : 0.509114400238171
+Prediction : 5  layer : 0 Average activation weights of Ben : 0.4225604277742631  Adv : 0.42561014563748684  GT : 0.42322172593781965
+Prediction : 5  layer : 1 Average activation weights of Ben : 0.5172049924020009  Adv : 0.5190444945758299  GT : 0.5161086312100166
+Prediction : 6  layer : 0 Average activation weights of Ben : 0.43142780092432276  Adv : 0.442660010037496  GT : 0.4312502032343093
+Prediction : 6  layer : 1 Average activation weights of Ben : 0.4989028329428972  Adv : 0.49993152083958686  GT : 0.5009151633302156
+Prediction : 7  layer : 0 Average activation weights of Ben : 0.4354003435287115  Adv : 0.4462741801831452  GT : 0.4385048866872883
+Prediction : 7  layer : 1 Average activation weights of Ben : 0.5093610180152329  Adv : 0.5123060098867608  GT : 0.5100889464978903
+Prediction : 8  layer : 0 Average activation weights of Ben : 0.4106255519429013  Adv : 0.4284244531835026  GT : 0.4167398197909536
+Prediction : 8  layer : 1 Average activation weights of Ben : 0.5204964498411041  Adv : 0.5209675894739992  GT : 0.5227823588072529
+Prediction : 9  layer : 0 Average activation weights of Ben : 0.42860291588790667  Adv : 0.4466785717617686  GT : 0.43768759192841766
+Prediction : 9  layer : 1 Average activation weights of Ben : v0.5195583963398874  Adv : 0.5212429991159683  GT : 0.5194774930307114
+
+
+Mnist_3 FGSM
+Prediction : 0
+ Average activation weights of Ben : 0.6848644207996085  Adv : 0.7150617961324661  GT : 0.6872247982466206
+Prediction : 1
+ Average activation weights of Ben : 0.5837124767675602  Adv : 0.5916385928874393  GT : 0.5788966842887903
+Prediction : 2
+ Average activation weights of Ben : 0.7501625831944525  Adv : 0.7050550450429401  GT : 0.739763184888335
+Prediction : 3
+ Average activation weights of Ben : 0.7429914152199782  Adv : 0.7314456516223701  GT : 0.7388361815892192
+Prediction : 4
+ Average activation weights of Ben : 0.6623471099737386  Adv : 0.6752864753806197  GT : 0.6557325181994815
+Prediction : 5
+ Average activation weights of Ben : 0.6750124631684576  Adv : 0.6926243783318834  GT : 0.6613224676361276
+Prediction : 6
+ Average activation weights of Ben : 0.6767089595233372  Adv : 0.6927176792020381  GT : 0.6560574687861416
+Prediction : 7
+ Average activation weights of Ben : 0.7056384059091835  Adv : 0.6414792593227939  GT : 0.7010226331780024
+Prediction : 8
+ Average activation weights of Ben : 0.6723527656223213  Adv : 0.6446030959445029  GT : 0.6658992834880427
+Prediction : 9
+ Average activation weights of Ben : 0.6523786431725498  Adv : 0.6524466275724982  GT : 0.6388448705378004
+
+
+Prediction : 0  layer : 0 Average activation weights of Ben : 0.5106235400737728  Adv : 0.5302160985196014  GT : 0.512089655854508
+Prediction : 0  layer : 1 Average activation weights of Ben : 1.4439697214621692  Adv : 1.5149692892470712  GT : 1.4495847380012978
+Prediction : 1  layer : 0 Average activation weights of Ben : 0.40744410207784626  Adv : 0.41646241876865364  GT : 0.404131096561689
+Prediction : 1  layer : 1 Average activation weights of Ben : 1.2436933281659472  Adv : 1.2584533589856315  GT : 1.2325589559161996
+Prediction : 2  layer : 0 Average activation weights of Ben : 0.5172812196886607  Adv : 0.4870586976735077  GT : 0.5117443516216226
+Prediction : 2  layer : 1 Average activation weights of Ben : 1.6332065291425484  Adv : 1.5281064373577309  GT : 1.607545202196497
+Prediction : 3  layer : 0 Average activation weights of Ben : 0.5087077448916485  Adv : 0.5034125416736701  GT : 0.5066183305360868
+Prediction : 3  layer : 1 Average activation weights of Ben : 1.6202664999663705  Adv : 1.5909244126282225  GT : 1.6098902134832629
+Prediction : 4  layer : 0 Average activation weights of Ben : 0.4669848111649817  Adv : 0.47330904077458225  GT : 0.4617356858514428
+Prediction : 4  layer : 1 Average activation weights of Ben : 1.420056517772297  Adv : 1.4525503850564743  GT : 1.4054618678579036
+Prediction : 5  layer : 0 Average activation weights of Ben : 0.46947834394484517  Adv : 0.47884886447739794  GT : 0.45962062326379505
+Prediction : 5  layer : 1 Average activation weights of Ben : 1.4555590444601687  Adv : 1.4990242697903786  GT : 1.4243467788987296
+Prediction : 6  layer : 0 Average activation weights of Ben : 0.4761658539753599  Adv : 0.4902157264660206  GT : 0.45875356378729704
+Prediction : 6  layer : 1 Average activation weights of Ben : 1.4539610234627824  Adv : 1.4879373109439047  GT : 1.409418841570603
+Prediction : 7  layer : 0 Average activation weights of Ben : 0.5046764845169609  Adv : 0.4429125733014247  GT : 0.5009796473378765
+Prediction : 7  layer : 1 Average activation weights of Ben : 1.512238731919056  Adv : 1.3815252043272126  GT : 1.502088251283881
+Prediction : 8  layer : 0 Average activation weights of Ben : 0.4801981586502429  Adv : 0.45518734325040217  GT : 0.47452256422186256
+Prediction : 8  layer : 1 Average activation weights of Ben : 1.4368601381199282  Adv : 1.3786219445817323  GT : 1.423175286022317
+Prediction : 9  layer : 0 Average activation weights of Ben : 0.47396837202414666  Adv : 0.4743413739676366  GT : 0.4626554393755566
+Prediction : 9  layer : 1 Average activation weights of Ben : 1.3831675571656177  Adv : 1.3829985087483487  GT : 1.3538791719935368
+
+
+
+Mnist_3 PGD
+Prediction : 0
+    Average activation weights of Ben : 0.6848644207996085  Adv : 0.7262128813485437  GT : 0.6872247982466206
+Prediction : 1
+    Average activation weights of Ben : 0.5837124767675602  Adv : 0.6092196343653826  GT : 0.5788966842887903
+Prediction : 2
+    Average activation weights of Ben : 0.7501625831944525  Adv : 0.698304124806439   GT : 0.739763184888335
+Prediction : 3
+    Average activation weights of Ben : 0.7429914152199782  Adv : 0.7333396536937753  GT : 0.7388361815892192
+Prediction : 4
+    Average activation weights of Ben : 0.6623471099737386  Adv : 0.669380973091233   GT : 0.6557325181994815
+ Prediction : 5
+    Average activation weights of Ben : 0.6750124631684576  Adv : 0.693748078323161   GT : 0.6613224676361276
+Prediction : 6
+    Average activation weights of Ben : 0.6767089595233372  Adv : 0.670857382354136   GT : 0.6560574687861416
+Prediction : 7
+    Average activation weights of Ben : 0.7056384059091835  Adv : 0.6513909571647055  GT : 0.7010226331780024
+Prediction : 8
+    Average activation weights of Ben : 0.6723527656223213  Adv : 0.6559271710811349  GT : 0.6658992834880427
+Prediction : 9
+    Average activation weights of Ben : 0.6523786431725498  Adv : 0.6719421880237227  GT : 0.6388448705378004
+
+
+
+Prediction : 0  layer : 0 Average activation weights of Ben : 0.5106235400737728  Adv : 0.5406736108864513  GT : 0.512089655854508
+Prediction : 0  layer : 1 Average activation weights of Ben : 1.4439697214621692  Adv : 1.5379650329476804  GT : 1.4495847380012978
+Prediction : 1  layer : 0 Average activation weights of Ben : 0.40744410207784626  Adv : 0.4340632380928563  GT : 0.404131096561689
+Prediction : 1  layer : 1 Average activation weights of Ben : 1.2436933281659472  Adv : 1.2935956647118771  GT : 1.2325589559161996
+Prediction : 2  layer : 0 Average activation weights of Ben : 0.5172812196886607  Adv : 0.4873234445687654  GT : 0.5117443516216226
+Prediction : 2  layer : 1 Average activation weights of Ben : 1.6332065291425484  Adv : 1.5075889289416742  GT : 1.607545202196497
+Prediction : 3  layer : 0 Average activation weights of Ben : 0.5087077448916485  Adv : 0.508201726458967  GT : 0.5066183305360868
+Prediction : 3  layer : 1 Average activation weights of Ben : 1.6202664999663705  Adv : 1.5918172337272982  GT : 1.6098902134832629
+Prediction : 4  layer : 0 Average activation weights of Ben : 0.4669848111649817  Adv : 0.47117972822687415  GT : 0.4617356858514428
+Prediction : 4  layer : 1 Average activation weights of Ben : 1.420056517772297  Adv : 1.436963190016857  GT : 1.4054618678579036
+Prediction : 5  layer : 0 Average activation weights of Ben : 0.46947834394484517  Adv : 0.48402453438858184  GT : 0.45962062326379505
+Prediction : 5  layer : 1 Average activation weights of Ben : 1.4555590444601687  Adv : 1.4972197001198249  GT : 1.4243467788987296
+Prediction : 6  layer : 0 Average activation weights of Ben : 0.4761658539753599  Adv : 0.48034512700814264  GT : 0.45875356378729704
+Prediction : 6  layer : 1 Average activation weights of Ben : 1.4539610234627824  Adv : 1.4322270193221267  GT : 1.409418841570603
+Prediction : 7  layer : 0 Average activation weights of Ben : 0.5046764845169609  Adv : 0.4521122894904676  GT : 0.5009796473378765
+Prediction : 7  layer : 1 Average activation weights of Ben : 1.512238731919056  Adv : 1.4020605811940914  GT : 1.502088251283881
+Prediction : 8  layer : 0 Average activation weights of Ben : 0.4801981586502429  Adv : 0.4666455578035779  GT : 0.47452256422186256
+Prediction : 8  layer : 1 Average activation weights of Ben : 1.4368601381199282  Adv : 1.401135955310162  GT : 1.423175286022317
+Prediction : 9  layer : 0 Average activation weights of Ben : 0.47396837202414666  Adv : 0.4917339772533181  GT : 0.4626554393755566
+Prediction : 9  layer : 1 Average activation weights of Ben : 1.3831675571656177  Adv : 1.4240925866094263  GT : 1.3538791719935368
+
+
+Cuckoo , cukoo_1 ,CKO
+    Average activation weights of Ben : 0.43869966701598767  Adv : 2.3273451961309006  GT : 0.43640503956050414
+    Average activation weights of Ben : 0.4499137292438852  Adv : 2.3436995662696622  GT : 0.44974521471341344
+
+    Prediction : 0  layer : 0 Average activation weights of Ben : 0.05433140951070643  Adv : 0.4597313388931321  GT : 0.05381382742393573
+    Prediction : 0  layer : 1 Average activation weights of Ben : 0.2119637881450973  Adv : 1.4386368147503388  GT : 0.21047564070911348
+    Prediction : 0  layer : 2 Average activation weights of Ben : 0.15338636395659652  Adv : 1.0232954501772502  GT : 0.15235339264496417
+    Prediction : 0  layer : 3 Average activation weights of Ben : 0.08333333298408972  Adv : 0.08333333312357472  GT : 0.0833333327580271
+    
+    Prediction : 1  layer : 0 Average activation weights of Ben : 0.04932742821134967  Adv : 0.4635731888107711  GT : 0.049278969231706646
+    Prediction : 1  layer : 1 Average activation weights of Ben : 0.17106553255259382  Adv : 1.39573078581066  GT : 0.17116944484810084
+    Prediction : 1  layer : 2 Average activation weights of Ben : 0.19005353373053946  Adv : 1.057260983686736  GT : 0.1898815219879293
+    Prediction : 1  layer : 3 Average activation weights of Ben : 0.08333333401713452  Adv : 0.08333333391123955  GT : 0.08333333404648834
+
+cifat10  FGSM 
+Prediction : 0   Average activation weights of Ben : 2.83738356576253   Adv : 2.8496233552625525  GT : 2.839303208220412
+Prediction : 1   Average activation weights of Ben : 3.64007800747518   Adv : 3.633017050859751   GT : 3.63814517335295
+Prediction : 2   Average activation weights of Ben : 2.323829304286416  Adv : 2.297851744024989   GT : 2.3654757996715574
+Prediction : 3   Average activation weights of Ben : 1.368760683884223  Adv : 1.4884834157255218  GT : 1.6607591976722083
+Prediction : 4   Average activation weights of Ben : 2.3498394397397835 Adv : 2.3402308628839603  GT : 2.37932928860643
+Prediction : 5   Average activation weights of Ben : 2.33524490487234   Adv : 2.3403515911789303  GT : 2.337142736674338
+Prediction : 6   Average activation weights of Ben : 2.042817209067256  Adv : 2.0559640177458087  GT : 2.149351438405987
+Prediction : 7   Average activation weights of Ben : 2.5420388922237382 Adv : 2.5513370945601817  GT : 2.5369728443810327
+Prediction : 8   Average activation weights of Ben : 3.4109912501645994 Adv : 3.378394554699104   GT : 3.385430324037859
+Prediction : 9   Average activation weights of Ben : 3.4956524740669166 Adv : 3.5410968055533316  GT : 3.5003804447531808
 
  Experiment 5 : 
 Mnist , FGSM , mnist.h5 feedforward
@@ -244,133 +734,798 @@ Prediction 8 :
 
 
 Mnist , PGD , mnist.h5 feedforward :
-Prediction 0:
-    Number of common nodes betwen Always_active_begnign and always_active_gt : 11
-    Numver of common nodes betwen always_active_adv and always_active_gt : 6
-Prediction 1 :
-    Number of common nodes betwen Always_active_begnign and always_active_gt : 16
-    Numver of common nodes betwen always_active_adv and always_active_gt : 11
-Preidction 2 : 
-    Number of common nodes betwen Always_active_begnign and always_active_gt : 5
-    Numver of common nodes betwen always_active_adv and always_active_gt : 4
-Prediction 3 :
-    Number of common nodes betwen Always_active_begnign and always_active_gt : 14
+    Prediction 0:
+        Number of common nodes betwen Always_active_begnign and always_active_gt : 11
+        Numver of common nodes betwen always_active_adv and always_active_gt : 6
+    Prediction 1 :
+        Number of common nodes betwen Always_active_begnign and always_active_gt : 16
+        Numver of common nodes betwen always_active_adv and always_active_gt : 11
+    Preidction 2 : 
+        Number of common nodes betwen Always_active_begnign and always_active_gt : 5
+        Numver of common nodes betwen always_active_adv and always_active_gt : 4
+    Prediction 3 :
+        Number of common nodes betwen Always_active_begnign and always_active_gt : 14
+        Numver of common nodes betwen always_active_adv and always_active_gt : 13
+    Prediction 4 :
+        Number of common nodes betwen Always_active_begnign and always_active_gt : 15
+        Numver of common nodes betwen always_active_adv and always_active_gt : 9
+    Prediction 5 :
+        Number of common nodes betwen Always_active_begnign and always_active_gt : 8
+        Numver of common nodes betwen always_active_adv and always_active_gt : 6
+    Prediction 6 :
+        Number of common nodes betwen Always_active_begnign and always_active_gt : 17
+        Numver of common nodes betwen always_active_adv and always_active_gt : 11
+    Prediction 7 :
+        Number of common nodes betwen Always_active_begnign and always_active_gt : 12
+        Numver of common nodes betwen always_active_adv and always_active_gt : 11
+    Prediction 8 :
+        Number of common nodes betwen Always_active_begnign and always_active_gt : 17
+        Numver of common nodes betwen always_active_adv and always_active_gt : 14
+    Prediction 9 :
+        Number of common nodes betwen Always_active_begnign and always_active_gt : 15
+        Numver of common nodes betwen always_active_adv and always_active_gt : 10
+
+
+Mnist , PGD , mnist_2.h5 feedforward  threshhold 0.5;
+    Prediction 0 :
+        number of nodes always active benign : 0
+        number of nodes always active Adv : 8
+        [2, 38, 91, 122, 184, 292, 298, 359]
+        number of nodes always active GT : 0
+        
+    Prediction 1 :
+        number of nodes always active benign : 0
+        number of nodes always active Adv : 16
+        [12, 33, 56, 85, 90, 163, 174, 177, 253, 266, 280, 326, 344, 359, 363, 376]
+        number of nodes always active GT : 0
+    Prediction 2 :
+        number of nodes always active benign : 0
+        number of nodes always active Adv : 1
+        [130]
+        number of nodes always active GT : 0
+    Prediction 3 :
+        number of nodes always active benign : 0
+        number of nodes always active Adv : 1
+        [2]
+        number of nodes always active GT : 0
+    Prediction 4 :
+        number of nodes always active benign : 0
+        number of nodes always active Adv : 5
+        [2, 149, 287, 341, 347]
+        number of nodes always active GT : 0
+    Prediction 5 :
+            number of nodes always active benign : 0
+        number of nodes always active Adv : 3
+        [2, 121, 298]
+        number of nodes always active GT : 0
+    Prediction 6 :
+        number of nodes always active benign : 0
+        number of nodes always active Adv : 9
+        [2, 11, 259, 275, 292, 296, 344, 359, 363]
+        number of nodes always active GT : 0
+    Prediction 7 :
+        number of nodes always active benign : 0
+        number of nodes always active Adv : 2
+        [332, 366]
+        number of nodes always active GT : 0
+    Prediction 8 :
+        number of nodes always active benign : 0
+        number of nodes always active Adv : 0
+        []
+        number of nodes always active GT : 0
+    Prediction 9 :
+        number of nodes always active benign : 0
+        number of nodes always active Adv : 4
+        [149, 313, 343, 366]
+        number of nodes always active GT : 0
+
+Mnist , fgsm , mnist_2.h5 feedforward  threshhold 0.5:
+
+    Prediction 0 :
+        number of nodes always active benign : 0
+        number of nodes always active Adv : 5
+        [2, 123, 184, 292, 298]
+        number of nodes always active GT : 0
+        Number of common nodes betwen Always_active_begnign and always_active_gt : 0
+        Numver of common nodes betwen always_active_adv and always_active_gt : 0
+
+    Prediction 1 :
+        number of nodes always active benign : 0
+        number of nodes always active Adv : 5
+        [56, 90, 253, 280, 326]
+        number of nodes always active GT : 0
+    Prediction 2 :
+        number of nodes always active benign : 0
+        number of nodes always active Adv : 0
+        []
+        number of nodes always active GT : 0
+    Prediction 3 :
+        number of nodes always active benign : 0
+        number of nodes always active Adv : 1
+        [2]
+        number of nodes always active GT : 0
+    Prediction 4 :
+        number of nodes always active benign : 0
+        number of nodes always active Adv : 1
+        [347]
+        number of nodes always active GT : 0
+    Prediction 5 :
+        number of nodes always active benign : 0
+        number of nodes always active Adv : 0
+        []
+        number of nodes always active GT : 0
+    Prediction 6 :
+        number of nodes always active benign : 0
+        number of nodes always active Adv : 4
+        [292, 308, 344, 363]
+        number of nodes always active GT : 0
+    Prediction 7 :
+        number of nodes always active benign : 0
+        number of nodes always active Adv : 2
+        [123, 366]
+        number of nodes always active GT : 0
+    Prediction 8 :
+        number of nodes always active benign : 0
+        number of nodes always active Adv : 0
+        []
+        number of nodes always active GT : 0
+    Prediction 9 :
+        number of nodes always active benign : 0
+        number of nodes always active Adv : 2
+        [149, 366]
+        number of nodes always active GT : 0
+
+Cuckoo, CKO , cukoo_1
+Prediction 0 :
+    number of nodes always active benign : 16
+    number of nodes always active Adv : 43
+    number of nodes always active GT : 14
+    Number of common nodes betwen Always_active_begnign and always_active_gt : 13
     Numver of common nodes betwen always_active_adv and always_active_gt : 13
-Prediction 4 :
-    Number of common nodes betwen Always_active_begnign and always_active_gt : 15
-    Numver of common nodes betwen always_active_adv and always_active_gt : 9
-Prediction 5 :
-    Number of common nodes betwen Always_active_begnign and always_active_gt : 8
-    Numver of common nodes betwen always_active_adv and always_active_gt : 6
-Prediction 6 :
-    Number of common nodes betwen Always_active_begnign and always_active_gt : 17
-    Numver of common nodes betwen always_active_adv and always_active_gt : 11
-Prediction 7 :
-    Number of common nodes betwen Always_active_begnign and always_active_gt : 12
-    Numver of common nodes betwen always_active_adv and always_active_gt : 11
-Prediction 8 :
-    Number of common nodes betwen Always_active_begnign and always_active_gt : 17
-    Numver of common nodes betwen always_active_adv and always_active_gt : 14
-Prediction 9 :
-    Number of common nodes betwen Always_active_begnign and always_active_gt : 15
-    Numver of common nodes betwen always_active_adv and always_active_gt : 10
+Prediction 1 :
+    number of nodes always active benign : 14
+    number of nodes always active Adv : 45
+    number of nodes always active GT : 13
+    Number of common nodes betwen Always_active_begnign and always_active_gt : 11
+    Numver of common nodes betwen always_active_adv and always_active_gt : 12
 
 
+Mnist_ 3 FGSM
+No node is always active
+Mnist_3 PGD :
+No node is always active
 
-
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 experiment 6:
 
 A   Determine frequency of nodes activity (% of times node is active)
 MNIST FGSM mnist.h5
-Prediction : 0
-    percentage of nodes more active in begnign then adv : 0.435
-Prediction 1 :
-    percentage of nodes more active in begnign then adv : 0.4825 
-Prediction 2 :
-    percentage of nodes more active in begnign then adv : 0.41 
-Prediction 3 :
-    percentage of nodes more active in begnign then adv : 0.42 
-Prediction 4 :
-    percentage of nodes more active in begnign then adv : 0.4825 
-Prediction 5 :
-    percentage of nodes more active in begnign then adv : 0.475
-Prediction 6 :
-    percentage of nodes more active in begnign then adv : 0.47 
-Prediction 7 :
-    percentage of nodes more active in begnign then adv : 0.4575
-Prediction 8 :
-    percentage of nodes more active in begnign then adv : 0.4875 
-Prediction 9 :
-    percentage of nodes more active in begnign then adv : 0.525 
+    Prediction : 0
+        percentage of nodes more active in begnign then adv : 0.435
+    Prediction 1 :
+        percentage of nodes more active in begnign then adv : 0.4825 
+    Prediction 2 :
+        percentage of nodes more active in begnign then adv : 0.41 
+    Prediction 3 :
+        percentage of nodes more active in begnign then adv : 0.42 
+    Prediction 4 :
+        percentage of nodes more active in begnign then adv : 0.4825 
+    Prediction 5 :
+        percentage of nodes more active in begnign then adv : 0.475
+    Prediction 6 :
+        percentage of nodes more active in begnign then adv : 0.47 
+    Prediction 7 :
+        percentage of nodes more active in begnign then adv : 0.4575
+    Prediction 8 :
+        percentage of nodes more active in begnign then adv : 0.4875 
+    Prediction 9 :
+        percentage of nodes more active in begnign then adv : 0.525 
 
 B .Compute distance between each node frequency in begnign-Gt and Adv-gt to determine if begnign frequencies are closer to Gt frequencies than Adv
 A threhhold could be xtracted
+
 MNIST FGSM mnist.h5
 
     (Chart : frequencies_distance_1)
-Prediction 0 :
-    distance between Benign and Gt: 0.013739585575062633
-    distance between Adversarial and Gt: 0.04358972540720032 
-Prediction 1 :
-    distance between Benign and Gt: 0.009616477451302228
-    distance between Adversarial and Gt: 0.124099810548199 
-Prediction 2 :
-   distance between Benign and Gt: 0.015034835946204679
-    distance between Adversarial and Gt: 0.07741772253549051 
-Prediction 3 :
-   distance between Benign and Gt: 0.01620310434402517
-    distance between Adversarial and Gt: 0.08575131747566221 
-Prediction 4 :
-   distance between Benign and Gt: 0.012210638224041483
-    distance between Adversarial and Gt: 0.08606310228769004 
-Prediction 5 :
-    distance between Benign and Gt: 0.015457813957460806
+    Prediction 0 :
+        distance between Benign and Gt: 0.013739585575062633
+        distance between Adversarial and Gt: 0.04358972540720032 
+    Prediction 1 :
+        distance between Benign and Gt: 0.009616477451302228
+        distance between Adversarial and Gt: 0.124099810548199 
+    Prediction 2 :
+    distance between Benign and Gt: 0.015034835946204679
+        distance between Adversarial and Gt: 0.07741772253549051 
+    Prediction 3 :
+    distance between Benign and Gt: 0.01620310434402517
+        distance between Adversarial and Gt: 0.08575131747566221 
+    Prediction 4 :
+    distance between Benign and Gt: 0.012210638224041483
+        distance between Adversarial and Gt: 0.08606310228769004 
+    Prediction 5 :
+        distance between Benign and Gt: 0.015457813957460806
     distance between Adversarial and Gt: 0.055006383226060024 
-Prediciton 6:
-    distance between Benign and Gt: 0.024747034055350125
-    distance between Adversarial and Gt: 0.0569347527814968 
-Prediciton 7:
-    distance between Benign and Gt: 0.012372455297437827
-    distance between Adversarial and Gt: 0.14168313687355405 
-Prediciton 8:
-    distance between Benign and Gt: 0.019863635698352377
-    distance between Adversarial and Gt: 0.06914735484084603 
-Prediciton 9:
-    distance between Benign and Gt: 0.015605640540439097
-    distance between Adversarial and Gt: 0.07768099777121601 
+    Prediciton 6:
+        distance between Benign and Gt: 0.024747034055350125
+        distance between Adversarial and Gt: 0.0569347527814968 
+    Prediciton 7:
+        distance between Benign and Gt: 0.012372455297437827
+        distance between Adversarial and Gt: 0.14168313687355405 
+    Prediciton 8:
+        distance between Benign and Gt: 0.019863635698352377
+        distance between Adversarial and Gt: 0.06914735484084603 
+    Prediciton 9:
+        distance between Benign and Gt: 0.015605640540439097
+        distance between Adversarial and Gt: 0.07768099777121601 
 
 
 MNIST PGD mnist.h5
 
     chart: distance_frequencies_2
-Prediction 0:
-    distance between Benign and Gt: 0.013739585575062633
-    distance be :tween Adversarial and Gt: 0.04358972540720032 
-Prediciton 1 :
-    distance between Benign and Gt: 0.009616477451302228
-    distance between Adversarial and Gt: 0.124099810548199 
-Prediciton 2 :
-    distance between Benign and Gt: 0.015034835946204679
-    distance between Adversarial and Gt: 0.07741772253549051 
-Prediciton 3 :
-    distance between Benign and Gt: 0.01620310434402517
-    distance between Adversarial and Gt: 0.08575131747566221 
-Prediciton 4 :
-    distance between Benign and Gt: 0.012210638224041483
-    distance between Adversarial and Gt: 0.08606310228769004 
-Prediciton 5 :
-    distance between Benign and Gt: 0.015457813957460806
-    distance between Adversarial and Gt: 0.055006383226060024 
-Prediciton 6 :
-    distance between Benign and Gt: 0.024747034055350125
-    distance between Adversarial and Gt: 0.0569347527814968 
-Prediciton 7 :
-    distance between Benign and Gt: 0.012372455297437827
-    distance between Adversarial and Gt: 0.14168313687355405 
-Prediciton 8 :
-    distance between Benign and Gt: 0.019863635698352377
-    distance between Adversarial and Gt: 0.06914735484084603 
-Prediciton 9:
-    distance between Benign and Gt: 0.015605640540439097
-    distance between Adversarial and Gt: 0.07768099777121601 
+    Prediction 0:
+        distance between Benign and Gt: 0.013739585575062633
+        distance be :tween Adversarial and Gt: 0.04358972540720032 
+    Prediciton 1 :
+        distance between Benign and Gt: 0.009616477451302228
+        distance between Adversarial and Gt: 0.124099810548199 
+    Prediciton 2 :
+        distance between Benign and Gt: 0.015034835946204679
+        distance between Adversarial and Gt: 0.07741772253549051 
+    Prediciton 3 :
+        distance between Benign and Gt: 0.01620310434402517
+        distance between Adversarial and Gt: 0.08575131747566221 
+    Prediciton 4 :
+        distance between Benign and Gt: 0.012210638224041483
+        distance between Adversarial and Gt: 0.08606310228769004 
+    Prediciton 5 :
+        distance between Benign and Gt: 0.015457813957460806
+        distance between Adversarial and Gt: 0.055006383226060024 
+    Prediciton 6 :
+        distance between Benign and Gt: 0.024747034055350125
+        distance between Adversarial and Gt: 0.0569347527814968 
+    Prediciton 7 :
+        distance between Benign and Gt: 0.012372455297437827
+        distance between Adversarial and Gt: 0.14168313687355405 
+    Prediciton 8 :
+        distance between Benign and Gt: 0.019863635698352377
+        distance between Adversarial and Gt: 0.06914735484084603 
+    Prediciton 9: 
+        distance between Benign and Gt: 0.015605640540439097
+        distance between Adversarial and Gt: 0.07768099777121601 
 
+MNIST FGSM mnist_2
+
+Prediction 0 :
+     distance between Benign and Gt: 0.01167476803208648
+     between Adversarial and Gt: 0.06450383799715838 
+
+Prediction 1 :
+    distance between Benign and Gt: 0.008092973051010678
+    distance between Adversarial and Gt: 0.15040372584789366
+Prediction 2 :
+    distance between Benign and Gt: 0.012523151678146495
+    distance between Adversarial and Gt: 0.07588010055918903 
+Prediction 3 :
+    distance between Benign and Gt: 0.013249984478387601
+    distance between Adversarial and Gt: 0.08702842368789772 
+Prediction 4 :
+    distance between Benign and Gt: 0.009661592774976652
+    distance between Adversarial and Gt: 0.06466614611307854 
+Prediction 5 :
+    distance between Benign and Gt: 0.01288164347444797
+    distance between Adversarial and Gt: 0.06291827791668582 
+Prediction 6 :
+    distance between Benign and Gt: 0.019695295194299
+    distance between Adversarial and Gt: 0.0767865911288652 
+Prediction 7 :
+    distance between Benign and Gt: 0.012541477502096169
+    distance between Adversarial and Gt: 0.09620166305297377 
+Prediction 8 :
+    distance between Benign and Gt: 0.019515253221321437
+    distance between Adversarial and Gt: 0.06844708061395496 
+Prediction 9 :
+    distance between Benign and Gt: 0.018785020118810218
+    distance between Adversarial and Gt: 0.06966173914030849 
+    
+    Nodes mroe active in benign than adversarial about 43%
+
+MNIST FGSM mnist_2
+
+Prediction 0 :
+    distance between Benign and Gt: 0.01167476803208648
+    distance between Adversarial and Gt: 0.05500288740797211
+Prediction 1 :
+    distance between Benign and Gt: 0.008092973051010678
+    distance between Adversarial and Gt: 0.08922650642339715 
+Prediction 2 :
+    distance between Benign and Gt: 0.012523151678146495
+    distance between Adversarial and Gt: 0.05653688765550192 
+Prediction 3 :
+    distance between Benign and Gt: 0.013249984478387601
+    distance between Adversarial and Gt: 0.06603048093565052 
+Prediction 4 :
+    distance between Benign and Gt: 0.009661592774976652
+    distance between Adversarial and Gt: 0.0435796041678154
+Prediction 5 :
+    distance between Benign and Gt: 0.01288164347444797
+    distance between Adversarial and Gt: 0.05476715962372326
+Prediction 6 :
+    distance between Benign and Gt: 0.019695295194299
+    distance between Adversarial and Gt: 0.06415802037582773 
+Prediction 7 :
+    distance between Benign and Gt: 0.012541477502096169
+    distance between Adversarial and Gt: 0.08535452679111068
+Prediction 8 :
+    distance between Benign and Gt: 0.019515253221321437
+    distance between Adversarial and Gt: 0.04799979307808611
+Prediction 9 :
+    distance between Benign and Gt: 0.018785020118810218
+    distance between Adversarial and Gt: 0.0527777237817063
+    
+    Nodes mroe active in benign than adversarial about 42%
+
+Mnist_3 FGSM
+
+Predcition 0 :
+    distance between Benign and Gt: 0.013970155317037106
+    distance between Adversarial and Gt: 0.04073942307813311    
+Predcition 1 :
+    distance between Benign and Gt: 0.010402402886336282
+    distance between Adversarial and Gt: 0.13308298429076154 
+Predcition 2 :
+    distance between Benign and Gt: 0.015147978872187598
+    distance between Adversarial and Gt: 0.07584582868704876 
+Predcition 3 :
+    distance between Benign and Gt: 0.01522177384039144
+    distance between Adversarial and Gt: 0.08400248416424781 
+Predcition 4 :
+    distance between Benign and Gt: 0.013130721711110143
+    distance between Adversarial and Gt: 0.0566099526774855
+Predcition 5 :
+    distance between Benign and Gt: 0.013851872325844951
+    distance between Adversarial and Gt: 0.04571351990338799 
+Predcition 6 :
+    distance between Benign and Gt: 0.02494025797575572
+    distance between Adversarial and Gt: 0.06989731062248826 
+Predcition 7 :
+    distance between Benign and Gt: 0.013325553606367868
+    distance between Adversarial and Gt: 0.15720732022405096
+Predcition 8 :
+    distance between Benign and Gt: 0.019951124409802855
+    distance between Adversarial and Gt: 0.06506019242915433 
+Predcition 9 :
+    distance between Benign and Gt: 0.014845831392329003
+    distance between Adversarial and Gt: 0.08646027777415077 
+
+50% mroe active in beg than adv
+
+
+Mnist_3 pgd :
+Prediction 1 :
+distance between Benign and Gt: 0.010402402886336282
+distance between Adversarial and Gt: 0.12627892703575377
+Prediction 2 :
+distance between Benign and Gt: 0.015147978872187598
+distance between Adversarial and Gt: 0.07999557582791218 
+Prediction 3 :
+distance between Benign and Gt: 0.01522177384039144
+distance between Adversarial and Gt: 0.09145332718757884
+Prediction 4 :
+distance between Benign and Gt: 0.013130721711110143
+distance between Adversarial and Gt: 0.055160189476103766 
+Prediction 5 :
+distance between Benign and Gt: 0.013851872325844951
+distance between Adversarial and Gt: 0.05385186569344704 
+Prediction 6 :
+distance between Benign and Gt: 0.02494025797575572
+distance between Adversarial and Gt: 0.08523549319319823
+Prediction 7 :
+distance between Benign and Gt: 0.013325553606367868
+distance between Adversarial and Gt: 0.1572820117224954
+Prediction 8:
+distance between Benign and Gt: 0.019951124409802855
+distance between Adversarial and Gt: 0.06858977435162479
+Prediction 9 :
+distance between Benign and Gt: 0.014845831392329003
+distance between Adversarial and Gt: 0.081478228399906
+
+
+
+
+
+
+
+
+
+
+
+
+Cuckoo_1 CKO 
+predi 0 :
+
+distance between Benign and Gt: 0.004948225458599012
+distance between Adversarial and Gt: 0.2885615790406979 
+pred 1:
+distance between Benign and Gt: 0.003224067603637675
+distance between Adversarial and Gt: 0.2465628108585303
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------
+
+Experiment 7 :
+    dispersation idnex (how sure nodes are with their output)(how clearly they identify the pattern they
+    are tasked with)
+
+    MNIST FGSM MNIST_1.h5
+
+prediction 0:
+    Dispersation index Gt : 0.08016648028234728  Benign : 0.07916308916410703  Adv : 0.06112649234747057 
+prediction 1:
+    Dispersation index Gt : 0.07970245066693799  Benign : 0.07974071224086716  Adv : 0.04540656582295022 
+prediction 2:
+    Dispersation index Gt : 0.07913407330889895  Benign : 0.07796271330345778  Adv : 0.06077438649018704 
+prediction 3:
+    Dispersation index Gt : 0.07812039825569557  Benign : 0.07766323627248015  Adv : 0.06142599174260104 
+prediction 4:
+    Dispersation index Gt : 0.07902226395612444  Benign : 0.07778694441156923  Adv : 0.06550240692803407 
+prediction 5:
+    Dispersation index Gt : 0.07708892201682327  Benign : 0.07733459966825039  Adv : 0.06455406470523525 
+prediction 6:
+    Dispersation index Gt : 0.0793680821359295  Benign : 0.0790002108559153  Adv : 0.059616483919132594 
+prediction 7:
+    Dispersation index Gt : 0.07758562804710953  Benign : 0.0768650243010403  Adv : 0.060723939173406266 
+prediction 8:
+    Dispersation index Gt : 0.07803391768116597  Benign : 0.07643239086332115  Adv : 0.06189408784838998 
+prediction 9:
+    Dispersation  index Gt : 0.07893258956267926  Benign : 0.07711523500163217  Adv : 0.06784566376342092 
+    
+    prediction 0 layer : 1 dispersation index  GT : 0.8891881716352896 Benign : 0.8751068535576607 Adv : 0.9075807522367632
+    prediction 0 layer : 2 dispersation index  GT : 18.79576102495146 Benign : 18.624701850596264 Adv : 21.20786718379006
+    prediction 1 layer : 1 dispersation index  GT : 0.2011840954352117 Benign : 0.2032624181799625 Adv : 0.310639192490629
+    prediction 1 layer : 2 dispersation index  GT : 6.234771949912626 Benign : 6.227242002657128 Adv : 10.401121636247352
+    prediction 2 layer : 1 dispersation index  GT : 0.6087357237695824 Benign : 0.6256444719575606 Adv : 0.5166149514080807
+    prediction 2 layer : 2 dispersation index  GT : 21.693660097354876 Benign : 22.713804510817905 Adv : 19.436080394004474
+    prediction 3 layer : 1 dispersation index  GT : 0.5549844496117535 Benign : 0.5687085885098893 Adv : 0.5301980665286212
+    prediction 3 layer : 2 dispersation index  GT : 30.071508096155863 Benign : 31.58833679211992 Adv : 28.4277402305153
+    prediction 4 layer : 1 dispersation index  GT : 0.3715691461507783 Benign : 0.3804243946670661 Adv : 0.398616910166886
+    prediction 4 layer : 2 dispersation index  GT : 10.495247311460908 Benign : 10.559351531630938 Adv : 13.146168309673126
+    prediction 5 layer : 1 dispersation index  GT : 0.4100035614930108 Benign : 0.4376679951637848 Adv : 0.50176333924227
+    prediction 5 layer : 2 dispersation index  GT : 20.847735812613344 Benign : 23.483197821368613 Adv : 29.33848163203473
+    prediction 6 layer : 1 dispersation index  GT : 0.49658803726631945 Benign : 0.5559215731759048 Adv : 0.6070653282060557
+    prediction 6 layer : 2 dispersation index  GT : 16.085163321078195 Benign : 17.829311940004267 Adv : 18.06836610465993
+    prediction 7 layer : 1 dispersation index  GT : 0.40035537325112686 Benign : 0.3987983434050878 Adv : 0.2936376207189105
+    prediction 7 layer : 2 dispersation index  GT : 18.547495954974348 Benign : 18.699378608790127 Adv : 10.647470281619878
+    prediction 8 layer : 1 dispersation index  GT : 0.41443394019372115 Benign : 0.41874085620662665 Adv : 0.3474609825971066
+    prediction 8 layer : 2 dispersation index  GT : x17.06774017213282 Benign : 17.268300482774038 Adv : 13.469190993185457
+    prediction 9 layer : 1 dispersation index  GT : x'0.33032009230158504 Benign : 0.3397836603192631 Adv : 0.4000466078253311
+    prediction 9 layer : 2 dispersation index  GT : 14.820407911630433 Benign : 15.64680847469058 Adv : 17.49277695047971
+
+    MNIST PGD MNIST_1.h5
+prediciton 0 :
+    Dispersation index Gt : 0.08016648028234728  Benign : 0.07916308916410703   Adv : 0.0659182242922089
+prediction 1 :
+    Dispersation index Gt : 0.07970245066693799  Benign : 0.07974071224086716  Adv : 0.07172253367962729
+prediction 2:
+    Dispersation index Gt : 0.07913407330889895  Benign : 0.07796271330345778   Adv : 0.0709021626587424
+prediction 3 :
+    Dispersation index Gt : 0.07812039825569557  Benign : 0.07766323627248015  Adv : 0.0727813259669805
+prediction 4 :
+    Dispersation index Gt : 0.07902226395612444  Benign : 0.07778694441156923  Adv : 0.07436807034636313
+prediction 5 ;
+    Dispersation index Gt : 0.07708892201682327  Benign : 0.07733459966825039  Adv : 0.07066964852360548
+prediciton 6 :
+    Dispersation index Gt : 0.0793680821359295  Benign : 0.0790002108559153  Adv : 0.06485600227210131
+prediction 7 :
+    Dispersation index Gt : 0.07758562804710953  Benign : 0.0768650243010403  Adv : 0.07640451760289353
+prediction 8 :
+    Dispersation index Gt : 0.07803391768116597  Benign : 0.07643239086332115  Adv : 0.07591656695898051 
+predition 9 :
+    Dispersation index Gt : 0.07893258956267926  Benign : 0.07711523500163217  Adv : 0.07612023347875123 
+
+prediction 0 layer : 1 dispersation index  GT : 0.8891881716352896 Benign : 0.8751068535576607 Adv : 0.8391243900617079
+prediction 0 layer : 2 dispersation index  GT : 18.79576102495146 Benign : 18.624701850596264 Adv : 17.45021483093903
+prediction 1 layer : 1 dispersation index  GT : 0.2011840954352117 Benign : 0.2032624181799625 Adv : 0.35194933276375007
+prediction 1 layer : 2 dispersation index  GT : 6.234771949912626 Benign : 6.227242002657128 Adv : 12.616866865714226
+prediction 2 layer : 1 dispersation index  GT : 0.6087357237695824 Benign : 0.6256444719575606 Adv : 0.48202362457550757
+prediction 2 layer : 2 dispersation index  GT : 21.693660097354876 Benign : 22.713804510817905 Adv : 17.339561450598552
+prediction 3 layer : 1 dispersation index  GT : 0.5549844496117535 Benign : 0.5687085885098893 Adv : 0.508892278772876
+prediction 3 layer : 2 dispersation index  GT : 30.071508096155863 Benign : 31.58833679211992 Adv : 25.465665858674456
+prediction 4 layer : 1 dispersation index  GT : 0.3715691461507783 Benign : 0.3804243946670661 Adv : 0.37619051012887056
+prediction 4 layer : 2 dispersation index  GT : 10.495247311460908 Benign : 10.559351531630938 Adv : 11.460716028491941
+prediction 5 layer : 1 dispersation index  GT : 0.4100035614930108 Benign : 0.4376679951637848 Adv : 0.46204613329622984
+prediction 5 layer : 2 dispersation index  GT : 20.847735812613344 Benign : 23.483197821368613 Adv : 25.482037605780082
+prediction 6 layer : 1 dispersation index  GT : 0.49658803726631945 Benign : 0.5559215731759048 Adv : 0.5625455479769524
+prediction 6 layer : 2 dispersation index  GT : 16.085163321078195 Benign : 17.829311940004267 Adv : 14.669073746610868
+prediction 7 layer : 1 dispersation index  GT : 0.40035537325112686 Benign : 0.3987983434050878 Adv : 0.30056163673814235
+prediction 7 layer : 2 dispersation index  GT : 18.547495954974348 Benign : 18.699378608790127 Adv : 11.388323663411583
+prediction 8 layer : 1 dispersation index  GT : 0.41443394019372115 Benign : 0.41874085620662665 Adv : 0.3418198277846191
+prediction 8 layer : 2 dispersation index  GT : 17.06774017213282 Benign : 17.268300482774038 Adv : 13.557312787751403
+prediction 9 layer : 1 dispersation index  GT : 0.33032009230158504 Benign : 0.3397836603192631 Adv : 0.41677187431840773
+prediction 9 layer : 2 dispersation index  GT : 14.820407911630433 Benign : 15.64680847469058 Adv : 18.610843979516023
+
+
+    MNIST PGD MNIST_2.h5
+
+prediction 0:
+    Dispersation index Gt : 0.07639002979607877  Benign : 0.07594716785284085  Adv : 0.053024527238714786 
+prediction 1:
+    Dispersation index Gt : 0.07556388111428872  Benign : 0.07603356462087399  Adv : 0.07094307700275061 
+prediction 2:
+    Dispersation index Gt : 0.07303664688509938  Benign : 0.07180043009521765  Adv : 0.05834221288346091 
+prediction 3:
+    Dispersation index Gt : 0.07086730610040722  Benign : 0.07008310255338152  Adv : 0.060455423009032595 
+prediction 4:
+    Dispersation index Gt : 0.07263884179491678  Benign : 0.0726836016811431  Adv : 0.06836791697666197 
+prediction 5:
+    Dispersation index Gt : 0.07093721583468948  Benign : 0.07062060200638114  Adv : 0.06372677361095096 
+prediction 6:
+    Dispersation index Gt : 0.07244249484016506  Benign : 0.07214031469638085  Adv : 0.05377417146396221 
+prediction 7:
+    Dispersation index Gt : 0.07298961343491299  Benign : 0.07171639554738012  Adv : 0.07007538420483586 
+prediction 8:
+    Dispersation index Gt : 0.0716538440326665  Benign : 0.07038595848279788  Adv : 0.06918037203120045 
+prediction 9:
+    Dispersation index Gt : 0.06820727106649613  Benign : 0.06757204566275685  Adv : 0.06925109503790688 
+
+    prediction 0 layer : 0 dispersation index  GT : 0.06767827206279821 Benign : 0.0670715941731542 Adv : 0.0670147388219034
+    prediction 0 layer : 1 dispersation index  GT : 0.03428366387106888 Benign : 0.03833992273048776 Adv : 0.023682640604035965
+    prediction 1 layer : 0 dispersation index  GT : 0.027593749558686775 Benign : 0.028044278192281613 Adv : 0.033410327686353984
+    prediction 1 layer : 1 dispersation index  GT : 0.021827666306279803 Benign : 0.022427986193729956 Adv : 0.016495462541437092
+    prediction 2 layer : 0 dispersation index  GT : 0.06050534373347036 Benign : 0.06065702881592552 Adv : 0.0503691950330131
+    prediction 2 layer : 1 dispersation index  GT : 0.03198841600158443 Benign : 0.03477097533596305 Adv : 0.020747856172817734
+    prediction 3 layer : 0 dispersation index  GT : 0.054475210771407795 Benign : 0.055218446166415136 Adv : 0.0491157011711334
+    prediction 3 layer : 1 dispersation index  GT : 0.031634986090535853 Benign : 0.03555251048515643 Adv : 0.01994394510134363
+    prediction 4 layer : 0 dispersation index  GT : 0.04363290416559178 Benign : 0.044294538235944154 Adv : 0.04310752809636982
+    prediction 4 layer : 1 dispersation index  GT : 0.030037294967243815 Benign : 0.032776719737176704 Adv : 0.022680027015445702
+    prediction 5 layer : 0 dispersation index  GT : 0.04708250692274523 Benign : 0.048664680739099 Adv : 0.04763949874581487
+    prediction 5 layer : 1 dispersation index  GT : 0.029941798592668347 Benign : 0.03349493934612146 Adv : 0.021153519368948513
+    prediction 6 layer : 0 dispersation index  GT : 0.04948065269207815 Benign : 0.05218283332284575 Adv : 0.05262149450958477
+    prediction 6 layer : 1 dispersation index  GT : 0.0346059750811416 Benign : 0.03589287085276992 Adv : 0.026744878972985355
+    prediction 7 layer : 0 dispersation index  GT : x0.042866680922807224 Benign : 0.042796020042272266 Adv : 0.03649651728302327
+    prediction 7 layer : 1 dispersation index  GT : 0.03449322369057508 Benign : 0.03451627617755138 Adv : 0.025616137932974174
+    prediction 8 layer : 0 dispersation index  GT : 0.049723682624248706 Benign : 0.04983611648575136 Adv : 0.04058378711175115
+    prediction 8 layer : 1 dispersation index  GT : 0.022333135561507737 Benign : 0.027150173163529617 Adv : 0.016453787437831182
+    prediction 9 layer : 0 dispersation index  GT : 0.03695530573670966 Benign : 0.03885807864336382 Adv : 0.038872910035375075
+    prediction 9 layer : 1 dispersation index  GT : 0.02791886120809505 Benign : 0.044713393243820454 Adv : 0.02217091991181378
+
+    MNIST FGSM MNIST_2.h5
+
+prediction 0 :
+    Dispersation index Gt : 0.07639002979607877  Benign : 0.07594716785284085  Adv : 0.048545091365858974 
+prediction 1 :
+    Dispersation index Gt : 0.07556388111428872  Benign : 0.07603356462087399  Adv : 0.03288130704901512 
+prediction 2 :
+    Dispersation index Gt : 0.07303664688509938  Benign : 0.07180043009521765  Adv : 0.04217512056431727 
+prediction 3 :
+    Dispersation index Gt : 0.07086730610040722  Benign : 0.07008310255338152  Adv : 0.04040110751562686 
+prediction 4 :
+    Dispersation index Gt : 0.07263884179491678  Benign : 0.0726 836016811431  Adv : 0.04913476332625924 
+prediction 5 :
+    Dispersation index Gt : 0.07093721583468948  Benign : 0.07062060200638114  Adv : 0.045777776137114756 
+prediction 6 :
+    Dispersation index Gt : 0.07244249484016506  Benign : 0.07214031469638085  Adv : 0.039560042815429 
+prediction 7 :
+    Dispersation index Gt : 0.07298961343491299  Benign : 0.07171639554738012  Adv : 0.04704852883786881 
+prediction 8 :
+    Dispersation index Gt : 0.0716538440326665  Benign : 0.07038595848279788  Adv : 0.04933872449255012 
+prediction 9 :
+    Dispersation index Gt : 0.06820727106649613  Benign : 0.06757204566275685  Adv : 0.04827508723106965 
+
+    prediction 0 layer : 0 dispersation index  GT : 0.06767827206279821 Benign : 0.0670715941731542 Adv : 0.0670147861985933
+    prediction 0 layer : 1 dispersation index  GT : 0.03428366387106888 Benign : 0.03833992273048776 Adv : 0.02237899528082397
+    prediction 1 layer : 0 dispersation index  GT : 0.027593749558686775 Benign : 0.028044278192281613 Adv : 0.03707530058895161
+    prediction 1 layer : 1 dispersation index  GT : 0.021827666306279803 Benign : 0.022427986193729956 Adv : 0.018221192948532194
+    prediction 2 layer : 0 dispersation index  GT : 0.06050534373347036 Benign : 0.06065702881592552 Adv : 0.05256168560980946
+    prediction 2 layer : 1 dispersation index  GT : 0.03198841600158443 Benign : 0.03477097533596305 Adv : 0.020090415352204304
+    prediction 3 layer : 0 dispersation index  GT : 0.054475210771407795 Benign : 0.055218446166415136 Adv : 0.05102777683760076
+    prediction 3 layer : 1 dispersation index  GT : 0.031634986090535853 Benign : 0.03555251048515643 Adv : 0.020024976915516572
+    prediction 4 layer : 0 dispersation index  GT : 0.04363290416559178 Benign : 0.044294538235944154 Adv : 0.04449868020790766
+    prediction 4 layer : 1 dispersation index  GT : 0.030037294967243815 Benign : 0.032776719737176704 Adv : 0.020150355177375002
+    prediction 5 layer : 0 dispersation index  GT : 0.04708250692274523 Benign : 0.048664680739099 Adv : 0.04949146387145332
+    prediction 5 layer : 1 dispersation index  GT : 0.029941798592668347 Benign : 0.03349493934612146 Adv : 0.02046295874172399
+    prediction 6 layer : 0 dispersation index  GT : 0.04948065269207815 Benign : 0.05218283332284575 Adv : 0.05417224578915142
+    prediction 6 layer : 1 dispersation index  GT : 0.0346059750811416 Benign : 0.03589287085276992 Adv : 0.02500180611657393
+    prediction 7 layer : 0 dispersation index  GT : 0.042866680922807224 Benign : 0.042796020042272266 Adv : 0.039304360197364066
+    prediction 7 layer : 1 dispersation index  GT : 0.03449322369057508 Benign : 0.03451627617755138 Adv : 0.024165848560128326
+    prediction 8 layer : 0 dispersation index  GT : 0.049723682624248706 Benign : 0.04983611648575136 Adv : 0.042717582826077745
+    prediction 8 layer : 1 dispersation index  GT : 0.022333135561507737 Benign : 0.027150173163529617 Adv : 0.0171729929893864
+    prediction 9 layer : 0 dispersation index  GT : 0.03695530573670966 Benign : 0.03885807864336382 Adv : 0.04059013113390052
+    prediction 9 layer : 1 dispersation index  GT : 0.02791886120809505 Benign : 0.044713393243820454 Adv : 0.021045245446385655
+
+mnist_3 PGD
+predcition 0 :
+Dispersation index Gt : 3.376723602152254   Benign : 3.3622347272423023  Adv : 3.6175906874232138 
+prediction 1 :
+Dispersation index Gt : 1.1428526071307359  Benign : 1.1753093714656393  Adv : 1.6168503663798943 
+prediction 2 :
+Dispersation index Gt : 2.9979839745161794  Benign : 3.109682705690314   Adv : 2.2641645020586165 
+prediction 3 :
+Dispersation index Gt : 2.959832098741816   Benign : 3.007761331373741   Adv : 2.5630128902335256 
+prediction 4 :
+Dispersation index Gt : 1.8438404783854792  Benign : 1.8960113773152705  Adv : 1.9817982002684975
+prediction 5 :
+Dispersation index Gt : 2.3705255928035203  Benign : 2.4927064072771503  Adv : 2.4392887644296914
+prediction 6 :
+Dispersation index Gt : 2.251540465849632   Benign : 2.5216009557001646  Adv : 2.4260053598517164 
+prediction 7 :
+Dispersation index Gt : 2.445938154278842   Benign : 2.4280865651755046  Adv : 1.6458562488339423 
+prediction 8 :
+Dispersation index Gt : 1.800680713691663   Benign : 1.8320606450731407  Adv : 1.691758509633618 
+prediction 9 :
+Dispersation index Gt : 1.6150533328885701  Benign : 1.6859758796880617  Adv : 1.9879531205833323 
+
+prediction 0 layer : 0 dispersation index  GT : 0.7941727983543072 Benign : 0.7880711177012096 Adv : 0.8858541956131544
+prediction 0 layer : 1 dispersation index  GT : 6.829886405086279 Benign : 6.8135942018394005 Adv : 7.633947466208089
+prediction 1 layer : 0 dispersation index  GT : 0.20229119743092222 Benign : 0.20764395254641266 Adv : 0.2675747372251258
+prediction 1 layer : 1 dispersation index  GT : 2.0928227165965763 Benign : 2.1514975512995145 Adv : 2.801657827233367
+prediction 2 layer : 0 dispersation index  GT : 0.5755056857675533 Benign : 0.5854567769165362 Adv : 0.4687341424863706
+prediction 2 layer : 1 dispersation index  GT : 5.403085550409069 Benign : 5.6025290595893456 Adv : 4.942480825731491
+prediction 3 layer : 0 dispersation index  GT : 0.44255383108471535 Benign : 0.4411479335829616 Adv : 0.42544303365050873
+prediction 3 layer : 1 dispersation index  GT : 5.759534534166397 Benign : 5.874510756347096 Adv : 5.9349260968744915
+prediction 4 layer : 0 dispersation index  GT : 0.3233577235563713 Benign : 0.33060417247259904 Adv : 0.3634550027171021
+prediction 4 layer : 1 dispersation index  GT : 3.489451028061492 Benign : 3.6005131628195493 Adv : 4.84587290604535
+prediction 5 layer : 0 dispersation index  GT : 0.38760445322975495 Benign : 0.39693293676868435 Adv : 0.433843230495417
+prediction 5 layer : 1 dispersation index  GT : 4.741701019652782 Benign : 5.013104239410709 Adv : 5.586729470433489
+prediction 6 layer : 0 dispersation index  GT : 0.4521818342575607 Benign : 0.49949137827373 Adv : 0.6174073284680931
+prediction 6 layer : 1 dispersation index  GT : 4.236827347092584 Benign : 4.814796003940724 Adv : 5.8989234744846595
+prediction 7 layer : 0 dispersation index  GT : 0.3551677950394834 Benign : 0.34855596399207794 Adv : 0.2775054066118127
+prediction 7 layer : 1 dispersation index  GT : 5.055744084121228 Benign : 5.012742240161874 Adv : 3.277865729040274
+prediction 8 layer : 0 dispersation index  GT : 0.3446867753104244 Benign : 0.34056410706033563 Adv : 0.32665634775103236
+prediction 8 layer : 1 dispersation index  GT : 3.2835003454728975 Benign : 3.3766888324003403 Adv : 2.979463681210479
+prediction 9 layer : 0 dispersation index  GT : 0v 70.2617356783723184 Benign : 0.2711901602245949 Adv : 0.339409256790104
+prediction 9 layer : 1 dispersation index  GT : 3.225970729485903 Benign : 3.370197613928516 Adv : 3.8200839900592585
+
+mnist_3 fgsm
+
+prediction 0 :
+Dispersation index Gt : 3.376723602152254   Benign : 3.3622347272423023  Adv : 3.8013646602003077
+prediction 1 :
+Dispersation index Gt : 1.1428526071307359  Benign : 1.1753093714656393  Adv : 1.4561599049156957 
+prediction 2 :
+Dispersation index Gt : 2.9979839745161794  Benign : 3.109682705690314   Adv : 2.660434154651532 
+prediction 3 :
+Dispersation index Gt : 2.959832098741816   Benign : 3.007761331373741   Adv : 2.988922609605424 
+prediction 4 :
+Dispersation index Gt : 1.8438404783854792  Benign : 1.8960113773152705  Adv : 2.370535404936849 
+prediction 5 :
+Dispersation index Gt : 2.3705255928035203  Benign : 2.4927064072771503  Adv : 2.779278614191502 
+prediction 6 :
+Dispersation index Gt : 2.251540465849632   Benign : 2.5216009557001646  Adv : 3.0433810059269635 
+prediction 7 :
+Dispersation index Gt : 2.445938154278842   Benign : 2.4280865651755046  Adv : 1.722153139297353
+prediction 8 :
+Dispersation index Gt : 1.800680713691663   Benign : 1.8320606450731407  Adv : 1.6656328012046888
+prediction 9 :
+Dispersation index Gt : 1.6150533328885701  Benign : 1.6859758796880617  Adv : 1.908197303734723
+
+prediction 0 layer : 0 dispersation index  GT : 0.7941727983543072 Benign : 0.7880711177012096 Adv : 0.8858541956131544
+prediction 0 layer : 1 dispersation index  GT : 6.829886405086279 Benign : 6.8135942018394005 Adv : 7.633947466208089
+prediction 1 layer : 0 dispersation index  GT : 0.20229119743092222 Benign : 0.20764395254641266 Adv : 0.2675747372251258
+prediction 1 layer : 1 dispersation index  GT : 2.0928227165965763 Benign : 2.1514975512995145 Adv : 2.801657827233367
+prediction 2 layer : 0 dispersation index  GT : 0.5755056857675533 Benign : 0.5854567769165362 Adv : 0.4687341424863706
+prediction 2 layer : 1 dispersation index  GT : 5.403085550409069 Benign : 5.6025290595893456 Adv : 4.942480825731491
+prediction 3 layer : 0 dispersation index  GT : 0.44255383108471535 Benign : 0.4411479335829616 Adv : 0.42544303365050873
+prediction 3 layer : 1 dispersation index  GT : 5.759534534166397 Benign : 5.874510756347096 Adv : 5.9349260968744915
+prediction 4 layer : 0 dispersation index  GT : 0.3233577235563713 Benign : 0.33060417247259904 Adv : 0.3634550027171021
+prediction 4 layer : 1 dispersation index  GT : 3.489451028061492 Benign : 3.6005131628195493 Adv : 4.84587290604535
+prediction 5 layer : 0 dispersation index  GT : 0.38760445322975495 Benign : 0.39693293676868435 Adv : 0.433843230495417
+prediction 5 layer : 1 dispersation index  GT : 4.741701019652782 Benign : 5.013104239410709 Adv : 5.586729470433489
+prediction 6 layer : 0 dispersation index  GT : 0.4521818342575607 Benign : 0.49949137827373 Adv : 0.6174073284680931
+prediction 6 layer : 1 dispersation index  GT : 4.236827347092584 Benign : 4.814796003940724 Adv : 5.8989234744846595
+prediction 7 layer : 0 dispersation index  GT : 0.3551677950394834 Benign : 0.34855596399207794 Adv : 0.2775054066118127
+prediction 7 layer : 1 dispersation index  GT : 5.055744084121228 Benign : 5.012742240161874 Adv : 3.277865729040274
+prediction 8 layer : 0 dispersation index  GT : 0.3446867753104244 Benign : 0.34056410706033563 Adv : 0.32665634775103236
+prediction 8 layer : 1 dispersation index  GT : 3.2835003454728975 Benign : 3.3766888324003403 Adv : 2.979463681210479
+prediction 9 layer : 0 dispersation index  GT : 0.2617356783723184 Benign : 0.2711901602245949 Adv : 0.339409256790104
+prediction 9 layer : 1 dispersation index  GT : 3.225970729485903 Benign : 3.370197613928516 Adv : 3.8200839900592585
+
+
+
+
+cifar 10 fgsm :
+prediction 0 layer : 0 dispersation index  GT : 23884.777421726947 Benign : 22198.482869691637 Adv : 22708.71778485496
+prediction 1 layer : 0 dispersation index  GT : 123429.601221996   Benign : 126573.14543506369 Adv : 123934.89657681224
+prediction 2 layer : 0 dispersation index  GT : 10207.222105369377 Benign : 12087.898604149372 Adv : 11239.770041305828
+prediction 3 layer : 0 dispersation index  GT : 1485.345146179199  Benign : 378.66946258544914 Adv : 508.0719897930439
+prediction 4 layer : 0 dispersation index  GT : 7557.538687569753  Benign : 9571.177660878499  Adv : 9890.026284161737
+prediction 5 layer : 0 dispersation index  GT : 11463.156921865839 Benign : 11421.852455474329 Adv : 11666.522673783244
+prediction 6 layer : 0 dispersation index  GT : 8301.440882402308  Benign : 6522.7161325887455 Adv : 6399.774919952177
+prediction 7 layer : 0 dispersation index  GT : 18615.233638838636 Benign : 19282.572488801175 Adv : 19409.01491633034
+prediction 8 layer : 0 dispersation index  GT : 39755.81805044694  Benign : 39071.7043291622   Adv : 38602.97508368902
+prediction 9 layer : 0 dispersation index  GT : 68035.34160383863  Benign : 66809.58806705245  Adv : 69197.37166643358
+Cuckoo , CKO , Cuckoo_1
+  Dispersation index Gt : 0.4373663445277044  Benign : 0.4399883660474986  Adv : 25.975156186949373 
+  Dispersation index Gt : 0.42720774096809244  Benign : 0.42589656631049577  Adv : 24.04475526976949 
+
+    prediction 0 layer : 1 dispersation index  GT : 0.42827702056288613 Benign : 0.4311349416064326 Adv : 39.45788104262453
+    prediction 0 layer : 2 dispersation index  GT : 1.6901982976057683 Benign : 1.7131718467372554 Adv : 55.39381358523249
+    prediction 0 layer : 3 dispersation index  GT : 0.09533846879727258 Benign : 0.0956457433635655 Adv : 0.10459259386717905
+    prediction 1 layer : 1 dispersation index  GT : 0.34198598871857416 Benign : 0.34185230003281547 Adv : 37.14492803016082
+    prediction 1 layer : 2 dispersation index  GT : 1.3363904640827757 Benign : 1.3357925957733883 Adv : 48.58712356787044
+    prediction 1 layer : 3 dispersation index  GT : 0.10850552345010936 Benign : 0.10763484238363191 Adv : 0.03952924460667606
+
+
+
+    New CNN (tshabah lshay):
+    cifar10_1 fgsm : 0.98
+    cifar10_2 pgd : 0.97 
+
+
+    CNN-driven decision :
+    model :     model.add(Dense(256, input_shape=(400,), activation="relu"))
+                model.add(Dense(128, activation="relu"))
+                model.add(Dense(64, activation="relu"))
+                model.add(Dense(2, activation="softmax"))
+    Mnist_1  FGSM
+        accuracy : 0.9387999773025513
+    Mnist_1 PGD 
+        accuracy : 0.9143000245094299
+     trained on FGSM tested on PGD
+            accuracy : 0.8799999952316284
+     trained on PGD tested on FGSM
+             accuracy : 0.8565999865531921
+    mnist_2  PGD
+        accuracy: 0.7883
+    mnist_2 FGSM
+        accuracy: 0.81
+    mnist_2 trained on PGD tested on fgsm
+        accuracy : 0.78829997777938
+    mnist_1 trained on fgsm tested on pgd
+          accuracy:   0.8118000
+    mnist_3 FGSM
+         accuracy: 0.975
+    mnist_3 trained on fgsm tested on pgd
+        accuracy : 0.86940
+    mnist3 pgd :
+        accuracy :0.98
+    mnist_3 trained on pgd tesed on fgsm
+         accuracy : 0.8252
+    Cuckoo CKO :
+        accuracy : 1
+
+    Decision Tree
+    Mnist_1 FGSM  accuracy : 0.718030303030303
+    mnist_1 PGD  accuracy : 0.7398484848484849
+    mnist_2 PGD  accuracy : 0.7921391952773031
+    mnist_2 FGSM  accuracy : 0.7821966754699394
+    mnist_3 fgsm  accuracy : 0.7325757575757575
+    mnisr_3 pgd  accuracy : 0.7446969696969697
+    cfar10_1 fgsm : accuracy : 0.5017543859649123
+    cuckoo  accuracy : 1.0
+
+    Logistic regression 
+      log_reg_model = LogisticRegression(max_iter=2500,
+                                   random_state=42)
+        Mnist_1 FGSM 
+         accuracy : 0.7378787878787879
+         Mnis_t1 PGD
+          accuracy : 0.7046969696969697
+        mnist_2 PGD 
+        accuracy : 0.7745844337424266
+        mnist_2 fgsm 
+        accuracy : 0.8042566412925276
+        mnist_3 fgsm
+         accuracy : 0.7442424242424243
+        mnist_3 pgd
+         accuracy : 0.7342424242424243
+        cifar10_1
+     accuracy : 0.49122807017543857
+
+
+    Naive Bayes:
+    mnist_3 fgsm :
+     accuracy : 0.5684848484848485
+    mnist_3 fgsm
+     accuracy : 0.568939393939394
+     mnist_2 fgsm 
+     accuracy : 0.5942209103619699
+     mnisr_2 pgd
+      accuracy : 0.6218735435762001
+      mnist_10_1 fgsm
+     accuracy : 0.5333333333333333
