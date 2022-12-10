@@ -2,24 +2,27 @@ from utils import *
 from Activations import *
 from Accessor import Accessor
 import sys
+import ember
 
 #Generate activations for selected dataset under selected attacks
 
 
 
 
-dataset = 'cifar10'
+dataset = 'ember'
 #In Uppercase
-attack = 'PGD'
+attack = 'FGSM'
 shape =784
-model_name= "cifar10_1"
+model_name= "ember_2"
  
 
 
 
 # todo 1 add cifar10
-model = get_model(model_name)
-(X_train, Y_train), (X_test, Y_test) = get_dataset(dataset,True,True,False)
+X_train, Y_train, X_test, Y_test = ember.read_vectorized_features("./data/ember2018/")
+Y_train = to_categorical(Y_train)
+Y_test = to_categorical(Y_test)
+model = load_model('./models/Ember_2.h5')
 
 
 def generate_train_activations():
@@ -45,15 +48,19 @@ def generate_train_activations():
 
 
 def generate_test_activation_adv():
-    index = 0    
+    index = 1   
+    true_count = 1 
     for i,x in enumerate(X_test):
       
         if(isinstance(Y_test, pd.DataFrame)) : y = Y_test.iloc[i]
         else : y = Y_test[i]
     
-        x = np.reshape(x,(-1,32,32,3))
         x = generate_attack_tf(model,x,y,attack)
-        generate_and_save_activations(model,x,index,y, "./adversarial/"+dataset+"/"+attack+"/"+model_name)
+
+        if(generate_and_save_activations(model,x,index,y, "./adversarial/"+dataset+"/"+attack+"/"+model_name)):
+            true_count+=1
+        if(index %100 ==0):
+            print(f'accuracy so far : {true_count/index*100} %')
         index+=1
         printProgressBar(index + 1, X_test.shape[0], prefix = 'Progress:', suffix = 'Complete', length = 50)
     print("Generating Adversarial Activations Csv for Dataset %s  under attack %s " % (dataset,attack))
@@ -67,6 +74,8 @@ def generate_test_activations_begnign():
         if(isinstance(Y_test, pd.DataFrame)) : y = Y_test.iloc[i]
         else : y = Y_test[i]
 
+        x =  np.reshape(x,(-1,x.shape[0]))
+        print(x.shape)
         if(generate_and_save_activations(model,x,index,y,"./begnign/"+dataset+"/"+model_name)) : 
             true_count+=1
         if(index %100 ==0):
@@ -80,17 +89,18 @@ def generate_test_activations_begnign():
 
 
 if __name__ == "__main__":
-
+ 
     '''
       Run For full seeding         py .\generate_activations_run_time.py all 
 
     Sample commands
             py .\generate_activations_run_time.py train 
             py .\generate_activations_run_time.py test begnign 
-            py .\generate_activations_run_time.py test adversarial  
+            py .\generate_activations_run_time.py test adversarial 
 
+        'pip' is not recognized as an internal or external command,
+        operable program or batch file.
     '''
-
 
     if(sys.argv[1] == 'train'):
         generate_train_activations()
@@ -103,6 +113,7 @@ if __name__ == "__main__":
             generate_train_activations()
             generate_test_activations_begnign()
             generate_test_activation_adv()
+
 
 
 

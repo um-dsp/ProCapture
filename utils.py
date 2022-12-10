@@ -153,7 +153,7 @@ def get_folder_name(attack,dataset):
 def get_layers_activations(model,input):
     inp = model.input                                           
     outputs = [layer.output for layer in model.layers]          
-    functors = [K.function([inp], [out]) for out in outputs]    
+    functors = [K.function([inp], [out]) for out in outputs]  
     layer_outs = [func([input]) for func in functors]
     return layer_outs
 
@@ -171,7 +171,7 @@ def compute_accuracy_tf(model,X_dataset,Y_dataset):
 
 #Generates acivations for a given model and input and saves in corresponding folder
 def generate_and_save_activations(model,input,index,label,folder_name):
-    input = np.reshape(input,(-1,32,32,3))
+    #input = np.reshape(input,(-1,28,28,1))
     ac =  get_layers_activations(model,input)
     prediction =np.argmax(model.predict(input,verbose=0)[0])
     activations = [item for sublist in ac for item in sublist]
@@ -191,11 +191,11 @@ def generate_and_save_activations(model,input,index,label,folder_name):
             arr = np.moveaxis(arr, [0,1], [1,0])
         arr = np.squeeze(arr)
         list.append(arr)
-
+   
 
     if(len(label) != 1):
         label =np.argmax(label)
-
+    
     #for i in list :
     #    arr = np.asarray(i)
     #    print(arr.shape)

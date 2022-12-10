@@ -10,7 +10,8 @@ from keras.models import Sequential, load_model
 from keras.layers import Dense, Dropout,  Activation
 from keras.utils import np_utils
 from keras.layers import BatchNormalization
-import keras
+import keras    
+
 
 import lightgbm as lgb
 
@@ -38,6 +39,7 @@ def model_accuracy() :
     
 
 def train_ember():
+    print('a')
     X_train, y_train, X_test, y_test = ember.read_vectorized_features("./data/ember2018/")
     
     y_train = to_categorical(y_train)
@@ -49,7 +51,7 @@ def train_ember():
 
 
     batch_size = 500
-    epochs = 5
+    epochs = 500
     model = Sequential()
 
     model.add(Dense(4608, activation='relu', input_shape=(2381,)))
@@ -97,27 +99,21 @@ def train_ember():
     model.compile(keras.optimizers.Adam(lr=1e-4),loss='binary_crossentropy', metrics=['accuracy'])# cross-entropy
     model.fit(X_train, y_train, batch_size=batch_size, epochs=epochs,
             verbose=1, validation_data=(X_test, y_test))
-    model.save("./models/Ember_1_2.h5")
+    model.save("./models/Ember_1_f.h5")
     
     #validator = Validator(1,1)
     #validator.accuracy_from_file('./adversarial/cuckoo/CKO/cuckoo_1')
 
 
 if __name__ == '__main__':
-
+ 
     X_train, y_train, X_test, y_test = ember.read_vectorized_features("./data/ember2018/")
     y_train = to_categorical(y_train)
     y_test = to_categorical(y_test)
-   
     print(f'X_train :{X_train.shape}')
     print(f'y_train : {y_train.shape}')
     print(f'X_test  : {X_test.shape}')
     print(f'y_test  :{y_test.shape}')
-    model = load_model('./models/Ember_1.h5')
-    X_test = X_test[1:1000]
-    y_test = y_test[1:1000]
+    model = load_model('./models/Ember_2.h5')
     print(X_test[0])
-
-    X_test = generate_attack_tf(model,X_test,y_test,'FGSM')
-    print(X_test[0])
-    model.evaluate(X_test,y_test)
+    print(model.predict([X_test[0]]))
