@@ -60,7 +60,8 @@ class Validator :
 if __name__ == "__main__":
     expected_nb_layers = 4
     v = Validator()
-    v.accuracy_from_file('./adversarial/cifar10/FGSM/cifar10_1')
+    v.accuracy_from_file('./adversarial/ember/EMBER/ember_2')
+    #v.accuracy_from_file('./begnign/mnist/mnist_3')
 
 
 

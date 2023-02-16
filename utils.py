@@ -5,11 +5,9 @@ import numpy as np
 import tensorflow as tf
 
 from keras import backend as K
-
 from keras.datasets import mnist
 from keras.datasets import cifar10
 import os
-
 from keras.utils import to_categorical
 from keras.models import load_model
 import matplotlib.pyplot as plt
@@ -21,12 +19,13 @@ from cleverhans.tf2.attacks.fast_gradient_method import fast_gradient_method
 import pandas as pd
 from sklearn import model_selection
 from pandas import get_dummies
-
+import ember
 
 #device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 def generate_attack_tf(model,x,y,attack):
-    if(attack not in ['FGSM','CW','PGD',"CKO"]):
+
+    if(attack not in ['FGSM','CW','PGD',"CKO",'EMBER']):
         raise Exception("Attack not supported")
     if(attack== 'FGSM'):
         x =  fast_gradient_method(model,x,eps=0.1,norm=np.inf,targeted=False)
@@ -35,20 +34,36 @@ def generate_attack_tf(model,x,y,attack):
     if(attack=='PGD'):
         x = projected_gradient_descent(model, x, 0.05, 0.01, 40, np.inf)
     if(attack =='CKO'):
-        x = reverse_bit_attack(x,500)
-
+        adv = []
+        for s in x :
+            adv.append(reverse_bit_attack(s,500))
+        x = np.array(adv)
+    if(attack == "EMBER"):
+        adv = []
+        for s in x :
+            adv.append(attack_Ember(s))
+        x = np.array(adv)
+    print(f'Generated attacks {attack}')
     return x
 
     
 
 #Returns model according to provided dataset 'this imlementation considers one model per dataset'
 def get_model(name):
-        return load_model("./models/"+name+".h5")
+    if(name not in ['cifar10_1','cuckoo_1','Ember_2','mnist_1','mnist_2','mnist_3']):
+         raise ValueError('Model Not Supported')
+    return load_model("./models/"+name+".h5")
 
-
+def attack_Ember(x):
+    aux = []
+    for i in x :
+        if(i>10) :
+            i +=  i/100*2
+        aux.append(i)
+    return np.array(aux)
 # Returns dataset and applies transformation according to parameters
-def get_dataset(dataset_name, normalize = True, categorical=False,reshape=False):
-    if(dataset_name not in ['mnist','cifar10','cuckoo']):
+def get_dataset(dataset_name, normalize = True, categorical=False):
+    if(dataset_name not in ['mnist','cifar10','cuckoo','ember']):
         raise Exception('Dataset not supported')
     if(dataset_name == "mnist"):
         (X_train, Y_train), (X_test, Y_test)  = mnist.load_data()
@@ -65,43 +80,32 @@ def get_dataset(dataset_name, normalize = True, categorical=False,reshape=False)
         Y=df['Target'].values
         X_train, X_test, Y_train, Y_test = model_selection.train_test_split(X, Y, test_size=0.2, random_state=7)
         feature_vector_length =1549
+    if(dataset_name == 'ember'):
+        X_train, Y_train, X_test, Y_test = ember.read_vectorized_features("./data/ember2018/")
 
 
-
-
-    if normalize : 
-        X_train = X_train.astype('float32')
-        X_test = X_test.astype('float32')
-        X_train = X_train / 255.0
-        X_test = X_test/ 255.0
-    if categorical : 
-        
-        #if type(Y_test[0] == "str"):  
-        #    Y_test = get_dummies(Y_test)
-        #    Y_train = get_dummies(Y_train)
-        #else : 
-        Y_train= to_categorical(Y_train,10)
-        Y_test= to_categorical(Y_test,10)
-
-    if reshape :
-        X_train = X_train.reshape(X_train.shape[0], feature_vector_length)
-        X_test = X_test.reshape(X_test.shape[0], feature_vector_length)
+    if categorical :
+        if(dataset_name == 'cuckoo') :
+            Y_train = pd.get_dummies(Y_train)
+            Y_test = pd.get_dummies(Y_test)
+        else : 
+            Y_train= to_categorical(Y_train)
+            Y_test= to_categorical(Y_test)
 
     return(X_train, Y_train), (X_test, Y_test)
 
     
   
-def reverse_bit_attack(X_test,Nb):
+def reverse_bit_attack(x,Nb):
     '''Generating adversarial samples by randomly flipping 
     Nb bits from 0 to 1
     For cuckoo dataset
     ''' 
-
-    X_test_crafted=X_test.copy()
+    X_test_crafted=x.copy()
 
     N_flipped=0
-    for index in range(X_test.size):
-        if X_test[index] == 0:
+    for index in range(x.size):
+        if x[index] == 0:
             X_test_crafted[index]=1
             N_flipped+=1
         if N_flipped == Nb:
@@ -171,7 +175,7 @@ def compute_accuracy_tf(model,X_dataset,Y_dataset):
 
 #Generates acivations for a given model and input and saves in corresponding folder
 def generate_and_save_activations(model,input,index,label,folder_name):
-    #input = np.reshape(input,(-1,28,28,1))
+    #remove axis with shape 1
     ac =  get_layers_activations(model,input)
     prediction =np.argmax(model.predict(input,verbose=0)[0])
     activations = [item for sublist in ac for item in sublist]
@@ -192,15 +196,10 @@ def generate_and_save_activations(model,input,index,label,folder_name):
         arr = np.squeeze(arr)
         list.append(arr)
    
-
-    if(len(label) != 1):
+    if(label.shape[0]!= 1):
         label =np.argmax(label)
     
-    #for i in list :
-    #    arr = np.asarray(i)
-    #    print(arr.shape)
 
-    
     a = Activations(index,label,prediction,list)
     a.save_cnn(list,folder_name)
     return label == prediction 
@@ -211,65 +210,5 @@ def get_shape(d):
     if(d=='cifar10'):
         return (-1,3,32,32)
 
-'''
-def generate_attack(data,model,attack):
-    i = 0
-    num_correct = 0
-    num_samples = 0
-    model.eval()
-    model =model.to(device)
-    x_adv = torch.Tensor().to(device)
-    y_adv = torch.Tensor().to(device)
-    for x,y in data.test : 
-        x = x.to(device=device)
-        y = y.to(device=device)
-        if(attack == 'FGSM'):
-            x = fast_gradient_method(model, x, eps=0.01, norm = np.inf)
-        if(attack == "CW"):
-            x = carlini_wagner_l2(model, x, 10,y,targeted = False)
-        if attack=='SPSA':
-            x = spsa(model, x,eps=0.01,nb_iter=500,norm = np.inf,sanity_checks=False)
-        if attack=='PGD':
-            x = projected_gradient_descent(model, x, 0.01, 0.01, 40, np.inf)
-        
-        scores = model(x)
-        _, predictions = scores.max(1)
-        num_correct += (predictions == y).sum()
-        num_samples += predictions.size(0)
-        printProgressBar(i , len(data.test), prefix = 'Progress:', suffix = 'Complete', length = 50)
-        i+=1
-        print(f' accuracy : {float(num_correct)/float(num_samples)*100:.2f}') 
-
-
-
-def compute_accuracy(x,y,model):
-    num_correct = 0
-    num_samples = 0
-    model.eval()
-    with torch.no_grad():
-        for x, y in zip(x,y):
-            x = x.to(device=device)
-            y = y.to(device=device)
-            scores = model(x)
-            _, predictions = scores.max(1)
-            num_correct += (predictions == y).sum()
-            num_samples += predictions.size(0)
-        
-        print(f' accuracy : {float(num_correct)/float(num_samples)*100:.2f}') 
-
-
-
-'''
-
-
-def get_input_from_activation(activation):
-    set = activation.get_activations_set()
-
-    for i in set :
-        print(len(i))
-    exit()
-    input = set[0] #Layer 0 represents each pixel of the input image
-    plt.imshow(np.reshape(input,(28,28)))
-    plt.show()
 
 

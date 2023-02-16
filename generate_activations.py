@@ -8,11 +8,11 @@ import sys
 
 
 
-dataset = 'ember'
+dataset = 'mnist'
 #In Uppercase
-attack = 'EMBER'
+attack = 'FGSM'
 shape =784
-model_name= "ember_2"
+model_name= "mnist_1"
  
 
 
