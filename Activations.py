@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
+import math
 
 class Activations : 
   
@@ -11,20 +12,25 @@ class Activations :
         self.label = label
         self.prediction =prediction
         self.activations_set = activation_set
-        # start and end  layer state what subset of layers in activations to consider
         self.start_layer = 0
         self.end_layer = 100
         self.is_clipped = False
      
+    # Returns a set represnting the activations weight of the activations shape : [[layer1] , [layer2],....,[layerN]] 
     def get_activations_set(self):
         if(self.is_clipped):
             return self.activations_set[self.start_layer:self.end_layer+1]
         return self.activations_set  
+
+    #returns the true label of the activations
     def get_label(self):
         return self.label
 
+    #return total nb of layers
     def get_nb_layers(self):
         return len(self.activations_set)
+
+
     #Saves activations a csv in corresponding folder
     def save_csv(self,folder_name):
         if(not self.activations_set):
@@ -41,6 +47,7 @@ class Activations :
       
         DF.to_csv(folder_name +"/"+filename +".csv", index=False)
 
+    #if each node has more than 1 weight( cnn's nodes produce an n*n matrix) it is saved in a differetn format
     def save_cnn(self,activations_list,folder_name):
         layer = 0
         filename = str(self.label) + "_"+ str(self.prediction) +"-"+str(self.index)+'.txt'
@@ -56,7 +63,7 @@ class Activations :
             out.close()
 
 
-    #Generates dot file and saves it in dfault folder  
+    #Generates dot file and saves it in dfault folder  ( for visualization [majids's work])
     def as_dot(self,start_layer =1,end_layer=3):
         file1 = open("graph.txt","w")
         L = ["digraph G {\n", "rankdir = LR;\n", "splines=line;\n","ranksep= 1.4;\n","node [fixedsize=true, label=\"\"];\n"]  
@@ -98,12 +105,14 @@ class Activations :
         os.system("dot -Tpng -O graph.txt")
         print('Generated graph dot code and saved in graph.txt, can see graph in graph.txt.png')
 
-     # returns actication set as binary 
+
+     # returns actication set as binary : meaning active_node => 1 , inactive_nodes =>0
     def get_binary(self,threshhold):
         aux = []
         for i,s in enumerate(self.activations_set) :
             aux.append([])
             for a in s :
+                #define a threshhold for what active and inactive mean
                 if a >threshhold :
                     aux[i].append(1)
                 else :
@@ -129,6 +138,7 @@ class Activations :
     def print(self):
         print('label : %s prediction : %s index :%s' %(self.label,self.prediction,self.index))
     
+    #returns number of active nodes : weight > threshhold
     def compute_nb_active_nodes(self,threshhold):
         nb = 0
         layer_count = 0
@@ -137,16 +147,15 @@ class Activations :
                 continue
             layer_count+=1
             for j,y in enumerate(x):
+                if(type(y) == type([])): continue
                 if y > threshhold:
                     nb +=1
         return nb
-
-
-
-
+    #get total number of node (considering clipping)
     def get_nb_nodes(self):
         return (len(self.flatten()))
 
+    # flatten array  => [ ...[layer1] , ...[layer2] , ..[layer3]]
     def flatten(self):
         if(self.is_clipped):
             slice_list = self.activations_set[self.start_layer:self.end_layer+1]
@@ -156,20 +165,26 @@ class Activations :
         #print('Flattened List to %s elements' %(len(flat_list)))
         return flat_list
 
+    # set layers to be considered if clipping is needed ( for a per layer analysis)
     def set_layer_range(self,start_layer,end_layer):
         self.start_layer =start_layer
         self.end_layer = end_layer
         self.is_clipped = True
         return self
 
+    #Get if prediction is equal to label
     def get_truth_value(self):
         return self.prediction == self.label
 
+    # get average activations weight
     def get_average_weight(self,nonZero = True):
         res = 0
         for i,x in enumerate(self.activations_set):
             if( i <self.start_layer or i > self.end_layer):
                 continue
+            if(len(x)==0):continue
+            s= [ i for i in x if (type(i) == type([]))]
+            if(len(s) !=0): continue
             res+= np.average(np.array(x))
         
         if(self.is_clipped):
@@ -178,6 +193,7 @@ class Activations :
             res = res / len(self.activations_set)
         return res 
     
+    #
     def get_nb_active_nodes (self,threshhold):
         count = 0
         for i,x in enumerate(self.activations_set):
@@ -189,23 +205,32 @@ class Activations :
         return count 
 
     
-    
+    #get dipersation index of this activations
     def dispersation_index(self):
         if(self.is_clipped):
             a = self.activations_set[self.start_layer:self.end_layer+1]
             a = [item for sublist in a for item in sublist]
         else :
              a = self.flatten()
-       
-        return np.var(a) * np.var(a) /np.mean(a)    
+        r = []
+        for i in a : 
+            if(type(i) != type([])):
+                r.append(i)
+        return np.var(r) * np.var(r) /np.mean(r)    
    
 
+    def drop_and_get(self,nb):
+        if(self.is_clipped):
+            a = self.activations_set[self.start_layer:self.end_layer+1]
+            a = [item for sublist in a for item in sublist]
+        else :
+             a = self.flatten()
+        return  list(filter(lambda x: (abs(x) < nb ), a)) 
 
+
+    # plot activations
     def plot(self,color ="green",label=''):
-
-
         axis = np.arange(len(self.flatten()))
-
         plt.figure(figsize=(10, 4))
         plt.xlabel("Nodes")
         plt.ylabel("Activaiton weight")       
@@ -218,7 +243,67 @@ class Activations :
             plt.axvline(x = len(i)+prev, color = 'b', label = 'Layer')
             prev = prev+len(i)
         plt.show()
-       
+
+
+    def transform_layers_to_image(self,activations):
+        max_length = 0
+        for i in activations : 
+            if(len(i)>max_length ):
+                max_length = len(i)
+        
+        if(max_length ==0):
+            raise KeyError
+        print(f'max_length {max_length}')
+        aux = []
+        for i in activations:
+            length_to_cover = max_length-len(i)
+            for j in range(math.floor(length_to_cover/2)):
+                i.insert(0,0)
+            for j in range(math.floor(length_to_cover/2)):
+                i.append(0) 
+            aux.append(i)
+        return aux
+
+
+    def draw_as_image(self,activations=None):
+
+        activationself = self.transform_layers_to_image(self.activations_set)
+        activationAux = self.transform_layers_to_image( activations)
+        print(activationAux[0])
+        print(activationself[0])
+
+        f, axarr = plt.subplots(1,2,figsize=(10,7))
+        axarr[0].imshow(activationself,interpolation='nearest', aspect='auto')
+        axarr[1].imshow(activationAux,interpolation='nearest', aspect='auto')
+        plt.show()
+
+
+        return
+
+    def plot_single(self,activations ):
+        activationAux = self.transform_layers_to_image( activations)
+        plt.imshow(activationAux,interpolation='nearest', aspect='auto')
+        plt.show()
+
+    # unflatten array to root form
+    def deflatten(self,flattened):
+        aux = []
+        index = 0 
+        for i in range(len(self.activations_set)):
+            lengthA = len(self.activations_set[i])
+            arr = flattened[index:index+lengthA].tolist()
+            aux.append(arr)
+            index+=lengthA   
+        return aux
+    
+    # get shape of activations (layer1.shape,layer2.shape ,..., layerN.shape)
+    def get_layers_shape (self):
+        layers_shape = []
+        for index,i in enumerate(self.activations_set):
+            if(index<self.start_layer or index>self.end_layer):
+                continue
+            layers_shape.append(len(i))
+        return layers_shape
 
 
         

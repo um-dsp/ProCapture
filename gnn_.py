@@ -1,130 +1,148 @@
-import gnn.GNN as GNN
-import gnn.gnn_utils as ut
+import torch
+from torch_geometric.data import Data
+from torch.nn import Linear
+import torch.nn.functional as F
+from torch_geometric.nn import GCNConv
+from torch_geometric.nn import global_mean_pool
+import torch
+from torch_geometric.datasets import TUDataset
+from torch_geometric.loader import DataLoader
+from torch_geometric.loader import DataLoader
 from Accessor import Accessor
-import numpy as np
-from Net_Subgraph import Net 
-import tensorflow._api.v2.compat.v1 as tf
-import tensorflow as tf
-import tensorflow_gnn as tfgnn
+from utils import *
+from captum.attr import Saliency, IntegratedGradients
 
-from tensorflow_gnn import runner
+
+begning_sample = Accessor('./begnign/cifar10/cifar10_1')
+adversarial_sample = Accessor('./adversarial/cifar10/pgd/cifar10_1')
+
+
+adv_sample_act = adversarial_sample.get_all(limit=11)
+begning_sample_act = begning_sample.get_all(limit=11)
+
+
+
+def to_dataset(activations,state):
+
+    dataset = []
+    index=  0
+    for act in activations:
+        index+=1
+        printProgressBar(index + 1, len(activations), prefix = 'Progress:', suffix = 'Complete', length = 50)
+        nodes = []
+        for i in act.activations_set:
+            for j in i:
+                nodes.append([j])
+        
+        source = []
+        target = []
+        start_index= 0
+        for i in range(len(act.activations_set)-1):
+            for s in range(len(act.activations_set[i])):
+                for t in range(len(act.activations_set[i+1])):
+                    if(act.activations_set[i+1][t] < 0.01 and act.activations_set[i+1][t]>-0.01):
+                        continue 
+                    source.append(s+start_index)
+                    target.append(t+start_index+len(act.activations_set[i]))
+            start_index= len(act.activations_set[i])
+        x = torch.FloatTensor(nodes)
+        y = torch.LongTensor([state])
+        edge_index = torch.tensor([source,
+                            target], dtype=torch.long)
+        data = Data(x=x, y=y, edge_index=edge_index)
+        dataset.append(data)
+    return dataset
+
+ben_dataset = to_dataset(begning_sample_act,0)
+adv_dataset = to_dataset(adv_sample_act,1)  
+
+print()
+print(len(ben_dataset))
+print(len(adv_dataset))
+
+
+
+a = ben_dataset[0:9]
+b = adv_dataset[0:9]
+c =ben_dataset[9:10]
+d =adv_dataset[9:10]
+train_dataset = [*a, *b]
+test_dataset = [*c,*d]
+print(f'train dataset : {len(train_dataset)}')
+print(f'test dataset : {len(test_dataset)}')
+
+train_loader = DataLoader(train_dataset, batch_size=10, shuffle=True)
+test_loader = DataLoader(test_dataset, batch_size=10, shuffle=True)
 
 '''
-def client_optimizer_fn(learning_rate,name):
-    return tf.keras.optimizers.Adam(learning_rate=learning_rate,name =name)
+#represents node sfeatures => Nodes activations
+x = torch.FloatTensor([[0],[0], [0], [0]])
+y = torch.LongTensor([0])
+edge_index = torch.tensor([[0, 2, 0, 3],
+                           [1, 1, 3, 2]], dtype=torch.long)
 
-if __name__ == "__main__":
-    tf.disable_v2_behavior() 
+data = Data(x=x, y=y, edge_index=edge_index)
+dataset = [data,data,data,data,data,data,data,data]
 
-    #adversarial_sample = Accessor('./adversarial/mnist/fgsm/mnist_1')
-    begning_sample = Accessor('./begnign/mnist/mnist_1')
-    begning_sample_act = begning_sample.get_label_by_prediction(0)
-    #adv_sample_act = adversarial_sample.get_all()
-    expected_nb_nodes = 384
-
-    sample = begning_sample_act[0]
-    sample.set_layer_range(1,2)
-    activations = sample.get_activations_set()
-    print(len(sample.flatten()))
-    edges = []
-    nodes =  []
-
-    # if fully connected :
-    
-    l = 0
-    id = 0
-    while(l<len(activations)-1):
-        for i in activations[l]:
-            nodes.append([i,id])
-            for j in activations[l+1]:
-                edges.append([i,j,id])
-        for i in activations[l+1]:
-            nodes.append([i,id])
-        l+=1
-
-    nodes = np.array(nodes,dtype='int')
-    edges = np.array(edges,dtype='int')
-    
-    inp ,arcnode, graphnode = ut.from_EN_to_GNN(edges,nodes)
-    labels = np.array([0] * len(inp))
-
-
-
-    input_dim =inp.shape[0]
-    output_dim =labels.shape[0]
-    state_dim = 1
-    max_it = 50
-    num_epoch = 10000
-    threshold = 0.01
-    learning_rate = 0.01
-     
-    net = Net(inp.shape[0],state_dim=1,output_dim = labels.shape[0])
-    g = GNN.GNN(net, input_dim, output_dim, state_dim,  max_it, client_optimizer_fn, learning_rate, threshold, graph_based=False,
-                tensorboard=False)
-    loss, it = g.Train(inp, arcnode, labels, j)
 '''
 
-def model_fn(gtspec: tfgnn.GraphTensorSpec):
-  """Builds a simple GNN with `ConvGNNBuilder`."""
-  convolver = tfgnn.keras.ConvGNNBuilder(
-      lambda edge_set_name, receiver_tag: tfgnn.keras.layers.SimpleConv(
-          lambda: tf.keras.layers.Dense(32, activation="relu"),
-          "sum",
-          receiver_tag=receiver_tag,
-          sender_edge_feature=tfgnn.HIDDEN_STATE),
-      lambda node_set_name: tfgnn.keras.layers.NextStateFromConcat(
-          lambda: tf.keras.layers.Dense(32, activation="relu")),
-      receiver_tag=tfgnn.SOURCE)
-  return tf.keras.Sequential([
-      convolver.Convolve() for _ in range(4)  # Message pass 4 times.
-  ])
 
 
-# in neeed arr = [[i]]  [activation_weights]
-# in need srouce arra =[i(flattened)] target = arr[i(flattened)]
-graph = tfgnn.GraphTensor.from_pieces(
-   node_sets={
-       "cnn_node": tfgnn.NodeSet.from_fields(
-           sizes=tf.constant([3]),
-           features={
-               "index": tf.ragged.constant(
-                   [[0],
-                    [1],
-                    [2]]),
-               "activation": tf.constant([1, 0, 1]),
-           })},
+class GCN(torch.nn.Module):
+    def __init__(self, hidden_channels):
+        super(GCN, self).__init__()
+        torch.manual_seed(12345)
+        self.conv1 = GCNConv(1, hidden_channels)
+        self.conv2 = GCNConv(hidden_channels, hidden_channels)
+        self.conv3 = GCNConv(hidden_channels, hidden_channels)
+        self.lin = Linear(hidden_channels,2)
 
-   edge_sets={
-       "cnn_edge": tfgnn.EdgeSet.from_fields(
-           sizes=tf.constant([3]),
-           adjacency=tfgnn.Adjacency.from_indices(
-               source=("paper", tf.constant([1, 2, 2])),
-               target=("paper", tf.constant([0, 0, 1]))))
-     
-               })
-'''
-with tf.io.TFRecordWriter('./gnn_data.txt') as writer:
-  for _ in range(1000):
-    example = tfgnn.write_example(graph)
-    writer.write(example.SerializeToString())
-'''
-
-graph_schema = tfgnn.read_schema("./schema.pbtxt")
-gtspec = tfgnn.create_graph_spec_from_schema_pb(graph_schema)
+    def forward(self, x, edge_index, batch):
+        # 1. Obtain node embeddings
+        x = self.conv1(x, edge_index)
+        x = x.relu()
+        x = self.conv2(x, edge_index)
+        #x = x.relu()
+        #x = self.conv3(x, edge_index)
+       
+        # 2. Readout layer
+        x = global_mean_pool(x, batch)  # [batch_size, hidden_channels]
+        
+        # 3. Apply a final classifier
+        x = F.dropout(x, p=0.5, training=self.training)
+        x = self.lin(x)
+        return x
 
 
-trainer = runner.KerasTrainer(
-    strategy=tf.distribute.experimental.CentralStorageStrategy(),
-    model_dir="...",
-     steps_per_epoch=1,  # global_batch_size == 128
-    validation_per_epoch=2,
 
-    #validation_steps=1)  
-)
+model = GCN(hidden_channels=16)
+optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
+criterion = torch.nn.CrossEntropyLoss()
 
-task = runner.RootNodeBinaryClassification(node_set_name="nodes")
+def train():
+    model.train()
 
-train_ds_provider = runner.TFRecordDatasetProvider(file_pattern="./gnn_data.txt")
-print(train_ds_provider)
-runner.run(train_ds_provider=train_ds_provider,valid_ds_provider=train_ds_provider
-,model_fn =model_fn,optimizer_fn=tf.keras.optimizers.Adam,trainer=trainer,task=task,global_batch_size=128,gtspec=gtspec)
+    for data in train_loader:  # Iterate in batches over the training dataset.
+         out = model(data.x, data.edge_index, data.batch)  # Perform a single forward pass.
+         loss = criterion(out, data.y)  # Compute the loss.
+         loss.backward()  # Derive gradients.
+         optimizer.step()  # Update parameters based on gradients.
+         optimizer.zero_grad()  # Clear gradients.
+
+def test(loader):
+     model.eval()
+     correct = 0
+     for data in loader:  # Iterate in batches over the training/test dataset.
+         out = model(data.x, data.edge_index, data.batch)  
+         pred = out.argmax(dim=1)  # Use the class with highest probability.
+         correct += int((pred == data.y).sum())  # Check against ground-truth labels.
+     return correct / len(loader.dataset)  # Derive ratio of correct predictions.
+
+
+
+for epoch in range(1, 5):
+    train()
+    train_acc = test(train_loader)
+    test_acc = test(test_loader)
+    print(f'Epoch: {epoch:03d}, Train Acc: {train_acc:.4f}, Test Acc: {test_acc:.4f}')
+

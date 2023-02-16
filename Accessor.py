@@ -26,13 +26,15 @@ class Accessor :
                 return  Activations(index,label,prediction,activations_set)
 
 
-    def get_label_by_prediction(self,target_prediction,verbose = 1,collapse='avg'):
+    def get_label_by_prediction(self,target_prediction,verbose = 1,collapse='avg',limit = float('+inf')):
 
         container = []
+        counter = 0
         for filename in os.listdir(self.folder):
+            if(counter>limit):
+                break
             f = os.path.join(self.folder, filename)
             predicted = filename[filename.index("_")+1:filename.index("-")] 
-         
             if int(predicted) == target_prediction:
                 index = filename[filename.index("-")+1:filename.index(".")] 
                 if(filename.find('csv') != -1):
@@ -42,6 +44,7 @@ class Accessor :
 
                 label = filename[0:filename.index("_")] 
                 container.append(Activations(index,label,predicted,activations_set))
+                counter += 0
         if( len(container) ==0):
             print('No File was found for prediction %s'%(target_prediction))
             raise Exception()
@@ -53,14 +56,23 @@ class Accessor :
   
 
     #gets activations for a given class [0,1,...]
-    def get_by_label(self,label):
+    def get_by_label(self,label,collapse='avg',limit= float('+inf'),verbose=0):
         container = []
+        counter = 0 
         for filename in os.listdir(self.folder):
+            if(verbose):
+                printProgressBar(counter, limit, prefix = 'Progress:', suffix = 'Complete', length = 50)
+            if(counter >= limit):
+                break
             f = os.path.join(self.folder, filename)
             if filename.startswith(str(label)):
+                counter+=1
                 index = filename[filename.index("-")+1:filename.index(".")] 
                 predicted = filename[filename.index("_"):filename.index("-")] 
-                activations_set = self.parse_csv_to_set(pd.read_csv(f))
+                if(filename.find('csv') != -1):
+                        activations_set = self.parse_csv_to_set(pd.read_csv(f))
+                else :
+                        activations_set = self.parse_txt_to_set(f,collapse)
                 container.append(Activations(index,label,predicted,activations_set))
         if( len(container) ==0):
             print('No File was found for label %s'%(label))
@@ -82,11 +94,13 @@ class Accessor :
         raise Exception("No file found for index %s" ,index)
 
 
-    def get_all(self,collapse='avg',sub_ration = 0):
+    def get_all(self,collapse='avg',sub_ration = 0,limit = float('+inf'),start=0):
         container = []
         current= 0
         for filename in os.listdir(self.folder):
             current+=1
+            if(current>limit): break
+            if(current<start):continue
             #purpose of this is t o shrink number of laoded activaitons to sub_ratio % (for faster loasd during research)
             if( sub_ration != 0 and not current % sub_ration == 0):
                 continue
@@ -99,6 +113,7 @@ class Accessor :
                     activations_set = self.parse_csv_to_set(pd.read_csv(f))
             else :
                     activations_set = self.parse_txt_to_set(f,collapse)
+                   
             container.append(Activations(index,label,predicted,activations_set))
         if( len(container) ==0):
             print('No File was found for label %s'%(label))
@@ -148,7 +163,6 @@ class Accessor :
                     if(collapse == "avg"):
                         s = np.average(s)
                     activations_set[layer][node]= s 
-                
         return activations_set
         
 
