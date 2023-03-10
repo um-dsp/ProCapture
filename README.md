@@ -3,13 +3,13 @@
 TODO:
 Please complete the following files/folders using relevant code in ```Relevant code``` folder:
 
-First we need to complete the following three python files that represents the  skeleton of the tool. They have to be implemented in a unified way and independantly from the used model or datasets. Thus, the taget model and datasets should be set as parameters by the user.
+1- We need to complete the following three python files that represents the  skeleton of the tool. They have to be implemented in a unified way and independantly from the used model or datasets. Thus, the taget model and datasets should be set as parameters by the user.
 
-* ``` activation_extractor.py```: The first step on our characterization approach is to extract activations of the target model ```model```. This model should be pretrained and previously stored at ```Models/[data_name]/```
-* ``` learn-graph.py```: The Second step: We train another model called ```graph_model``` that learns the NN graph (activations) of the target model ```model```. This model should be also stored at ```Models/[data_name]/```.
-* ``` Attribution.py```: The thrid step: is to perform **Attributions** on the trained ```graph_model```. This file should include a fucntion that takes as input a ```graph_model``` and ```data_name```, the model should be imported automaticcaly from ```Models/[data_name]/[[graph_model_name]```. Example: ```Models/MNIST/graph_MNIST.pth```
+  * ``` activation_extractor.py```: The first step on our characterization approach is to extract activations of the target model ```model```. This model should be pretrained and previously stored at ```Models/[data_name]/```
+  * ``` learn-graph.py```: The Second step: We train another model called ```graph_model``` that learns the NN graph (activations) of the target model ```model```. This model should be also stored at ```Models/[data_name]/```.
+  * ``` Attribution.py```: The thrid step: is to perform **Attributions** on the trained ```graph_model```. This file should include a fucntion that takes as input a ```graph_model``` and ```data_name```, the model should be imported automaticcaly from ```Models/[data_name]/[[graph_model_name]```. Example: ```Models/MNIST/graph_MNIST.pth```
 
-
+2- Our extensive experiments, including plots, compultations and test that we performed for emperical and structured characterization has be included in a jupyter notebook file ```characterization.ipynb```. This file should list code chunks of all our experiments ans plots with description of each chunk of code.
 
 
 ############
