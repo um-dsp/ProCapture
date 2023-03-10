@@ -1,5 +1,12 @@
-# ProvML
+# ProvML: Inference Provenance-Driven Characterization of Machine Learning in Adversarial Settings
 
+TODO:
+Complete the following:
+* ``` activation_extractor.py```: The first step on our characterization approach is to extract activations of the target model ```model```. This model should be pretrained and previously stored at ```Models/[data_name]/```
+
+
+
+############
 Documentation :
 
 This software enables users to extract and store the hidden layer activations of a neural network that they select. Additionally, it offers a range of metrics to evaluate the differences between datasets, such as the average number of active nodes and frequency distances. Moreover, we offer a machine learning-based approach to compute the truth state of a prediction based on the inner logits of the neural network. Lastly, we provide a methodology for explainability techniques to gain further insights into the activations.
