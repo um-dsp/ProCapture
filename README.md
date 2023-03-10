@@ -3,6 +3,8 @@
 TODO:
 Complete the following:
 * ``` activation_extractor.py```: The first step on our characterization approach is to extract activations of the target model ```model```. This model should be pretrained and previously stored at ```Models/[data_name]/```
+* ``` learn-graph.py```: The Second step: We train another model called ```graph_model``` that learns the NN graph (activations) of the target model ```model```. This model should be also stored at ```Models/[data_name]/```
+
 
 
 
