@@ -1,5 +1,5 @@
-from generate_activations import generate_activations
-from utils import get_dataset,get_model,generate_attack_tf
+from library.generate_activations import generate_activations
+from library.utils import get_dataset,get_model,generate_attack_tf
 import numpy as np
 
 
@@ -36,19 +36,8 @@ evaluating the models
 
 if __name__ == "__main__":
 
-    #Use the abose function to generate activations for different datasets/attacks
-    exit()    
-
-# This is some sample code to look at if needed
-def sampleCode():
-
-    # Mnist generation Code
-    (X_train, y_train), (X_test, y_test) = get_dataset('mnist',False,True)
-    model = get_model('mnist_1')
-    X_adv = generate_attack_tf(model,X_test,y_test,'FGSM')
-    generate_activations(X_adv,y_test,model,'./adversarial/test')
-
-    # Cifar generation Code
+    #Use the below  function to generate activations for different datasets/attacks
+      # Cifar generation Code
 
     (X_train, y_train), (X_test, y_test) = get_dataset('cifar10',True,True)
     model = get_model('cifar10_1')
@@ -58,6 +47,23 @@ def sampleCode():
     X_test = X_test/ 255.0
     X_adv = generate_attack_tf(model,X_test,y_test,'FGSM')
     generate_activations(X_adv,y_test,model,'./adversarial/test')
+    exit()    
+
+
+    
+
+# This is some sample code to look at if needed
+def sampleCode():
+
+  # Mnist generation Code
+    
+    (X_train, y_train), (X_test, y_test) = get_dataset('mnist',False,True)
+    model = get_model('mnist_1')
+    X_adv = generate_attack_tf(model,X_test,y_test,'FGSM')
+    generate_activations(X_adv,y_test,model,'./adversarial/test')
+
+ 
+
 
     # Cuckoo generation Code
 

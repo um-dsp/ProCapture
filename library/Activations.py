@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+from library.utils import discretize,scotts_rule
 
 import math
 
@@ -168,7 +169,8 @@ class Activations :
     # set layers to be considered if clipping is needed ( for a per layer analysis)
     def set_layer_range(self,start_layer,end_layer):
         self.start_layer =start_layer
-        self.end_layer = end_layer
+        if(end_layer == float('+inf')):
+            self.end_layer = len(self.activations_set)
         self.is_clipped = True
         return self
 
@@ -305,5 +307,28 @@ class Activations :
             layers_shape.append(len(i))
         return layers_shape
 
+    def is_spoiled(self):
+        #For CIfar10 some nodes contain empty array [] {BuG debt} to avoid erros we just replace the array with a weight of 0
+        array = self.flatten()
+        for i in array:
+            if(type(i) == type([])):
+                return True
+        return False
 
-        
+    def compute_entropy(self):
+
+        if (self.is_spoiled()): return 0
+        array = self.flatten()
+        nb_bins = scotts_rule(array)
+        array = discretize(array,nb_bins)
+
+        array = array.tolist()
+        size = len(array)
+        unique_elements = set(array)
+        entropy = 0.0
+        for element in unique_elements:
+            count = array.count(element)
+            probability = count / size
+            entropy += probability * math.log2(probability)
+        return -entropy
+            

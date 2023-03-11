@@ -1,22 +1,16 @@
-from utils import *
-from Activations import *
-from Accessor import Accessor
+from library.Activations import *
+from library.Accessor import Accessor
 import sys
-
+from library.utils import *
 #Generate activations for selected dataset under selected attacks
 
 
 
-
+#This code is for debugging purposes and should not use it unless you are runnig this file directly
 dataset = 'mnist'
-#In Uppercase
-attack = 'FGSM'
+attack = 'PGD'
 shape =784
 model_name= "mnist_1"
- 
-
-
-
 (X_train, Y_train), (X_test, Y_test) = get_dataset(dataset,normalize=False,categorical = True)
 model = load_model('./models/' +model_name+'.h5')
 
@@ -134,7 +128,36 @@ def generate_test_activations_begnign():
     print("Generated Begnign Activations Csv for Dataset %s    " % (dataset))
 
 
+#Generates acivations for a given model and input and saves in corresponding folder
+def generate_and_save_activations(model,input,index,label,folder_name):
+    #remove axis with shape 1
+    ac =  get_layers_activations(model,input)
+    prediction =np.argmax(model.predict(input,verbose=0)[0])
+    activations = [item for sublist in ac for item in sublist]
+    #print(np.array(activations[0][0]).shape)
 
+    #For string label translated to dummy categories need to format label to string to put in file name
+    '''
+    if(isinstance(label,pd.Series)):
+       label = label['Benign'].astype(str) + label['Malware'].astype(str)
+    '''
+    list= []
+    for i in activations : 
+        arr = np.array(i)
+        if(len(arr.shape) ==4):
+            arr = np.moveaxis(arr, [0,1,2,3], [3,2,1,0])
+        if(len(arr.shape)==2):
+            arr = np.moveaxis(arr, [0,1], [1,0])
+        arr = np.squeeze(arr)
+        list.append(arr)
+   
+    if(label.shape[0]!= 1):
+        label =np.argmax(label)
+    
+
+    a = Activations(index,label,prediction,list)
+    a.save_cnn(list,folder_name)
+    return label == prediction 
 
 if __name__ == "__main__":
  

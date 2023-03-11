@@ -1,10 +1,10 @@
 from operator import contains
-from Activations import Activations
+from library.Activations import Activations
 import os
 import pandas as pd
 import numpy as np
 from keras import backend as K
-from utils import *
+from library.utils import *
 class Accessor :
 
     # for all class attack param selects whether to get adersarial activations or begnign activations
@@ -27,7 +27,7 @@ class Accessor :
 
 
     def get_label_by_prediction(self,target_prediction,verbose = 1,collapse='avg',limit = float('+inf')):
-
+        
         container = []
         counter = 0
         for filename in os.listdir(self.folder):
@@ -44,7 +44,7 @@ class Accessor :
 
                 label = filename[0:filename.index("_")] 
                 container.append(Activations(index,label,predicted,activations_set))
-                counter += 0
+                counter += 1
         if( len(container) ==0):
             print('No File was found for prediction %s'%(target_prediction))
             raise Exception()

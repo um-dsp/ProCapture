@@ -11,7 +11,6 @@ import os
 from keras.utils import to_categorical
 from keras.models import load_model
 import matplotlib.pyplot as plt
-from Activations import Activations
 from cleverhans.tf2.attacks.projected_gradient_descent import (projected_gradient_descent,)
 from cleverhans.tf2.attacks.carlini_wagner_l2 import carlini_wagner_l2
 from cleverhans.tf2.attacks.spsa import spsa
@@ -20,6 +19,7 @@ import pandas as pd
 from sklearn import model_selection
 from pandas import get_dummies
 import ember
+import torch
 
 #device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -61,6 +61,7 @@ def attack_Ember(x):
             i +=  i/100*2
         aux.append(i)
     return np.array(aux)
+
 # Returns dataset and applies transformation according to parameters
 def get_dataset(dataset_name, normalize = True, categorical=False):
     if(dataset_name not in ['mnist','cifar10','cuckoo','ember']):
@@ -116,9 +117,6 @@ def reverse_bit_attack(x,Nb):
 
 
 
-        
-        
-    
     # Print iterations progress
 def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):
 
@@ -173,42 +171,35 @@ def compute_accuracy_tf(model,X_dataset,Y_dataset):
   
 
 
-#Generates acivations for a given model and input and saves in corresponding folder
-def generate_and_save_activations(model,input,index,label,folder_name):
-    #remove axis with shape 1
-    ac =  get_layers_activations(model,input)
-    prediction =np.argmax(model.predict(input,verbose=0)[0])
-    activations = [item for sublist in ac for item in sublist]
-    #print(np.array(activations[0][0]).shape)
-
-    #For string label translated to dummy categories need to format label to string to put in file name
-    '''
-    if(isinstance(label,pd.Series)):
-       label = label['Benign'].astype(str) + label['Malware'].astype(str)
-    '''
-    list= []
-    for i in activations : 
-        arr = np.array(i)
-        if(len(arr.shape) ==4):
-            arr = np.moveaxis(arr, [0,1,2,3], [3,2,1,0])
-        if(len(arr.shape)==2):
-            arr = np.moveaxis(arr, [0,1], [1,0])
-        arr = np.squeeze(arr)
-        list.append(arr)
-   
-    if(label.shape[0]!= 1):
-        label =np.argmax(label)
-    
-
-    a = Activations(index,label,prediction,list)
-    a.save_cnn(list,folder_name)
-    return label == prediction 
     
 def get_shape(d):
     if(d=='mnist') : 
         return (28,28)
     if(d=='cifar10'):
         return (-1,3,32,32)
+    
+def dispersation_index(x):
+    if(len(x)==0): raise ValueError('Dispersaiton of an empty array')
+    if(type(x) == torch.Tensor) : return torch.var(x)* torch.var(x) / torch.mean(x)
+    return np.var(x) * np.var(x) /np.mean(x) 
 
 
+def normalize(x):
+    x_min = np.min(x)
+    x_max = np.max(x)
+    x_norm = (x - x_min) / (x_max - x_min)
+    return x_norm
 
+def discretize (arr,nb_bins):
+    hist, bins = np.histogram(arr, bins=nb_bins)
+    discretized = np.digitize(arr, bins)
+    return discretized
+   
+def scotts_rule(data):
+    n = len(data)
+    if n == 0:
+        return 0
+    sigma = np.std(data)
+    bin_width = 3.5 * sigma / (n ** (1/3))
+    num_bins = int(np.ceil((np.max(data) - np.min(data)) / bin_width))
+    return num_bins
