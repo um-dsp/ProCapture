@@ -11,9 +11,9 @@ if __name__ == "__main__":
 
 
     #Instantiate and Accessor class with a folder containing activations csv/txt
-    adversarial_sample = Accessor('./adversarial/pgd/')
-    begning_sample = Accessor('./begnign/mnist_1/')
-    ground_truth = Accessor('./Ground_truth/mnist_1/')
+    adversarial_sample = Accessor('./adversarial/test/')
+    begning_sample = Accessor('./begnign/test/')
+    ground_truth = Accessor('./Ground_truth/test/')
 
         
     #Accessor will load and parse the activations from csv/txt to an Activation Class

@@ -6,12 +6,17 @@ from keras.models import Sequential
 from keras.layers import Dense
 from keras.utils import to_categorical
 from keras.layers import Input, Conv2D, Dense, Flatten, Dropout,MaxPooling2D
-from utils import get_dataset, generate_attack_tf #This is needed because mnist has 10 classes - classification problem
+from library.utils import get_dataset, generate_attack_tf #This is needed because mnist has 10 classes - classification problem
 from keras.models import load_model
 from keras.layers import BatchNormalization
 import ember
 import keras
 import numpy as np
+from sklearn.model_selection import train_test_split
+import torch
+from torch import nn 
+import torch.optim as optim
+
 
 def train_Cifar10(model_name):
     feature_vector_length = 32*32*3
@@ -141,7 +146,49 @@ def compute_mismatch(model,X_test,Y_test):
                 zeros+=1
     print(f' mismatches 0 {zeros}' )        
     print(f' mismatches 1 {ones}' )        
-    print(f' Accuracy  {correct/len(X_test) * 100}' )        
+    print(f' Accuracy  {correct/len(X_test) * 100}' )    
+
+
+def train_adversrial_detection_model(X,Y,modelArchitecture,checkpoint):
+
+    model = modelArchitecture()
+    Y = to_categorical(Y)
+    optimizer = optim.Adam(model.parameters())
+    criterion = nn.CrossEntropyLoss()
+
+    X_train, X_test,y_train, y_test = train_test_split(X,Y ,random_state=104, test_size=0.25, shuffle=True)
+    print('[ADV DETECTION MODEL TRAINING]')
+    print(f'X_train len {len(X_train)}')
+    print(f'Y_train len {len(y_train)}')
+    print(f'X_test len {len(X_test)}')
+    print(f'Y_test len {len(y_test)}')
+
+    accuracy = 1
+        #Train Model
+    while(accuracy < 83):
+        #Load in the data in batches using the train_loader object
+        correct =0
+        for x, y in  zip(X_train,y_train):  
+
+            y= torch.tensor(y)
+            x = x[None, :]
+            # Forward pass
+            outputs = model(x)
+            outputs = torch.squeeze(outputs)
+
+            #print(torch.argmax(outputs),torch.argmax(y))
+
+            loss = criterion(outputs, y)
+            correct += 1 if (torch.argmax(outputs) == torch.argmax(y)) else 0 
+            # Backward and optimize
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+        print(f'accuracy {correct/len(X_train) *100}')
+        accuracy = correct/len(X_train) *100
+    
+    torch.save(model, checkpoint)
+    return model
 
 if __name__ == '__main__':
     
