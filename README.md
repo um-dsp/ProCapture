@@ -1,7 +1,7 @@
 # ProvML: Inference Provenance-Driven Characterization of Machine Learning in Adversarial Settings
 
 TODO:
-Please complete the following files/folders using relevant code in `Relevant code` folder:
+Please complete the following files/folders using relevant code in `Library` folder:
 
 1- We need to complete the following three python files that represents the  skeleton of the tool. They have to be implemented in a unified way and independantly from the used model or datasets. Thus, the taget model and datasets should be set as parameters by the user.
 
