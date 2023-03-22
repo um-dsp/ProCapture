@@ -26,7 +26,6 @@ Please complete the following files/folders using relevant code in `Library` fol
 
 ProvMl provides a set of dataset ,pretrained models and attacks in its implementation , Using the CLI command will limit the user to these models. Use Library if you need to extend to other dataset,attacks. <br />
 `Datasets` : Cifar10 and Mnist. Download cuckoo and Ember dataset and put them in the folder `./data/`. By default ProvMl will look for them in that path
-
 `Pretrained Models` : we offer pretrained models: mnist_1 , mnist_2 , mnist_3 , cifar10_1 ,cuckoo_1 and ember_1 <br />
 ` Attacks`: ProvMl supports the following attacks : <br />
 
@@ -45,10 +44,10 @@ To Use activaiton generation file use the CLI with the following parameters :
   `folder/dataset_name/model_name/<attack>/`
 - `Attack Name` : ['FGSM','CW','PGD',"CKO",'EMBER',None]
   this parameter is optional , if mentioned, ProvMl will apply the attack on the dataset.
-  (note: if attack is None and the folder input is set to adversarial it will throw an Error)
-  Sample Commands :
-  `py gen_activations.py mnist mnist_1  adversarial FGSM`
-  `py gen_activations.py mnist mnist_1 groundTruth  `
+  (note: if attack is None and the folder input is set to adversarial it will throw an Error) <br />
+  Sample Commands : <br />
+  `py gen_activations.py mnist mnist_1  adversarial FGSM` <br />
+  `py gen_activations.py mnist mnist_1 groundTruth  ` <br />
 
 ### Activation File Format :
 
