@@ -25,7 +25,7 @@ Please complete the following files/folders using relevant code in `Library` fol
 ### Dataset , Pretrained Models , Attacks :
 
 ProvMl provides a set of dataset ,pretrained models and attacks in its implementation , Using the CLI command will limit the user to these models. Use Library if you need to extend to other dataset,attacks. <br />
-`Datasets` : Cifar10 and Mnist. Download cuckoo and Ember dataset and put them in the folder `./data/`. By default ProvMl will look for them in that path
+`Datasets` : Cifar10 and Mnist. Download cuckoo and Ember dataset and put them in the folder `./data/`. By default ProvMl will look for them in that path<br />
 `Pretrained Models` : we offer pretrained models: mnist_1 , mnist_2 , mnist_3 , cifar10_1 ,cuckoo_1 and ember_1 <br />
 ` Attacks`: ProvMl supports the following attacks : <br />
 
