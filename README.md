@@ -36,14 +36,14 @@ To Use activaiton generation file use the CLI with the following parameters :
 
 - `Dataset Name` : cifar10 | mnist | cuckoo |ember <br />
 - `Pre-Trained Model Name` : cifar10_1 |cuckoo_1 | Ember_2 | mnist_1 | mnist_2 | mnist_3 <br />
-- `Folder` : groundTruth | begnign | adversarial <br />
+- `Folder` : Ground_Truth | Begnign | Adversarial <br />
   this parameter sets what folder will the generated activations be saved, the default file path is
   `folder/dataset_name/model_name/<attack>/`
 - `Attack Name` : FGSM | CW | PGD |CKO |EMBER | None <br />
   this parameter is optional , if mentioned, ProvMl will apply the attack on the dataset.
   (**note** : if attack is None and the folder input is set to adversarial it will throw an Error) <br />
   **Sample Commands :** <br />
-  > `py gen_activations.py mnist mnist_1  adversarial FGSM` <br /> `py gen_activations.py mnist mnist_1 groundTruth  ` <br />
+  > `py gen_activations.py mnist mnist_1  Adversarial FGSM` <br /> `py gen_activations.py mnist mnist_1 Ground_Truth  ` <br />
 
 ##### Activation File Format :
 

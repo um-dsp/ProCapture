@@ -35,7 +35,7 @@ evaluating the models
 supported_dataset = ['cifar10' ,'mnist', 'cuckoo','ember'] 
 supported_attacks = ['FGSM','CW','PGD',"CKO",'EMBER',None]
 pre_trained_models = ['cifar10_1','cuckoo_1','Ember_2','mnist_1','mnist_2','mnist_3']
-folder = ['groundTruth' , 'begnign' ,'adversarial']
+folder = ['Ground_Truth' , 'Begnign' ,'Adversarial']
 def parseArgs():
     args= sys.argv
     dataset = args[1]
@@ -72,7 +72,7 @@ def get_checkpoint_name(dataset,attack,model_name,folder):
     save_path = folder +'/' +dataset +'/'
     if(attack):
         save_path+= attack +'/'
-    save_path += model_name +'/'
+    save_path += model_name 
     return save_path
 
 
@@ -82,7 +82,7 @@ if __name__ == "__main__":
 
     save_path = get_checkpoint_name(dataset,attack,model_name,folder)
 
-    print(f'\n Dataset : {dataset} | Model : {model_name} | Attack : {attack} | Checkpoint : {save_path} \n')
+    print(f'\n[GEN ACT] Dataset : {dataset} | Model : {model_name} | Attack : {attack} | Checkpoint : {save_path} \n')
     #Use the below  function to generate activations for different datasets/attacks
       # Cifar generation Code
 
@@ -90,7 +90,7 @@ if __name__ == "__main__":
     # Ground Truth -> We Use Train Data 
     # Adersarial | Begnign -> We use Test Data
     (X_train, y_train), (X_test, y_test) = get_dataset(dataset,True)
-    if(folder == 'groundTruth'):
+    if(folder == 'Ground_Truth'):
         X = X_train 
         Y= y_train 
     else : 
@@ -101,10 +101,9 @@ if __name__ == "__main__":
     model = get_model(model_name)
  
     if(attack):
-      print(X.dtype)
       X = generate_attack_tf(model,X,Y,attack)
 
-    generate_activations(X,Y,model,'./adversarial/test')
+    generate_activations(X,Y,model,save_path)
 
 
     
