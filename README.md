@@ -49,7 +49,7 @@ To Use activaiton generation file use the CLI with the following parameters :
   `py gen_activations.py mnist mnist_1  adversarial FGSM` <br />
   `py gen_activations.py mnist mnist_1 groundTruth  ` <br />
 
-### Activation File Format :
+###### Activation File Format :
 
 The activations generation will save to the folder a set of CSV | TXT files ,each file represents the activations of a individual input throught the set model and using the attack if mentioned :
 
@@ -58,6 +58,8 @@ The activations generation will save to the folder a set of CSV | TXT files ,eac
   .csv files are used fro feedforward network where the ouput of The node is a float
 - `Validator.py`: offers a st of function to run verifications on the activations folder. such as compute_accuracy
 - `Accessor.py` : offers a set of functionalities that imports and parses the activations files into an array of activations Object. This Class also offer many parameters to allow acces using label , prediction or get all activations ..
+
+# Metrics :
 
 - `run_metrics.py` : Once you have the generated activations of adversarial, benign and Groundtruth, instanciate an Accessor classwith the path of each. Then leverage the experiment expD() -> expI() to compute the different metrics
   Metrics : average number of active ndoes , activaions weight, nodes frequencies, always active nodes, Dispersation index, Entropy index.
