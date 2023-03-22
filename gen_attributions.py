@@ -6,8 +6,12 @@ import numpy as np
 import torch
 from library.train import train_adversrial_detection_model
 from library.attributionUtils import NeuralNetMnist_1
+import sys
+
+
 if __name__ == "__main__":
 
+ 
     begning_accessor = Accessor('./begnign/test/')
     adversarial_accessor= Accessor('./adversarial/test/')
     ground_truth_accessor = Accessor('./Ground_truth/test/')
@@ -21,7 +25,6 @@ if __name__ == "__main__":
 
     # Transforms the activations to the folowing data set : x[activationA,activaitonB,...]  y= [1, 0 ,1...]
     X_adv,Y_adv=adversarial_detection_set(adv_sample_act,label = torch.tensor(1),expected_nb_nodes=expected_nb_nodes)
-
     X_ben,Y_ben=adversarial_detection_set(begning_sample_act,label = torch.tensor(0),expected_nb_nodes =expected_nb_nodes)
     X_gt ,Y_gt =adversarial_detection_set(gt_sample_act,label = torch.tensor(0),expected_nb_nodes=expected_nb_nodes)
 

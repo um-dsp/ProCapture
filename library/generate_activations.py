@@ -6,14 +6,6 @@ from library.utils import *
 
 
 
-#This code is for debugging purposes and should not use it unless you are runnig this file directly
-dataset = 'mnist'
-attack = 'PGD'
-shape =784
-model_name= "mnist_1"
-(X_train, Y_train), (X_test, Y_test) = get_dataset(dataset,normalize=False,categorical = True)
-model = load_model('./models/' +model_name+'.h5')
-
 
 def select_only_one_label (X,Y,label):
     aux = []
@@ -47,11 +39,11 @@ def generate_activations(X,Y,model,file_path):
         if(counter %100 ==0):
             print(f'accuracy so far : {correct_predictions/counter*100} %')
 
-        printProgressBar(i + 1, X_train.shape[0], prefix = 'Progress:', suffix = 'Complete', length = 50)
+        printProgressBar(i + 1, X.shape[0], prefix = 'Progress:', suffix = 'Complete', length = 50)
         counter+=1
     print("Generated and saved set activations dataset to %s " %(file_path))
 
-def generate_train_activations():
+def generate_train_activations(X_train,Y_train,model,dataset,model_name):
     #optimize this
     #Takes 30 mn to finish
        
@@ -80,7 +72,7 @@ def generate_train_activations():
     print(" \n Generated and saved  Train set activations dataset %s size " %(dataset),end='\r')
 
 
-def generate_test_activation_adv():
+def generate_test_activation_adv(X_test, Y_test, model , attack,dataset , model_name):
 
     count = 1   
     true_count = 1
@@ -105,7 +97,7 @@ def generate_test_activation_adv():
     print("Generating Adversarial Activations Csv for Dataset %s  under attack %s " % (dataset,attack))
 
 
-def generate_test_activations_begnign():
+def generate_test_activations_begnign(X_test, Y_test,model,dataset,model_name):
 
     correct_prediction = 1
     count = 0
@@ -160,29 +152,18 @@ def generate_and_save_activations(model,input,index,label,folder_name):
     return label == prediction 
 
 if __name__ == "__main__":
+
+    #This code is for debugging purposes and should not use it unless you are runnig this file directly
+    dataset = 'mnist'
+    attack = 'PGD'
+    shape =784
+    model_name= "mnist_1"
+    (X_train, Y_train), (X_test, Y_test) = get_dataset(dataset,categorical = True)
+    model = load_model('./models/' +model_name+'.h5')
  
-    '''
-      Run For full seeding         py .\generate_activations_run_time.py all 
+   
 
-    Sample commands
-            py .\generate_activations_run_time.py train 
-            py .\generate_activations_run_time.py test begnign 
-            py .\generate_activations_run_time.py test adversarial  
-
-    '''
-
-    if(sys.argv[1] == 'train'):
-        generate_train_activations()
-    if(sys.argv[1] =='test'):
-        if(sys.argv[2]== 'begnign'):
-            generate_test_activations_begnign()
-        if(sys.argv[2] == 'adversarial'):
-            generate_test_activation_adv()
-    if (sys.argv[1] =='all'):
-            generate_train_activations()
-            generate_test_activations_begnign()
-            generate_test_activation_adv()
-
+ 
 
 
 

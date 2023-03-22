@@ -63,15 +63,19 @@ def attack_Ember(x):
     return np.array(aux)
 
 # Returns dataset and applies transformation according to parameters
-def get_dataset(dataset_name, normalize = True, categorical=False):
-    if(dataset_name not in ['mnist','cifar10','cuckoo','ember']):
-        raise Exception('Dataset not supported')
+def get_dataset(dataset_name, categorical=False):
+    
+
     if(dataset_name == "mnist"):
         (X_train, Y_train), (X_test, Y_test)  = mnist.load_data()
-        feature_vector_length= 784
+        X_train = X_train.astype('float32')
+        X_test = X_test.astype('float32')
     if(dataset_name == "cifar10"):
         (X_train, Y_train), (X_test, Y_test)  = cifar10.load_data()
-        feature_vector_length = 32*32*3
+        X_train = X_train.astype('float32')
+        X_test = X_test.astype('float32')
+        X_train = X_train / 255.0
+        X_test = X_test/ 255.0
     if(dataset_name =="cuckoo"):
         df = pd.read_csv("./data/cuckoo.csv")
         df_train=df.drop(['Target'],axis=1)
@@ -80,11 +84,9 @@ def get_dataset(dataset_name, normalize = True, categorical=False):
         X= df_train.values
         Y=df['Target'].values
         X_train, X_test, Y_train, Y_test = model_selection.train_test_split(X, Y, test_size=0.2, random_state=7)
-        feature_vector_length =1549
     if(dataset_name == 'ember'):
         X_train, Y_train, X_test, Y_test = ember.read_vectorized_features("./data/ember2018/")
-
-
+    
     if categorical :
         if(dataset_name == 'cuckoo') :
             Y_train = pd.get_dummies(Y_train)

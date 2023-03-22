@@ -6,6 +6,36 @@ Please complete the following files/folders using relevant code in `Relevant cod
 1- We need to complete the following three python files that represents the skeleton of the tool. They have to be implemented in a unified way and independantly from the used model or datasets. Thus, the taget model and datasets should be set as parameters by the user.
 
 - ` gen_activations.py`: The first step on our characterization approach is to extract activations of the target model `model`. Import data and your pretrained model and utilzie the functions in library/generate_activations.py to generate and save the activations
+
+### Dataset , Pretrained Models , Attacks :
+
+ProvMl provides a set of dataset ,pretrained models and attacks in its implementation , Using the CLI command will limit the user to these models. Use Library if you need to extend to other dataset,attacks.
+`Datasets` : Cifar10 and Mnist.
+Download cuckoo and Ember dataset and put them in the folder `./data/`. By default ProvMl will look for them in that path
+
+`Pretrained Models` : we offer pretrained models: mnist_1 , mnist_2 , mnist_3 , cifar10_1 ,cuckoo_1 and ember_1
+` Attacks`: ProvMl supports the following attacks :  
+Cifar10, Mnist => FGSM, PGD
+Cuckoo => Reverse first n bits attack (CKO)
+Ember => Developed personalized attack (EMB)
+
+### Activation Generation Process
+
+To Use activaiton generation file use the CLI with the following parameters : 1. `Dataset Name` : ['cifar10' ,'mnist', 'cuckoo','ember'] 2. `Pre-Trained Model Name` : ['cifar10_1','cuckoo_1','Ember_2','mnist_1','mnist_2','mnist_3'] 3. `Folder` : ['groundTruth' , 'begnign' ,'adversarial']
+this parameter sets what folder will the generated activations be saved, the default file path is
+`folder/dataset_name/model_name/<attack>/` 4. `Attack Name` : ['FGSM','CW','PGD',"CKO",'EMBER',None]
+this parameter is optional , if mentioned, ProvMl will apply the attack on the dataset.
+(note: if attak is None and the folder input is set to adversarial it will throw an Error)
+
+### Activation File Format :
+
+The activations generation will save to the folder a set of CSV | TXT files ,each file represents the activations of a individual input throught the set model and using the attack if mentioned :
+file Name : {label}-{prediction}\_{id in dataset} .txt |.csv
+.txt files are used for COnvolutional Neural network wher each node acitvaiton is represented by an ndarray
+.csv files are used fro feedforward network where the ouput of The node is a float
+`Validator.py`: offers a st of function to run verifications on the activations folder. such as compute_accuracy
+`Accessor.py` : offers a set of functionalities that imports and parses the activations files into an array of activations Object. This Class also offer many parameters to allow acces using label , prediction or get all activations ..
+
 - `run_metrics.py` : Once you have the generated activations of adversarial, benign and Groundtruth, instanciate an Accessor classwith the path of each. Then leverage the experiment expD() -> expI() to compute the different metrics
   Metrics : average number of active ndoes , activaions weight, nodes frequencies, always active nodes, Dispersation index, Entropy index.
 - ` gen_attributions.py`: this file explains how to transform generated activations to dataset and train an torch adversarial detection model. ` attributionUtils.py` holds different predefined architecture that cover all the dataset we research and produce satisfactory performance.

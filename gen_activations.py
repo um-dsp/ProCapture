@@ -1,7 +1,7 @@
 from library.generate_activations import generate_activations
 from library.utils import get_dataset,get_model,generate_attack_tf
 import numpy as np
-
+import sys
 
 '''
 get_dataset() in utils would return a dataset of your choice, 
@@ -32,22 +32,79 @@ utils.py containes some helpers function that could help you with other function
 evaluating the models
 '''
 
+supported_dataset = ['cifar10' ,'mnist', 'cuckoo','ember'] 
+supported_attacks = ['FGSM','CW','PGD',"CKO",'EMBER',None]
+pre_trained_models = ['cifar10_1','cuckoo_1','Ember_2','mnist_1','mnist_2','mnist_3']
+folder = ['groundTruth' , 'begnign' ,'adversarial']
+def parseArgs():
+    args= sys.argv
+    dataset = args[1]
+    if( dataset not in supported_dataset):
+        raise ValueError(f'ProvMl only Supports {supported_dataset}')
+        
+    model_name = args[2]
+    if(model_name not in pre_trained_models ):
+        raise ValueError(f'ProvMl only Supports {pre_trained_models}')
+        
+
+    folder = args[3]
+    if(folder not in folder):
+        raise ValueError(f"ProMl save folder options are {folder}")
+
+    # Optional Attack argument, if None no attack will be performed on the input
+    if (len(args)==5 ):
+        attack = args[4]
+        if(attack not in supported_attacks):
+          raise ValueError(f'ProvMl only Supports {supported_attacks}')
+    else :
+        attack = None
+
+  
+    if(not attack and folder =="adversarial"):
+      raise ValueError('cannot save adversarial checkpoint without Attack Input')
+
+  
+    return dataset,attack,model_name,folder
+
+
+def get_checkpoint_name(dataset,attack,model_name,folder):
+    # Generate FoLder Path 
+    save_path = folder +'/' +dataset +'/'
+    if(attack):
+        save_path+= attack +'/'
+    save_path += model_name +'/'
+    return save_path
 
 
 if __name__ == "__main__":
+   
+    dataset,attack,model_name,folder = parseArgs()
 
+    save_path = get_checkpoint_name(dataset,attack,model_name,folder)
+
+    print(f'\n Dataset : {dataset} | Model : {model_name} | Attack : {attack} | Checkpoint : {save_path} \n')
     #Use the below  function to generate activations for different datasets/attacks
       # Cifar generation Code
 
-    (X_train, y_train), (X_test, y_test) = get_dataset('cifar10',True,True)
-    model = get_model('cifar10_1')
-    X_train = X_train.astype('float32')
-    X_test = X_test.astype('float32')
-    X_train = X_train / 255.0
-    X_test = X_test/ 255.0
-    X_adv = generate_attack_tf(model,X_test,y_test,'FGSM')
-    generate_activations(X_adv,y_test,model,'./adversarial/test')
-    exit()    
+
+    # Ground Truth -> We Use Train Data 
+    # Adersarial | Begnign -> We use Test Data
+    (X_train, y_train), (X_test, y_test) = get_dataset(dataset,True)
+    if(folder == 'groundTruth'):
+        X = X_train 
+        Y= y_train 
+    else : 
+        X= X_test 
+        Y = y_test
+
+
+    model = get_model(model_name)
+ 
+    if(attack):
+      print(X.dtype)
+      X = generate_attack_tf(model,X,Y,attack)
+
+    generate_activations(X,Y,model,'./adversarial/test')
 
 
     
