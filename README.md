@@ -15,7 +15,7 @@ Please complete the following files/folders using relevant code in `Library` fol
 
 ---
 
-#DOCS
+# DOCS
 
 - ` gen_activations.py`: The first step on our characterization approach is to extract activations of the target model `model`. Import data and your pretrained model and utilzie the functions in library/generate_activations.py to generate and save the activations
 
