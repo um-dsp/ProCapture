@@ -42,10 +42,10 @@ To Use activaiton generation file use the CLI with the following parameters :
 - `Attack Name` : FGSM | CW | PGD |CKO |EMBER | None <br />
   this parameter is optional , if mentioned, ProvMl will apply the attack on the dataset.
   (**note** : if attack is None and the folder input is set to adversarial it will throw an Error) <br />
-  Sample Commands : <br />
+  **Sample Commands :** <br />
   > `py gen_activations.py mnist mnist_1  adversarial FGSM` <br /> `py gen_activations.py mnist mnist_1 groundTruth  ` <br />
 
-###### Activation File Format :
+##### Activation File Format :
 
 The activations generation will save to the folder a set of CSV | TXT files ,each file represents the activations of a individual input throught the set model and using the attack if mentioned :
 
