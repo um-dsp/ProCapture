@@ -14,7 +14,7 @@
 
 ProvMl provides a set of dataset ,pretrained models and attacks in its implementation , Using the CLI command will limit the user to these models. Use Library if you need to extend to other dataset,attacks. <br />
 
-- **Datasets\*** : Cifar10 and Mnist are directly used throught keras. If Needed Download cuckoo and Ember dataset and put them in the folder `./data/`. By default ProvMl will look for them in that path<br />
+- **Datasets** : Cifar10 and Mnist are directly used throught keras. If Needed Download cuckoo and Ember dataset and put them in the folder `./data/`. By default ProvMl will look for them in that path<br />
 - **Pretrained** Models : we offer pretrained models: mnist_1 , mnist_2 , mnist_3 , cifar10_1 ,cuckoo_1 and ember_1 <br />
   Models are availabe to donwload [here](https://drive.google.com/drive/folders/1a0kdq4waz8SXU9gThsUmKsR0YTSuaEWO?usp=share_link)
   model.txt file has the metadata of each model
@@ -40,7 +40,7 @@ ProvMl provides a set of dataset ,pretrained models and attacks in its implement
   **Sample Commands :** <br />
   > `py gen_activations.py mnist mnist_1  Adversarial FGSM` <br /> `py gen_activations.py mnist mnist_1 Ground_Truth  ` <br />
 
-##### Activation File Format :
+#### Activation File Format :
 
 The activations generation will save to the folder a set of CSV | TXT files ,each file represents the activations of a individual input throught the set model and using the attack if mentioned :
 
@@ -58,15 +58,16 @@ This step utilizes the activations extracted in the previous step, To Train a pr
 
 - Datase Name
 - Model Name
-- Attack
+- Attack <br />
   (The Above arguments will just be used to locate the needed activations in the project folder)
 - Expected Number Of Nodes : this number represents the number of nodes to expect in the activations, this is a safe guard against activation extraction errors and will ignore the sampels that have more nodes that expected
-- Model Path : represents the path for the predefined .pt model (**note** : after training the model will be saved in the same file)
+- Model Path : represents the path for the predefined .pt model <br/>
+  (**note** : after training the model will be saved in the same file)
   The model will be trained across all samples in Ground_Truth , Adversarial and Begnign for a specific model/attack and for 30 epochs
 
   **Sample Commands :** <br />
 
-  > `py learn-graph.py mnist mnist_1 FGSM 420 ./ModelsFolder/mnist_1.pt` <br /> > `py gen_activations.py cuckoo cuckoo_1 62 ./ModelsFolder/cifar10_1.pt  ` <br />
+  > `py learn-graph.py mnist mnist_1 FGSM 420 ./ModelsFolder/mnist_1.pt` <br /> `py gen_activations.py cuckoo cuckoo_1 62 ./ModelsFolder/cifar10_1.pt  ` <br />
 
 # Metrics :
 
