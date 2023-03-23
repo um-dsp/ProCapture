@@ -149,9 +149,10 @@ def compute_mismatch(model,X_test,Y_test):
     print(f' Accuracy  {correct/len(X_test) * 100}' )    
 
 
-def train_adversrial_detection_model(X,Y,modelArchitecture,checkpoint):
+def train_adversrial_detection_model(X,Y,model_path):
+    
+    model =torch.load(model_path)
 
-    model = modelArchitecture()
     Y = to_categorical(Y)
     optimizer = optim.Adam(model.parameters())
     criterion = nn.CrossEntropyLoss()
@@ -163,15 +164,18 @@ def train_adversrial_detection_model(X,Y,modelArchitecture,checkpoint):
     print(f'X_test len {len(X_test)}')
     print(f'Y_test len {len(y_test)}')
 
-    accuracy = 1
+    epoch = 30
+    i=0
         #Train Model
-    while(accuracy < 83):
+    while(i < epoch):
+        i+=1
         #Load in the data in batches using the train_loader object
         correct =0
         for x, y in  zip(X_train,y_train):  
 
             y= torch.tensor(y)
             x = x[None, :]
+
             # Forward pass
             outputs = model(x)
             outputs = torch.squeeze(outputs)
@@ -184,10 +188,11 @@ def train_adversrial_detection_model(X,Y,modelArchitecture,checkpoint):
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-        print(f'accuracy {correct/len(X_train) *100}')
-        accuracy = correct/len(X_train) *100
-    
-    torch.save(model, checkpoint)
+        print(f'accuracy: {correct/len(X_train) *100} epoch: {i}',end='\r')
+
+    torch.save(model, model_path)
+    print(f' Accuracy : {correct/len(X_train)*100} Saved to {model_path}')
+
     return model
 
 if __name__ == '__main__':

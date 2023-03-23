@@ -277,14 +277,16 @@ def adversarial_detection_set(act,label,expected_nb_nodes):
     outlier_counter = 0
     for x in act:
 
-        x.set_layer_range(1,10)
+        x.set_layer_range(1,float('+inf'))
 
         if(len(x.flatten()) != expected_nb_nodes ):
             outlier_counter+=1
-            print(f'number of ndoes found {len(x.flatten())}')
             continue  
         X.append(torch.tensor(x.flatten()))
         Y.append(torch.tensor(label))
+    
+    print(f'[GRAPH LEARN] [SET GENERATION] Ignored {outlier_counter} Samples')
+
     return X,Y
  
 

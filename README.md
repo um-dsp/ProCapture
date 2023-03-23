@@ -34,12 +34,13 @@ ProvMl provides a set of dataset ,pretrained models and attacks in its implement
 
 To Use activaiton generation file use the CLI with the following parameters :
 
-- `Dataset Name` : cifar10 | mnist | cuckoo |ember <br />
-- `Pre-Trained Model Name` : cifar10_1 |cuckoo_1 | Ember_2 | mnist_1 | mnist_2 | mnist_3 <br />
-- `Folder` : Ground_Truth | Begnign | Adversarial <br />
+- **Dataset Name**: cifar10 | mnist | cuckoo |ember <br />
+- **Pre-Trained Model Name** : cifar10_1 |cuckoo_1 | Ember_2 | mnist_1 | mnist_2 | mnist_3 <br />
+- **Folder** : Ground_Truth | Begnign | Adversarial <br />
   this parameter sets what folder will the generated activations be saved, the default file path is
-  `folder/dataset_name/model_name/<attack>/`
-- `Attack Name` : FGSM | CW | PGD |CKO |EMBER | None <br />
+  `folder/dataset_name/model_name/<attack>/`.
+  (**note** : Make Sure to create the folder with the above path before running the generator)
+- **Attack Name** : FGSM | CW | PGD |CKO |EMBER | None <br />
   this parameter is optional , if mentioned, ProvMl will apply the attack on the dataset.
   (**note** : if attack is None and the folder input is set to adversarial it will throw an Error) <br />
   **Sample Commands :** <br />
@@ -54,6 +55,24 @@ The activations generation will save to the folder a set of CSV | TXT files ,eac
   .csv files are used fro feedforward network where the ouput of The node is a float
 - `Validator.py`: offers a st of function to run verifications on the activations folder. such as compute_accuracy
 - `Accessor.py` : offers a set of functionalities that imports and parses the activations files into an array of activations Object. This Class also offer many parameters to allow acces using label , prediction or get all activations ..
+
+### Adversarial Detection Model Training
+
+- ` learn-graph.py`: The Second step: We train another model called `graph_model` that learns the NN graph (activations) of the target model `model`. This model should be also stored should be initiated and stored in a .pt file <br />
+
+This step utilizes the activations extracted in the previous step, To Train a predefined model on the activations set use the CLI command with the following parameters <br />
+
+- Datase Name
+- Model Name
+- Attack
+(The Above arguments will just be used to locate the needed activations in the project folder)
+- Expected Number Of Nodes : this number represents the number of nodes to expect in the activations, this is a safe guard against activation extraction errors and will ignore the sampels that have more nodes that expected
+- Model Path : represents the path for the predefined .pt model (**note** : after training the model will be saved in the same file)
+  The model will be trained across all samples in Ground_Truth , Adversarial and Begnign for a specific model/attack and for 30 epochs
+
+  **Sample Commands :** <br />
+
+  > `py learn-graph.py mnist mnist_1 FGSM 420 ./ModelsFolder/mnist_1.pt` <br /> > `py gen_activations.py cuckoo cuckoo_1 62 ./ModelsFolder/cifar10_1.pt  ` <br />
 
 # Metrics :
 
