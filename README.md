@@ -10,7 +10,7 @@
 
 # DOCS
 
-### Overview, Dataset , Pretrained Models , Attacks :
+## Overview, Dataset , Pretrained Models , Attacks :
 
 ProvMl provides a set of dataset ,pretrained models and attacks in its implementation , Using the CLI command will limit the user to these models. Use Library if you need to extend to other dataset,attacks. <br />
 
@@ -23,7 +23,7 @@ ProvMl provides a set of dataset ,pretrained models and attacks in its implement
   Cuckoo => Reverse first n bits attack (CKO) <br />
   Ember => Developed personalized attack (EMB) <br />
 
-### Activation Generation Process
+## Activation Generation Process
 
 - ` gen_activations.py`: The first step on our characterization approach is to extract activations of the target model `model`. Import data and your pretrained model and utilzie the functions in library/generate_activations.py to generate and save the activations
   To Use activaiton generation file use the CLI with the following parameters :
@@ -50,7 +50,7 @@ The activations generation will save to the folder a set of CSV | TXT files ,eac
 - `Validator.py`: offers a st of function to run verifications on the activations folder. such as compute_accuracy
 - `Accessor.py` : offers a set of functionalities that imports and parses the activations files into an array of activations Object. This Class also offer many parameters to allow acces using label , prediction or get all activations ..
 
-### Adversarial Detection Model Training
+## Adversarial Detection Model Training
 
 ` learn-graph.py`: The Second step: We train another model called `graph_model` that learns the NN graph (activations) of the target model `model`. This model should be also stored should be initiated and stored in a .pt file <br />
 
