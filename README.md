@@ -1,12 +1,5 @@
 # ProvML: Inference Provenance-Driven Characterization of Machine Learning in Adversarial Settings
 
-TODO:
-Please complete the following files/folders using relevant code in `Library` folder:
-
-1- We need to complete the following three python files that represents the skeleton of the tool. They have to be implemented in a unified way and independantly from the used model or datasets. Thus, the taget model and datasets should be set as parameters by the user.
-
-- ` activation_extractor.py`: The first step on our characterization approach is to extract activations of the target model `model`. This model should be pretrained and previously stored at `Models/[data_name]/`
-- ` learn-graph.py`: The Second step: We train another model called `graph_model` that learns the NN graph (activations) of the target model `model`. This model should be also stored at `Models/[data_name]/`.
 - ` Attribution.py`: The thrid step: is to perform **Attributions** on the trained `graph_model`. This file should include a fucntion that takes as input a `graph_model` and `data_name`, the model should be imported automaticcaly from `Models/[data_name]/[[graph_model_name]`. Example: `Models/MNIST/graph_MNIST.pth`
 
 2- Our extensive experiments, including plots, compultations and test that we performed for emperical and structured characterization has be included in a jupyter notebook file `characterization.ipynb`. This file should list code chunks of all our experiments ans plots with description of each chunk of code.
@@ -17,22 +10,23 @@ Please complete the following files/folders using relevant code in `Library` fol
 
 # DOCS
 
-- ` gen_activations.py`: The first step on our characterization approach is to extract activations of the target model `model`. Import data and your pretrained model and utilzie the functions in library/generate_activations.py to generate and save the activations
-
-### Dataset , Pretrained Models , Attacks :
+### Overview, Dataset , Pretrained Models , Attacks :
 
 ProvMl provides a set of dataset ,pretrained models and attacks in its implementation , Using the CLI command will limit the user to these models. Use Library if you need to extend to other dataset,attacks. <br />
-`Datasets` : Cifar10 and Mnist. Download cuckoo and Ember dataset and put them in the folder `./data/`. By default ProvMl will look for them in that path<br />
-`Pretrained Models` : we offer pretrained models: mnist_1 , mnist_2 , mnist_3 , cifar10_1 ,cuckoo_1 and ember_1 <br />
-` Attacks`: ProvMl supports the following attacks : <br />
 
-- Cifar10, Mnist => FGSM, PGD
-- Cuckoo => Reverse first n bits attack (CKO)
-- Ember => Developed personalized attack (EMB)
+- **Datasets\*** : Cifar10 and Mnist are directly used throught keras. If Needed Download cuckoo and Ember dataset and put them in the folder `./data/`. By default ProvMl will look for them in that path<br />
+- **Pretrained** Models : we offer pretrained models: mnist_1 , mnist_2 , mnist_3 , cifar10_1 ,cuckoo_1 and ember_1 <br />
+  Models are availabe to donwload [here] (https://drive.google.com/drive/folders/1a0kdq4waz8SXU9gThsUmKsR0YTSuaEWO?usp=share_link)
+  model.txt file has the metadata of each model
+- **Attacks** : ProvMl supports the following attacks : <br />
+  Cifar10, Mnist => FGSM, PGD <br />
+  Cuckoo => Reverse first n bits attack (CKO) <br />
+  Ember => Developed personalized attack (EMB) <br />
 
 ### Activation Generation Process
 
-To Use activaiton generation file use the CLI with the following parameters :
+- ` gen_activations.py`: The first step on our characterization approach is to extract activations of the target model `model`. Import data and your pretrained model and utilzie the functions in library/generate_activations.py to generate and save the activations
+  To Use activaiton generation file use the CLI with the following parameters :
 
 - **Dataset Name**: cifar10 | mnist | cuckoo |ember <br />
 - **Pre-Trained Model Name** : cifar10_1 |cuckoo_1 | Ember_2 | mnist_1 | mnist_2 | mnist_3 <br />
@@ -58,14 +52,14 @@ The activations generation will save to the folder a set of CSV | TXT files ,eac
 
 ### Adversarial Detection Model Training
 
-- ` learn-graph.py`: The Second step: We train another model called `graph_model` that learns the NN graph (activations) of the target model `model`. This model should be also stored should be initiated and stored in a .pt file <br />
+` learn-graph.py`: The Second step: We train another model called `graph_model` that learns the NN graph (activations) of the target model `model`. This model should be also stored should be initiated and stored in a .pt file <br />
 
 This step utilizes the activations extracted in the previous step, To Train a predefined model on the activations set use the CLI command with the following parameters <br />
 
 - Datase Name
 - Model Name
 - Attack
-(The Above arguments will just be used to locate the needed activations in the project folder)
+  (The Above arguments will just be used to locate the needed activations in the project folder)
 - Expected Number Of Nodes : this number represents the number of nodes to expect in the activations, this is a safe guard against activation extraction errors and will ignore the sampels that have more nodes that expected
 - Model Path : represents the path for the predefined .pt model (**note** : after training the model will be saved in the same file)
   The model will be trained across all samples in Ground_Truth , Adversarial and Begnign for a specific model/attack and for 30 epochs
