@@ -1,20 +1,10 @@
 # ProvML: Inference Provenance-Driven Characterization of Machine Learning in Adversarial Settings
 
-- ` Attribution.py`: The thrid step: is to perform **Attributions** on the trained `graph_model`. This file should include a fucntion that takes as input a `graph_model` and `data_name`, the model should be imported automaticcaly from `Models/[data_name]/[[graph_model_name]`. Example: `Models/MNIST/graph_MNIST.pth`
+## Overview, Dataset , Pretrained Models , Attacks:
 
-2- Our extensive experiments, including plots, compultations and test that we performed for emperical and structured characterization has be included in a jupyter notebook file `characterization.ipynb`. This file should list code chunks of all our experiments ans plots with description of each chunk of code.
+We describe the supported Datasets, Attacks and the pre-trained models provided in our code. <br />
 
-3- [Optional] A jupyter notebook that runs our code as library for in-depth functionalities
-
----
-
-# DOCS
-
-## Overview, Dataset , Pretrained Models , Attacks :
-
-ProvMl provides a set of dataset ,pretrained models and attacks in its implementation , Using the CLI command will limit the user to these models. Use Library if you need to extend to other dataset,attacks. <br />
-
-- **Datasets** : Cifar10 and Mnist are directly used throught keras. If Needed Download cuckoo and Ember dataset and put them in the folder `./data/`. By default ProvMl will look for them in that path<br />
+- **Datasets** : CIFAR10 and MNIST are directly used throught keras. To test ProvML on malware data, download Cuckoo-Traces and Ember datasets and add them in the folder `./data/`. By default ProvML will look for them in that path<br />
 - **Pretrained** Models : we offer pretrained models: mnist_1 , mnist_2 , mnist_3 , cifar10_1 ,cuckoo_1 and ember_1 <br />
   Models are availabe to donwload [here](https://drive.google.com/drive/folders/1a0kdq4waz8SXU9gThsUmKsR0YTSuaEWO?usp=share_link)
   model.txt file has the metadata of each model
@@ -75,3 +65,12 @@ This step utilizes the activations extracted in the previous step, To Train a pr
   Metrics : average number of active ndoes , activaions weight, nodes frequencies, always active nodes, Dispersation index, Entropy index.
 - ` gen_attributions.py`: this file explains how to transform generated activations to dataset and train an torch adversarial detection model. ` attributionUtils.py` holds different predefined architecture that cover all the dataset we research and produce satisfactory performance.
   ` Attributions :` in the same file we showcase the steps to generate the attributions of the models on a batch of input,
+  
+ --- 
+  
+  - ` Attribution.py`: The thrid step: is to perform **Attributions** on the trained `graph_model`. This file should include a fucntion that takes as input a `graph_model` and `data_name`, the model should be imported automaticcaly from `Models/[data_name]/[[graph_model_name]`. Example: `Models/MNIST/graph_MNIST.pth`
+
+2- Our extensive experiments, including plots, compultations and test that we performed for emperical and structured characterization has be included in a jupyter notebook file `characterization.ipynb`. This file should list code chunks of all our experiments ans plots with description of each chunk of code.
+
+3- [Optional] A jupyter notebook that runs our code as library for in-depth functionalities
+
