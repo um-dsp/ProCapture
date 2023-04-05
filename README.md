@@ -1,16 +1,14 @@
 # ProvML: Inference Provenance-Driven Characterization of Machine Learning in Adversarial Settings
 
-## Overview, Dataset , Pretrained Models , Attacks:
-
 We describe the supported Datasets, Attacks and the pre-trained models provided in our code. <br />
 
 - **Datasets** : CIFAR10 and MNIST are directly used throught keras. To test ProvML on malware data, download Cuckoo-Traces and Ember datasets and add them in the folder `./data/`. By default ProvML will look for them in that path<br />
-- **Pretrained** Models : we offer pretrained models: mnist_1 , mnist_2 , mnist_3 , cifar10_1 ,cuckoo_1 and ember_1 <br />
+- **Pretrained Models** : we offer pretrained models: mnist_1 , mnist_2 , mnist_3 , cifar10_1 ,cuckoo_1 and ember_1 <br />
   Models are availabe to donwload [here](https://drive.google.com/drive/folders/1a0kdq4waz8SXU9gThsUmKsR0YTSuaEWO?usp=share_link)
   model.txt file has the metadata of each model
-- **Attacks** : ProvMl supports the following attacks : <br />
+- **Attacks** : ProvML supports the following attacks : <br />
   Cifar10, Mnist => FGSM, PGD <br />
-  Cuckoo => Reverse first n bits attack (CKO) <br />
+  Cuckoo => Reverse first null n bits attack (CKO) <br />
   Ember => Developed personalized attack (EMB) <br />
 
 ## Activation Generation Process
