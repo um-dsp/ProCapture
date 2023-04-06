@@ -42,12 +42,9 @@ The activations generation will save to the folder a set of CSV | TXT files ,eac
 
 ` learn-graph.py`: The Second step: We train another model called `graph_model` that learns the NN graph (activations) of the target model `model`. This model should be also stored should be initiated and stored in a .pt file <br />
 
-This step utilizes the activations extracted in the previous step, To Train a predefined model on the activations set use the CLI command with the following parameters <br />
-
-- Datase Name
-- Model Name
-- Attack <br />
-  (The Above arguments will just be used to locate the needed activations in the project folder)
+This step utilizes the activations extracted in the previous step, To Train a predefined model on the activations set use the CLI command with the following parameters: Dataset Name, Model Name and Attack
+  (The Above arguments will just be used to locate the needed activations in the project folder).
+  The command also expects the following arguments: <br />
 - Expected Number Of Nodes : this number represents the number of nodes to expect in the activations, this is a safe guard against activation extraction errors and will ignore the sampels that have more nodes that expected
 - Model Path : represents the path for the predefined .pt model <br/>
   (**note** : after training the model will be saved in the same file)
