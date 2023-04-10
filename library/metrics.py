@@ -41,7 +41,7 @@ def  expD(begning_sample_act,adv_sample_act,ground_truth_act,p=None):
 
 
 
-def expE(begning_sample_act,adv_sample_act,ground_truth_act,p):
+def expE(begning_sample_act,adv_sample_act,ground_truth_act,p=None):
     #purpose of this experiment is to detemine the average weight of activations 
     # and comapre adversarial,begnign and training
     
