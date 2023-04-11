@@ -1,26 +1,14 @@
 # ProvML: Inference Provenance-Driven Characterization of Machine Learning in Adversarial Settings
 
-- ` Attribution.py`: The thrid step: is to perform **Attributions** on the trained `graph_model`. This file should include a fucntion that takes as input a `graph_model` and `data_name`, the model should be imported automaticcaly from `Models/[data_name]/[[graph_model_name]`. Example: `Models/MNIST/graph_MNIST.pth`
+We describe the supported Datasets, Attacks and the pre-trained models provided in our code. <br />
 
-2- Our extensive experiments, including plots, compultations and test that we performed for emperical and structured characterization has be included in a jupyter notebook file `characterization.ipynb`. This file should list code chunks of all our experiments ans plots with description of each chunk of code.
-
-3- [Optional] A jupyter notebook that runs our code as library for in-depth functionalities
-
----
-
-# DOCS
-
-## Overview, Dataset , Pretrained Models , Attacks :
-
-ProvMl provides a set of dataset ,pretrained models and attacks in its implementation , Using the CLI command will limit the user to these models. Use Library if you need to extend to other dataset,attacks. <br />
-
-- **Datasets** : Cifar10 and Mnist are directly used throught keras. If Needed Download cuckoo and Ember dataset and put them in the folder `./data/`. By default ProvMl will look for them in that path<br />
-- **Pretrained** Models : we offer pretrained models: mnist_1 , mnist_2 , mnist_3 , cifar10_1 ,cuckoo_1 and ember_1 <br />
+- **Datasets** : CIFAR10 and MNIST are directly used throught keras. To test ProvML on malware data, download Cuckoo-Traces and Ember datasets and add them in the folder `./data/`. By default ProvML will look for them in that path<br />
+- **Pretrained Models** : we offer pretrained models: mnist_1 , mnist_2 , mnist_3 , cifar10_1 ,cuckoo_1 and ember_1 <br />
   Models are availabe to donwload [here](https://drive.google.com/drive/folders/1a0kdq4waz8SXU9gThsUmKsR0YTSuaEWO?usp=share_link)
   model.txt file has the metadata of each model
-- **Attacks** : ProvMl supports the following attacks : <br />
+- **Attacks** : ProvML supports the following attacks : <br />
   Cifar10, Mnist => FGSM, PGD <br />
-  Cuckoo => Reverse first n bits attack (CKO) <br />
+  Cuckoo => Reverse first null n bits attack (CKO) <br />
   Ember => Developed personalized attack (EMB) <br />
 
 ## Activation Generation Process
@@ -54,12 +42,9 @@ The activations generation will save to the folder a set of CSV | TXT files ,eac
 
 ` learn-graph.py`: The Second step: We train another model called `graph_model` that learns the NN graph (activations) of the target model `model`. This model should be also stored should be initiated and stored in a .pt file <br />
 
-This step utilizes the activations extracted in the previous step, To Train a predefined model on the activations set use the CLI command with the following parameters <br />
-
-- Datase Name
-- Model Name
-- Attack <br />
-  (The Above arguments will just be used to locate the needed activations in the project folder)
+This step utilizes the activations extracted in the previous step, To Train a predefined model on the activations set use the CLI command with the following parameters: Dataset Name, Model Name and Attack
+  (The Above arguments will just be used to locate the needed activations in the project folder).
+  The command also expects the following arguments: <br />
 - Expected Number Of Nodes : this number represents the number of nodes to expect in the activations, this is a safe guard against activation extraction errors and will ignore the sampels that have more nodes that expected
 - Model Path : represents the path for the predefined .pt model <br/>
   (**note** : after training the model will be saved in the same file)
@@ -75,17 +60,12 @@ This step utilizes the activations extracted in the previous step, To Train a pr
   Metrics : average number of active ndoes , activaions weight, nodes frequencies, always active nodes, Dispersation index, Entropy index.
 - ` gen_attributions.py`: this file explains how to transform generated activations to dataset and train an torch adversarial detection model. ` attributionUtils.py` holds different predefined architecture that cover all the dataset we research and produce satisfactory performance.
   ` Attributions :` in the same file we showcase the steps to generate the attributions of the models on a batch of input,
+  
+ --- 
+  
+  - ` Attribution.py`: The thrid step: is to perform **Attributions** on the trained `graph_model`. This file should include a fucntion that takes as input a `graph_model` and `data_name`, the model should be imported automaticcaly from `Models/[data_name]/[[graph_model_name]`. Example: `Models/MNIST/graph_MNIST.pth`
 
-This software enables users to extract and store the hidden layer activations of a neural network that they select. Additionally, it offers a range of metrics to evaluate the differences between datasets, such as the average number of active nodes and frequency distances. Moreover, we offer a machine learning-based approach to compute the truth state of a prediction based on the inner logits of the neural network. Lastly, we provide a methodology for explainability techniques to gain further insights into the activations.
+2- Our extensive experiments, including plots, compultations and test that we performed for emperical and structured characterization has be included in a jupyter notebook file `characterization.ipynb`. This file should list code chunks of all our experiments ans plots with description of each chunk of code.
 
-Activations.py:
-This class represents the hidden layer activations for a specific dataset or attack, (a graph). It includes various functionalities that can be applied to the activations_set, such as computing the number of active nodes and dispersion index.
+3- [Optional] A jupyter notebook that runs our code as library for in-depth functionalities
 
-Accessor.py:
-This class serves as a crawler that allows for loading the activations from txt/csv files and parsing them to the Activations class. It implements various functionalities, such as getting elements by prediction, by label, or retrieving all elements.
-
-generate_activations.py:
-This function encapsulates the necessary functionalities to pass an input through a model, extract the hidden layer weights, and save them in a user-defined file. The user can import these functions to generate custom activations or trigger them through the terminal to create default activation samples.
-
-metrics.py:
-This file contains the code for each metric discussed in the paper. ExpA to ExpD , Each experiment requires three file paths that represent the adversarial, benign, and ground truth data. This function should only be used once the required activations have been extracted into a text file.
