@@ -205,3 +205,19 @@ def scotts_rule(data):
     bin_width = 3.5 * sigma / (n ** (1/3))
     num_bins = int(np.ceil((np.max(data) - np.min(data)) / bin_width))
     return num_bins
+
+
+def plotAcrossPredictions(gt,ben=None,adv=None,Pred_range=0): 
+    X = np.arange(Pred_range)
+ 
+    plt.bar(X - 0.2, gt, 0.2, label = 'GroundTruth',color="grey")
+    if(ben):
+        plt.bar(X , ben, 0.2, label = 'Benign',color="green")
+    if(gt) :
+        plt.bar(X + 0.2, adv, 0.2, label = 'Adversarial',color ="red")
+
+    plt.xticks(X)
+    plt.xlabel("Prediction")
+    plt.ylabel("Metric")
+    plt.legend()
+    plt.show()

@@ -319,6 +319,7 @@ class Activations :
 
         if (self.is_spoiled()): return 0
         array = self.flatten()
+
         nb_bins = scotts_rule(array)
         array = discretize(array,nb_bins)
 

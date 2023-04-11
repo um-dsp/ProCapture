@@ -78,7 +78,7 @@ def multiply_attributed_with_input(X,Y,model):
     
     for index,input in enumerate(X):
         label = Y[index]
-        prediction = predict_torch(model,input).item()
+        prediction = predict_torch(model,input,batch=False).item()
         # filter to only correct prediction
         if( prediction != label): continue
         attributes = get_attributes(input,model,prediction)           

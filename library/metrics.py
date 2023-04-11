@@ -34,14 +34,16 @@ def  expD(begning_sample_act,adv_sample_act,ground_truth_act,p=None):
         y.set_layer_range(1,float('+inf'))
         gt_nb.append(y.compute_nb_active_nodes(threshhold)) 
 
+
+    g = np.average(gt_nb)
+    b = np.average(avg_active_node_hits)
+    a=np.average(avg_active_node_miss)
     if(p): print(f'prediction {p}')
-    print('\n Avg of active nodes for prediction : %s Gt : %s   Begnign : %s  Adversarial : %s' %(p,np.average(gt_nb),
-    np.average(avg_active_node_hits),
-    np.average(avg_active_node_miss)))
+    print('\n Avg of active nodes   Begnign : %s  Adversarial : %s  Gt : %s ' %( b, a,g))
 
+    return b,a,g
 
-
-def expE(begning_sample_act,adv_sample_act,ground_truth_act,p):
+def expE(begning_sample_act,adv_sample_act,ground_truth_act,p=None):
     #purpose of this experiment is to detemine the average weight of activations 
     # and comapre adversarial,begnign and training
     
@@ -62,14 +64,15 @@ def expE(begning_sample_act,adv_sample_act,ground_truth_act,p):
     for x in ground_truth_act:
         #x.set_layer_range(l,l)
         sum_g += x.get_average_weight()
+    
+    b = sum_b/len(begning_sample_act)
+    a = sum_a/len(adv_sample_act)
+    g =  sum_g/len(ground_truth_act)
 
     if(p): print(f'prediction {p}')
-    print(' Average activation weights of Ben : %s  Adv : %s  GT : %s'%
-    (sum_b/len(begning_sample_act)
-    ,sum_a/len(adv_sample_act),
-    sum_g/len(ground_truth_act)))
+    print(' Average activation weights of   Ben : %s  Adv : %s GT : %s '%(b,a,g))
 
-    return
+    return b,a,g
 
 
 def expF(begning_sample_act,adv_sample_act,ground_truth_act,p=None):
@@ -142,7 +145,9 @@ def expF(begning_sample_act,adv_sample_act,ground_truth_act,p=None):
         for i in always_active_nodes_adv:
             if(i in always_active_nodes_gt):
                 counter_adv +=1
-        print(f'Prediction {p} ')
+  
+        if(p): print(f'prediction {p}')
+
         print('number of nodes always active benign : %s'%(len(always_active_nodes_b)))
         print(always_active_nodes_b)
         print('number of nodes always active Adv : %s'%(len(always_active_nodes_adv)))
@@ -150,7 +155,6 @@ def expF(begning_sample_act,adv_sample_act,ground_truth_act,p=None):
         print('number of nodes always active GT : %s'%(len(always_active_nodes_gt)))
         print(always_active_nodes_gt)
         
-        if(p): print(f'prediction {p}')
 
         print('Number of common nodes betwen Always_active_begnign and always_active_gt : %s'%(counter_b))
         print('Numver of common nodes betwen always_active_adv and always_active_gt : %s'% (counter_adv))
@@ -219,10 +223,12 @@ def expG( begning_sample_act,adv_sample_act,ground_truth_act,p=None):
 
     if(p): print(f'prediction {p}')
 
-    print('distance between Benign and Gt: %s' %(np.average(np.absolute(begnig_gt))))
-    print('distance between Adversarial and Gt: %s ' %(np.average(np.absolute(adv_gt))))
+    b_gt = np.average(np.absolute(begnig_gt))
+    a_gt = np.average(np.absolute(adv_gt))
+    print('distance between Benign and Gt: %s' %(b_gt))
+    print('distance between Adversarial and Gt: %s ' %(a_gt))
 
-    return 
+    return b_gt, a_gt
 
 
 def expH(begning_sample_act,adv_sample_act,ground_truth_act,p=None):
@@ -244,9 +250,9 @@ def expH(begning_sample_act,adv_sample_act,ground_truth_act,p=None):
 
     if(p): print(f'prediction {p}')
 
-    print(f'dispersation index  GT : {index_gt} Benign : {index_ben} Adv : {index_adv}')
+    print(f'dispersation index Benign : {index_ben} Adv : {index_adv} GT : {index_gt} ')
 
-
+    return index_ben,index_adv, index_gt 
 
    
 def expI(begning_sample_act,adv_sample_act,ground_truth_act,p=None):
@@ -267,20 +273,25 @@ def expI(begning_sample_act,adv_sample_act,ground_truth_act,p=None):
 
     #print('Prediction %s  layer  Dispersation index Gt : %s  Benign : %s  Adv : %s '%(index_gt,index_ben,index_adv))
     if(p): print(f'prediction {p}')
-    print(f'Entropy index  GT : {gt_entropy} Benign : {ben_entropy} Adv : {adv_entrpy}')
+    print(f'Entropy index   Benign : {ben_entropy} Adv : {adv_entrpy} GT : {gt_entropy}')
 
+    return ben_entropy,adv_entrpy,gt_entropy
    
 
 if __name__ == "__main__":
 
-    adversarial_sample = Accessor('./adversarial/ember/EMBER/ember_2')
-    begning_sample = Accessor('./begnign/ember/ember_2')
-    ground_truth = Accessor('./Ground_truth/ember/ember_2')
+    adversarial_sample = Accessor('./adversarial/mnist/FGSM/mnist_1')
+    begning_sample = Accessor('./begnign/mnist/mnist_1')
+    ground_truth = Accessor('./Ground_truth/mnist/mnist_1')
 
-        
+    begning_sample_act = begning_sample.get_all(collapse='avg',limit=1000)   
+    adv_sample_act = adversarial_sample.get_all(collapse='avg',limit=1000)
+    ground_truth_act = ground_truth.get_all(collapse='avg',limit=1000)
+    expI(begning_sample_act,adv_sample_act,ground_truth_act)
 
+
+    exit()
     for i in range(0,10):
-        i=1
         begning_sample_act = begning_sample.get_label_by_prediction(target_prediction= i,collapse='avg',limit=1000)   
         adv_sample_act = adversarial_sample.get_label_by_prediction(target_prediction = i,collapse='avg',limit=1000)
         ground_truth_act = ground_truth.get_label_by_prediction(target_prediction = i,collapse='avg',limit=1000)

@@ -6,15 +6,14 @@ import numpy as np
 import torch
 from library.train import train_adversrial_detection_model
 from library.attributionUtils import NeuralNetMnist_1
-import sys
 
 
 if __name__ == "__main__":
 
  
-    begning_accessor = Accessor('./begnign/test/')
-    adversarial_accessor= Accessor('./adversarial/test/')
-    ground_truth_accessor = Accessor('./Ground_truth/test/')
+    begning_accessor = Accessor('./Begnign/mnist/mnist_1')
+    adversarial_accessor= Accessor('./Adversarial/mnist/FGSM/mnist_1')
+    ground_truth_accessor = Accessor('./Ground_Truth/mnist/mnist_1')
     expected_nb_nodes = 420
 
     begning_sample_act = begning_accessor.get_all()
@@ -30,7 +29,7 @@ if __name__ == "__main__":
 
     X = X_adv + X_ben + X_gt
     Y= Y_adv + Y_ben + Y_gt
-    train_adversrial_detection_model(X,Y,NeuralNetMnist_1,'./advDetectionModels/test.pt')
+    train_adversrial_detection_model(X,Y,'./advDetectionModels/test.pt')
 
     model = torch.load('./advDetectionModels/test.pt')
 

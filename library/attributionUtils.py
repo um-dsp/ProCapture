@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np 
 from library.utils import dispersation_index
 from sklearn.model_selection import train_test_split
-
+import random
 def attribtuions_to_polarity(X_test,y_test,model,target_label):
     
     positive = []
@@ -401,17 +401,15 @@ class KNN(NN):
 
         return winner
 
-def box_plot(ben,ben_,adv,adv_):
-    #banign / dav in benign samples
-    ben,adv = get_nodes_weight_per_label(1)
-    #banign / dav in adversarail samples
-    adv_,ben_ = get_nodes_weight_per_label(0)
-    case0 = 0
+def box_plot(ben,ben_,adv,adv_,expected_nb_nodes):
+
     case1 = 0 
     case2 = 0
     case3 = 0
+    case4 = 0
     nb = 0 
-    x = []
+    x = {}
+    avg_diff= []
     while(nb <10):
         i = random.randint(1,expected_nb_nodes)
         all_ben = ben[i] + ben_[i]
@@ -425,10 +423,12 @@ def box_plot(ben,ben_,adv,adv_):
         max_ben= max(all_ben)
         min_adv =min(all_adv)
         max_adv= max(all_adv)
-        #x[ 'B' +str(i)] = all_ben
-        #x['A'+str(i)] = all_adv
+        b = 'B' +str(i)
+        a = 'A'+str(i)
+        x[b] = all_ben
+        x[a] = all_adv
         nb+=1
-        x.append(avg_adv - avg_ben)    
+        avg_diff.append(avg_adv - avg_ben)    
         if(max_ben <min_adv):
             case1 +=1
         elif(max_adv<min_ben):
@@ -439,18 +439,27 @@ def box_plot(ben,ben_,adv,adv_):
             case4+=1
 
     fig, ax = plt.subplots()
+    fig.suptitle('nodes activation weight under both benign and advesarial state [10 samples]')
+    plt.xlabel('Nodes/States')
+    plt.ylabel('Activations')
     box = ax.boxplot(x.values(),patch_artist=True)
     for i,v in enumerate(box["boxes"]):
         if(i%2 == 0 ): continue
         plt.setp(v, color="red")
-
         print(i)
     ax.set_xticklabels(x.keys())
+    plt.show()
 
+    plt.title('Average Difference (adv -ben)')
+    plt.xlabel('Nodes [10 Sampels]')
+    plt.ylabel('Avg(adv) -Avg(ben)')
+    plt.bar(np.arange(len(avg_diff)),avg_diff)
     plt.show()
 
 
-def get_nodes_weight_per_label(label,expected_nb_nodes,model):
+
+
+def get_nodes_weight_per_label(label,expected_nb_nodes,X,Y,model):
     negative_nodes = [[] for i in range(expected_nb_nodes)]
     positive_nodes = [[] for i in range(expected_nb_nodes)]
 
@@ -467,6 +476,7 @@ def get_avg_number_of_nodes_per_state(label,model,X,Y):
     neg = 0
     counter = 0
     for index,input in enumerate(X):
+        print(Y[index][1])
         if(Y[index][1] != label) : continue
         attributes = get_attributes(input,model,label)
         for i,x in enumerate(attributes):
@@ -478,10 +488,21 @@ def get_avg_number_of_nodes_per_state(label,model,X,Y):
 
     
 
-def predict_torch(model,x):
+def predict_torch(model,x,batch =False):
+    if(batch): return predict_torch_batch(model,x)
     x = torch.unsqueeze(x,dim=0)
     prediction = model(x)
     return torch.argmax(prediction)
+
+
+def predict_torch_batch(model,x):
+    pred=  []
+    for i in x :
+        print(i)
+        prediction = model(i)
+        pred.append(torch.argmax(prediction))
+    return pred
+
 
 def cluster(model,input,X,Y):
     clusteringX = []
@@ -566,6 +587,19 @@ def scatter(adv,ben):
     axis[1, 1].title.set_text(' Dispersation indexes')
 
     plt.show()
+
+def representative_set(inp):
+    # Given a set of n activations , every activaiton is a flattened array of weight of x node,
+    #this function computes the average activation of every node and returns a flattened array with thos 
+    #return array is of length x computed over an average of length n
+    aux = []
+    for i in inp:
+        for index,j in enumerate(i) :
+            aux[index] += j / len(inp)
+
+    return aux
+
+
 
 def get_nodes_impact_for_one_label(label):
     positive, negative = attribtuions_to_polarity(X_test,y_test,model,label)
