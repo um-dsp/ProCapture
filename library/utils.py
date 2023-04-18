@@ -193,7 +193,7 @@ def scotts_rule(data):
     return num_bins
 
 
-def plotAcrossPredictions(gt, metric, ben=None,adv=None,Pred_range=10):#,data='mnist'): 
+def plotAcrossPredictions(gt, metric, ben=None,adv=None,Pred_range=10,data='mnist'):#,data='mnist'): 
     X = np.arange(Pred_range)
  
     
@@ -215,10 +215,13 @@ def plotAcrossPredictions(gt, metric, ben=None,adv=None,Pred_range=10):#,data='m
     plt.xlabel("Prediction")
     plt.ylabel(metric)
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    if not (os.path.exists('./Results/'+data+'/')):
+        os.makedirs('./Results/'+data+'/')
+    plt.savefig('./Results/'+data+'/'+metric+'.pdf')
     plt.show()
     
-def plotAcrossNodes(gt, metric, ben,adv,Node_range=10):#,data='mnist'): 
-    plt.figure(figsize=(30,10))
+def plotAcrossNodes(gt, metric, ben,adv,Node_range=10,data='mnist',label=0):#,data='mnist'): 
+    plt.figure(figsize=(50,20))
     X = np.arange(Node_range)
     mask=[]
     
@@ -253,10 +256,13 @@ def plotAcrossNodes(gt, metric, ben,adv,Node_range=10):#,data='mnist'):
     plt.xlabel("Nodes")
     plt.ylabel(metric)
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    if not (os.path.exists('./Results/'+data+'/'+metric)):
+        os.makedirs('./Results/'+data+'/'+metric)
+    plt.savefig('./Results/'+data+'/'+metric+'/pred='+str(label)+'.pdf')
     plt.show()
     
-def plotDiff(FGSM_diff,PGD_diff,adv_diff,Node_range=10):#,data='mnist'): 
-    plt.figure(figsize=(30,10))
+def plotDiff(FGSM_diff,PGD_diff,adv_diff,Node_range=10,data='mnist',label=0):#,data='mnist'): 
+    plt.figure(figsize=(50,20))
     X = np.arange(Node_range)
     
     
@@ -270,7 +276,10 @@ def plotDiff(FGSM_diff,PGD_diff,adv_diff,Node_range=10):#,data='mnist'):
         
 
     plt.xticks(X,rotation = 90,fontsize=5)
-    plt.xlabel("Nodes")
-    plt.ylabel('Average Activation Difference')
+    plt.xlabel("Nodes",fontsize=10)
+    plt.ylabel('Average Activation Difference',fontsize=10)
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    if not (os.path.exists('./Results/'+data+'/Diffirence_in_activations/')):
+        os.makedirs('./Results/'+data+'/Diffirence_in_activations/')
+    plt.savefig('./Results/'+data+'/Diffirence_in_activations/pred='+str(label)+'.pdf')
     plt.show()

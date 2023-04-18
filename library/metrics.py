@@ -1,12 +1,11 @@
 import numpy as np
-from library.Accessor import Accessor
 
 
 
 def avg_act_diff(act1,act2,nb_sample=1000):
     '''This function computes the difference between activation weights of two sets 
     of activations across all samples 'nb_samples'''
-    
+    nb_sample=np.min([len(act1),len(act2),nb_sample])
     for i in range(nb_sample):
         if i==0:
             diff=abs(np.subtract(np.array(act1[i].flatten()),np.array(act2[i].flatten())))
@@ -22,6 +21,7 @@ def compare(act1,act2,nb_sample=1000):
     
     avg_sim=0
     nb_nodes=act1[0].get_nb_nodes()
+    nb_sample=np.min([len(act1),len(act2),nb_sample])
     for i in range(nb_sample):
         sim=0
         
