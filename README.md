@@ -35,7 +35,7 @@ We describe the supported Datasets, Attacks and the pre-trained models provided 
  Use `Empirical_Characterization.ipynb` to compute the proposed graph-related metrics for empirical characterization.
 
 ---
-## Structured Characterization
+## Structured Characterization [THIS PART IS STILL NOT READY]
 
 ### Graph Feature learning model: training a model `graph_model` on the extracted graph data
 
