@@ -25,7 +25,7 @@ We describe the supported Datasets, Attacks and the pre-trained models provided 
   this parameter is optional , if mentioned, ProvMl will apply the attack on the dataset.
   (**note** : if attack is None and the folder input is set to adversarial it will throw an Error) <br />
   **Sample Commands :** <br />
-  > `python gactivations_extractor.py mnist mnist_1 Adversarial FGSM` <br /> `python activations_extractor.py mnist mnist_1 Ground_Truth  ` <br />
+  > `python activations_extractor.py mnist mnist_1 Adversarial FGSM` <br /> `python activations_extractor.py mnist mnist_1 Ground_Truth  ` <br />
   
   The model activations of Ground truth, Test benign and adversarial data are stored in each respective folder. Check readme there. 
 
