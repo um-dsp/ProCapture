@@ -11,7 +11,7 @@ We describe the supported Datasets, Attacks and the pre-trained models provided 
   Cuckoo => Reverse first null n bits attack (CKO) <br />
   Ember => Developed personalized attack (EMB) <br />
 
-## Activation Generation Process
+## Graph Extraction: Extraction Activations of a Neural Network model
 
 - ` gen_activations.py`: The first step on our characterization approach is to extract activations of the target model `model`. Import data and your pretrained model and utilzie the functions in library/generate_activations.py to generate and save the activations
   To Use activaiton generation file use the CLI with the following parameters :
