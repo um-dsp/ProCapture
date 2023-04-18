@@ -51,6 +51,17 @@ class Activations :
     #if each node has more than 1 weight( cnn's nodes produce an n*n matrix) it is saved in a differetn format
     def save_cnn(self,activations_list,folder_name):
         layer = 0
+        if os.path.exists(folder_name) == False:
+            try:
+                os.mkdir(folder_name)
+            except FileNotFoundError:
+                sub_dir = os.path.join(*folder_name.split('/')[:-1])
+                print('creating ',sub_dir)
+                os.mkdir(sub_dir)
+                os.mkdir(folder_name)
+                    
+                
+            
         filename = str(self.label) + "_"+ str(self.prediction) +"-"+str(self.index)+'.txt'
         with open(folder_name+'/'+filename, 'a') as out:
             for i in activations_list :
@@ -149,7 +160,7 @@ class Activations :
             layer_count+=1
             for j,y in enumerate(x):
                 if(type(y) == type([])): continue
-                if y > threshhold:
+                if abs(y) > threshhold:
                     nb +=1
         return nb
     #get total number of node (considering clipping)
@@ -195,7 +206,7 @@ class Activations :
             res = res / len(self.activations_set)
         return res 
     
-    #
+    
     def get_nb_active_nodes (self,threshhold):
         count = 0
         for i,x in enumerate(self.activations_set):
@@ -204,7 +215,7 @@ class Activations :
             for j in x :
                 if(j>threshhold):
                     count+=1
-        return count 
+        return count
 
     
     #get dipersation index of this activations
@@ -212,7 +223,7 @@ class Activations :
         if(self.is_clipped):
             a = self.activations_set[self.start_layer:self.end_layer+1]
             a = [item for sublist in a for item in sublist]
-        else :
+        else:
              a = self.flatten()
         r = []
         for i in a : 
@@ -319,7 +330,6 @@ class Activations :
 
         if (self.is_spoiled()): return 0
         array = self.flatten()
-
         nb_bins = scotts_rule(array)
         array = discretize(array,nb_bins)
 

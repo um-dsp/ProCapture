@@ -1,10 +1,4 @@
-from ast import Raise
-from pkgutil import get_data
-from tokenize import PlainToken
 import numpy as np 
-import tensorflow as tf
-
-from keras import backend as K
 from keras.datasets import mnist
 from keras.datasets import cifar10
 import os
@@ -13,13 +7,14 @@ from keras.models import load_model
 import matplotlib.pyplot as plt
 from cleverhans.tf2.attacks.projected_gradient_descent import (projected_gradient_descent,)
 from cleverhans.tf2.attacks.carlini_wagner_l2 import carlini_wagner_l2
-from cleverhans.tf2.attacks.spsa import spsa
+#from cleverhans.tf2.attacks.spsa import spsa
 from cleverhans.tf2.attacks.fast_gradient_method import fast_gradient_method
 import pandas as pd
 from sklearn import model_selection
-from pandas import get_dummies
+#from pandas import get_dummies
 import ember
 import torch
+
 
 #device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -87,8 +82,8 @@ def get_dataset(dataset_name, categorical=False):
     if(dataset_name == 'ember'):
         X_train, Y_train, X_test, Y_test = ember.read_vectorized_features("./data/ember2018/")
     
-    if categorical :
-        if(dataset_name == 'cuckoo') :
+    if categorical:
+        if(dataset_name == 'cuckoo'):
             Y_train = pd.get_dummies(Y_train)
             Y_test = pd.get_dummies(Y_test)
         else : 
@@ -100,6 +95,7 @@ def get_dataset(dataset_name, categorical=False):
     
   
 def reverse_bit_attack(x,Nb):
+    
     '''Generating adversarial samples by randomly flipping 
     Nb bits from 0 to 1
     For cuckoo dataset
@@ -114,7 +110,6 @@ def reverse_bit_attack(x,Nb):
         if N_flipped == Nb:
             break
   
-
     return X_test_crafted 
 
 
@@ -151,15 +146,6 @@ def get_folder_name(attack,dataset):
         os.mkdir(folder)
     
     return folder
-
-
-# return the activations of each mlayer of the mdel  
-def get_layers_activations(model,input):
-    inp = model.input                                           
-    outputs = [layer.output for layer in model.layers]          
-    functors = [K.function([inp], [out]) for out in outputs]  
-    layer_outs = [func([input]) for func in functors]
-    return layer_outs
 
 def compute_accuracy_tf(model,X_dataset,Y_dataset):
     correct = 0
@@ -207,17 +193,84 @@ def scotts_rule(data):
     return num_bins
 
 
-def plotAcrossPredictions(gt,ben=None,adv=None,Pred_range=0): 
+def plotAcrossPredictions(gt, metric, ben=None,adv=None,Pred_range=10):#,data='mnist'): 
     X = np.arange(Pred_range)
  
-    plt.bar(X - 0.2, gt, 0.2, label = 'GroundTruth',color="grey")
-    if(ben):
-        plt.bar(X , ben, 0.2, label = 'Benign',color="green")
-    if(gt) :
-        plt.bar(X + 0.2, adv, 0.2, label = 'Adversarial',color ="red")
+    
+    if(adv) :
+        if len(adv)==2:
+            plt.bar(X - 0.2, adv[0], 0.2, label = 'FGSM',color ="red")
+            plt.bar(X , adv[1], 0.2, label = 'PGD',color ="orange")
+            
+            plt.bar(X+ 0.2 , gt, 0.2, label = 'GroundTruth',color="grey")
+            if(ben):
+                plt.bar(X+0.4 , ben, 0.2, label = 'Benign',color="green")
+        else:
+            plt.bar(X - 0.2, adv[0], 0.2, label = 'adv',color ="red")
+            plt.bar(X - 0.2, gt, 0.2, label = 'GroundTruth',color="grey")
+            if(ben):
+                plt.bar(X , ben, 0.2, label = 'Benign',color="green")
 
     plt.xticks(X)
     plt.xlabel("Prediction")
-    plt.ylabel("Metric")
-    plt.legend()
+    plt.ylabel(metric)
+    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    plt.show()
+    
+def plotAcrossNodes(gt, metric, ben,adv,Node_range=10):#,data='mnist'): 
+    plt.figure(figsize=(30,10))
+    X = np.arange(Node_range)
+    mask=[]
+    
+    for i in range(Node_range):
+        if gt[i]<0.6 or ben[i]<0.6 or adv[0][i]<0.6 or adv[1][i]<0.6:
+            mask.append(False)
+        else:
+            mask.append(True)
+            
+    X=X[mask]
+    gt=gt[mask]
+    adv[0]=adv[0][mask]
+    adv[1]=adv[1][mask]
+    ben=ben[mask]        
+    
+    print(len(X))
+    
+    if len(adv)==2:
+        plt.bar(X - 0.1, abs(adv[0] - gt) , 0.2, label = 'FGSM - GT',color ="red")
+        plt.bar(X , abs(adv[1] - gt), 0.2 , label = 'PGD - GT',color ="orange")
+        
+        #plt.bar(X+ 0.2 , gt, 0.2, label = 'GroundTruth',color="grey")
+        
+        plt.bar(X+0.1 , ben, 0.2, label = 'Benign- GT',color="green")
+    else:
+        plt.bar(X - 0.1, abs(adv-gt), 0.2, label = 'adv - GT',color ="red")
+        #plt.bar(X - 0.2, gt, 0.2, label = 'GroundTruth',color="grey")
+        
+        plt.bar(X , abs(ben-gt), 0.2, label = 'Benign - GT',color="green")
+
+    plt.xticks(X,rotation = 90,fontsize=5)
+    plt.xlabel("Nodes")
+    plt.ylabel(metric)
+    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    plt.show()
+    
+def plotDiff(FGSM_diff,PGD_diff,adv_diff,Node_range=10):#,data='mnist'): 
+    plt.figure(figsize=(30,10))
+    X = np.arange(Node_range)
+    
+    
+    
+    plt.bar(X - 0.1, FGSM_diff , 0.2, label = 'FGSM - Ben',color ="red")
+    plt.bar(X , PGD_diff, 0.2 , label = 'PGD - Ben',color ="orange")
+    
+    #plt.bar(X+ 0.2 , gt, 0.2, label = 'GroundTruth',color="grey")
+    
+    plt.bar(X+0.1 , adv_diff, 0.2, label = 'FGSM- PGD',color="blue")
+        
+
+    plt.xticks(X,rotation = 90,fontsize=5)
+    plt.xlabel("Nodes")
+    plt.ylabel('Average Activation Difference')
+    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     plt.show()

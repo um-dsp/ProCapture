@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np 
 from library.utils import dispersation_index
 from sklearn.model_selection import train_test_split
-import random
+
 def attribtuions_to_polarity(X_test,y_test,model,target_label):
     
     positive = []
@@ -45,222 +45,7 @@ def get_attributes (sample,model,label):
         return a
 
 
-class NeuralNetMnist_1(nn.Module):
-    def __init__(self):
 
-        super(NeuralNetMnist_1, self).__init__()
-        self.conv1 = nn.Conv1d( 1,64,kernel_size =4)
-        self.conv2 = nn.Conv1d( 64,64,kernel_size =4)
-        self.conv3= nn.Conv1d(64,1,kernel_size =4)
-
-        self.mp = nn.MaxPool1d(kernel_size=2)
-        self.drop = nn.Dropout(0.4)
-        self.flat = nn.Flatten()
-        self.fc1 = nn.Linear(205 , 2)
-        self.fc2 = nn.Linear(2, 2)
-
-    def forward(self,x):
-        x=self.conv1(x)
-        x=F.relu(x)
-        x=self.conv2(x)
-        x=F.relu(x) 
-        x=self.conv3(x)
-        x=F.relu(x) 
-        x= self.mp(x)
-        x = self.drop(x)
-        x = self.flat(x)
-        x = self.fc1(x)
-        x = F.relu(x)
-        x = self.fc2(x)
-        output = F.log_softmax(x, dim=1)
-        
-        return output
-
-class NeuralNetEmber(nn.Module):
-    def __init__(self):
-
-        super(NeuralNetMnist_1, self).__init__()
-        self.conv1 = nn.Conv1d( 1,64,kernel_size =4)
-        self.conv2 = nn.Conv1d( 64,64,kernel_size =4)
-        self.conv3= nn.Conv1d(64,1,kernel_size =4)
-
-        self.mp = nn.MaxPool1d(kernel_size=2)
-        self.drop = nn.Dropout(0.4)
-        self.flat = nn.Flatten()
-        self.fc1 = nn.Linear(205 , 2)
-        self.fc2 = nn.Linear(2, 2)
-
-    def forward(self,x):
-        x=self.conv1(x)
-        x=F.relu(x)
-        x=self.conv2(x)
-        x=F.relu(x) 
-        x=self.conv3(x)
-        x=F.relu(x) 
-        x= self.mp(x)
-        x = self.drop(x)
-        x = self.flat(x)
-        x = self.fc1(x)
-        x = F.relu(x)
-        x = self.fc2(x)
-        output = F.log_softmax(x, dim=1)
-        
-        return output 
-
-class NeuralNetMnist_2(nn.Module):
-    def __init__(self):
-
-        super(NeuralNetMnist_2, self).__init__()
-        self.conv1 = nn.Conv1d( 1,64,kernel_size =4)
-        self.conv2= nn.Conv1d(64,32,kernel_size =4)
-        self.conv3= nn.Conv1d(32,2,kernel_size =3)
-
-        self.mp = nn.MaxPool1d(kernel_size=2)
-        self.drop = nn.Dropout(0.4)
-        self.flat = nn.Flatten()
-        self.fc1 = nn.Linear(193 , 2)
-        self.fc2 = nn.Linear(2, 2)
-
-    def forward(self,x):
-        x=self.conv1(x)
-        x=F.relu(x)
-        x=self.conv2(x)
-        x=F.relu(x) 
-        x=self.conv3(x)
-        x=F.relu(x)
-        x= self.mp(x)
-        x = self.drop(x)
-        x = self.flat(x)
-        x = self.fc1(x)
-        x = F.relu(x)
-        x = self.fc2(x)
-        output = F.log_softmax(x, dim=1)
-        
-        return output
-
-        
-class NeuralNetEmber(nn.Module):
-    def __init__(self):
-
-        super(NeuralNetEmber, self).__init__()
-        self.conv1 = nn.Conv1d( 1,64,kernel_size =4)
-        self.conv2 = nn.Conv1d( 64,1,kernel_size =4)
-
-        self.mp = nn.MaxPool1d(kernel_size=2)
-        self.drop = nn.Dropout(0.4)
-        self.flat = nn.Flatten()
-        self.fc1 = nn.Linear(19197 , 2)
-        self.fc2 = nn.Linear(2, 2)
-
-    def forward(self,x):
-        x=self.conv1(x)
-        x=F.relu(x)
-        x=self.conv2(x)
-        x=F.relu(x) 
-
-        x= self.mp(x)
-        x = self.drop(x)
-        x = self.flat(x)
-        x = self.fc1(x)
-        x = F.relu(x)
-        x = self.fc2(x)
-        output = F.log_softmax(x, dim=1)
-        return output
-
-class NeuralNetCuckoo_1(nn.Module):
-    def __init__(self):
-
-        super(NeuralNetCuckoo_1, self).__init__()
-        self.conv1 = nn.Conv1d( 1,64,kernel_size =4)
-        self.conv2 = nn.Conv1d( 64,64,kernel_size =4)
-        self.conv3= nn.Conv1d(64,1,kernel_size =4)
-
-        self.mp = nn.MaxPool1d(kernel_size=2)
-        self.drop = nn.Dropout(0.4)
-        self.flat = nn.Flatten()
-        self.fc1 = nn.Linear(27 , 2)
-        self.fc2 = nn.Linear(2, 2)
-
-    def forward(self,x):
-        x=self.conv1(x)
-        x=F.relu(x)
-        x=self.conv2(x)
-        x=F.relu(x) 
-        x=self.conv3(x)
-        x=F.relu(x) 
-        x= self.mp(x)
-        x = self.drop(x)
-        x = self.flat(x)
-        x = self.fc1(x)
-        x = F.relu(x)
-        x = self.fc2(x)
-        output = F.log_softmax(x, dim=1)
-        
-        return output
-
-class NeuralNetMnist_3(nn.Module):
-    def __init__(self):
-
-        super(NeuralNetMnist_3, self).__init__()
-        self.conv1 = nn.Conv1d( 1,64,kernel_size =4)
-        self.conv2 = nn.Conv1d( 64,64,kernel_size =4)
-        self.conv3= nn.Conv1d(64,1,kernel_size =4)
-
-        self.mp = nn.MaxPool1d(kernel_size=2)
-        self.drop = nn.Dropout(0.4)
-        self.flat = nn.Flatten()
-        self.fc1 = nn.Linear(64 , 2)
-        self.fc2 = nn.Linear(2, 2)
-
-    def forward(self,x):
-        x=self.conv1(x)
-        x=F.relu(x)
-        x=self.conv2(x)
-        x=F.relu(x) 
-        x=self.conv3(x)
-        x=F.relu(x) 
-        x= self.mp(x)
-        x = self.drop(x)
-        x = self.flat(x)
-        x = self.fc1(x)
-        x = F.relu(x)
-        x = self.fc2(x)
-        output = F.log_softmax(x, dim=1)
-        
-        return output
-
-
-
-class NeuralNetCifar_10(nn.Module):
-    def __init__(self):
-
-        super(NeuralNetCifar_10, self).__init__()
-        self.conv1 = nn.Conv1d( 1,64,kernel_size =4)
-        self.conv2 = nn.Conv1d( 64,64,kernel_size =4)
-        self.conv3= nn.Conv1d(64,1,kernel_size =4)
-
-        self.mp = nn.MaxPool1d(kernel_size=2)
-        self.drop = nn.Dropout(0.4)
-        self.flat = nn.Flatten()
-        self.fc1 = nn.Linear(1952 , 2)
-        self.fc2 = nn.Linear(2, 2)
-
-    def forward(self,x):
-        x=self.conv1(x)
-        x=F.relu(x)
-        x=self.conv2(x)
-        x=F.relu(x) 
-        x=self.conv3(x)
-        x=F.relu(x) 
-        x= self.mp(x)
-        x = self.drop(x)
-        x = self.flat(x)
-        x = self.fc1(x)
-        x = F.relu(x)
-        x = self.fc2(x)
-        output = F.log_softmax(x, dim=1)
-        
-        return output
     
 def get_categoriztion_mapping(X,Y):
     X = torch.tensor(X)
@@ -288,46 +73,6 @@ def adversarial_detection_set(act,label,expected_nb_nodes):
     print(f'[GRAPH LEARN] [SET GENERATION] Ignored {outlier_counter} Samples')
 
     return X,Y
- 
-
-
-def train_Detection_Model ():
-    Y = to_categorical(Y)
-    model = NeuralNetCifar_10()
-    optimizer = optim.Adam(model.parameters())
-    criterion = nn.CrossEntropyLoss()
-    accuracy = 0
-    #while(accuracy <80):
-    X_train, X_test,y_train, y_test = train_test_split(X,Y ,random_state=104, test_size=0.25, shuffle=True)
-    print(f'X_test len {len(X_test)}')
-    print(f'Y_test len {len(y_test)}')
-
-    accuracy = 1
-        #Train Model
-    while(accuracy < 95):
-        #Load in the data in batches using the train_loader object
-        correct =0
-        for x, y in  zip(X_train,y_train):  
-
-            y= torch.tensor(y)
-            x = x[None, :]
-            # Forward pass
-            outputs = model(x)
-            outputs = torch.squeeze(outputs)
-
-            #print(torch.argmax(outputs),torch.argmax(y))
-
-            loss = criterion(outputs, y)
-            correct += 1 if (torch.argmax(outputs) == torch.argmax(y)) else 0 
-            # Backward and optimize
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
-        print(f'accuracy {correct/len(X_train) *100}')
-        accuracy = correct/len(X_train) *100
-
-    torch.save(model, './advDetectionModels/torch_Cifar10_2.pt')
-    #exit()
 
 
 def randomize_tensor(tensor):
@@ -401,15 +146,17 @@ class KNN(NN):
 
         return winner
 
-def box_plot(ben,ben_,adv,adv_,expected_nb_nodes):
-
+def box_plot(ben,ben_,adv,adv_):
+    #banign / dav in benign samples
+    ben,adv = get_nodes_weight_per_label(1)
+    #banign / dav in adversarail samples
+    adv_,ben_ = get_nodes_weight_per_label(0)
+    case0 = 0
     case1 = 0 
     case2 = 0
     case3 = 0
-    case4 = 0
     nb = 0 
-    x = {}
-    avg_diff= []
+    x = []
     while(nb <10):
         i = random.randint(1,expected_nb_nodes)
         all_ben = ben[i] + ben_[i]
@@ -423,12 +170,10 @@ def box_plot(ben,ben_,adv,adv_,expected_nb_nodes):
         max_ben= max(all_ben)
         min_adv =min(all_adv)
         max_adv= max(all_adv)
-        b = 'B' +str(i)
-        a = 'A'+str(i)
-        x[b] = all_ben
-        x[a] = all_adv
+        #x[ 'B' +str(i)] = all_ben
+        #x['A'+str(i)] = all_adv
         nb+=1
-        avg_diff.append(avg_adv - avg_ben)    
+        x.append(avg_adv - avg_ben)    
         if(max_ben <min_adv):
             case1 +=1
         elif(max_adv<min_ben):
@@ -439,27 +184,18 @@ def box_plot(ben,ben_,adv,adv_,expected_nb_nodes):
             case4+=1
 
     fig, ax = plt.subplots()
-    fig.suptitle('nodes activation weight under both benign and advesarial state [10 samples]')
-    plt.xlabel('Nodes/States')
-    plt.ylabel('Activations')
     box = ax.boxplot(x.values(),patch_artist=True)
     for i,v in enumerate(box["boxes"]):
         if(i%2 == 0 ): continue
         plt.setp(v, color="red")
+
         print(i)
     ax.set_xticklabels(x.keys())
-    plt.show()
 
-    plt.title('Average Difference (adv -ben)')
-    plt.xlabel('Nodes [10 Sampels]')
-    plt.ylabel('Avg(adv) -Avg(ben)')
-    plt.bar(np.arange(len(avg_diff)),avg_diff)
     plt.show()
 
 
-
-
-def get_nodes_weight_per_label(label,expected_nb_nodes,X,Y,model):
+def get_nodes_weight_per_label(label,expected_nb_nodes,model):
     negative_nodes = [[] for i in range(expected_nb_nodes)]
     positive_nodes = [[] for i in range(expected_nb_nodes)]
 
@@ -476,7 +212,6 @@ def get_avg_number_of_nodes_per_state(label,model,X,Y):
     neg = 0
     counter = 0
     for index,input in enumerate(X):
-        print(Y[index][1])
         if(Y[index][1] != label) : continue
         attributes = get_attributes(input,model,label)
         for i,x in enumerate(attributes):
@@ -488,21 +223,10 @@ def get_avg_number_of_nodes_per_state(label,model,X,Y):
 
     
 
-def predict_torch(model,x,batch =False):
-    if(batch): return predict_torch_batch(model,x)
+def predict_torch(model,x):
     x = torch.unsqueeze(x,dim=0)
     prediction = model(x)
     return torch.argmax(prediction)
-
-
-def predict_torch_batch(model,x):
-    pred=  []
-    for i in x :
-        print(i)
-        prediction = model(i)
-        pred.append(torch.argmax(prediction))
-    return pred
-
 
 def cluster(model,input,X,Y):
     clusteringX = []
@@ -587,19 +311,6 @@ def scatter(adv,ben):
     axis[1, 1].title.set_text(' Dispersation indexes')
 
     plt.show()
-
-def representative_set(inp):
-    # Given a set of n activations , every activaiton is a flattened array of weight of x node,
-    #this function computes the average activation of every node and returns a flattened array with thos 
-    #return array is of length x computed over an average of length n
-    aux = []
-    for i in inp:
-        for index,j in enumerate(i) :
-            aux[index] += j / len(inp)
-
-    return aux
-
-
 
 def get_nodes_impact_for_one_label(label):
     positive, negative = attribtuions_to_polarity(X_test,y_test,model,label)
