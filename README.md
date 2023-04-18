@@ -2,7 +2,7 @@
 
 We describe the supported Datasets, Attacks and the pre-trained models provided in our code. <br />
 
-- **Datasets** : CIFAR10 and MNIST are directly used throught keras. To test ProvML on malware data, download Cuckoo-Traces and Ember datasets and add them in the folder `./data/`. By default ProvML will look for them in that path<br />
+- **Datasets** : CIFAR10 and MNIST are autimatically loaded throught keras. To test ProvML on malware data, download Cuckoo-Traces and Ember datasets and add them in the folder `./data/`. By default ProvML will look for them in that path<br />
 - **Pretrained Models** : we offer pretrained models: mnist_1 , mnist_2 , mnist_3 , cifar10_1 ,cuckoo_1 and ember_1 <br />
   Models are availabe to donwload [here](https://drive.google.com/drive/folders/1a0kdq4waz8SXU9gThsUmKsR0YTSuaEWO?usp=share_link)
   model.txt file has the metadata of each model
