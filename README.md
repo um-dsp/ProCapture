@@ -17,7 +17,7 @@ We describe the supported Datasets, Attacks and the pre-trained models provided 
 
 - **Dataset Name**: cifar10 | mnist | cuckoo |ember <br />
 - **Pre-Trained Model Name** : cifar10_1 |cuckoo_1 | Ember_2 | mnist_1 | mnist_2 | mnist_3 <br />
-- **Folder** : Ground_Truth | Benign | Adversarial <br />
+- **Folder** : Ground_Truth | Benign | Adversarial (It is required to use these exact folder names) <br />
   this parameter sets what folder will the generated activations be saved, the default file path is
   `folder/dataset_name/model_name/<attack>/`.
   (**note** : Make Sure to create the folder with the above path before running the generator)
