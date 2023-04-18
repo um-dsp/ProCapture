@@ -13,8 +13,7 @@ We describe the supported Datasets, Attacks and the pre-trained models provided 
 
 ## Graph Extraction: Extraction Activations of a Neural Network model
 
-- ` gen_activations.py`: The first step on our characterization approach is to extract activations of the target model `model`. Import data and your pretrained model and utilzie the functions in library/generate_activations.py to generate and save the activations
-  To Use activaiton generation file use the CLI with the following parameters :
+- ` activations_extractor.py`: The first step for our characterization approach is to extract activations of the target model `model`. It takes the following parameters :
 
 - **Dataset Name**: cifar10 | mnist | cuckoo |ember <br />
 - **Pre-Trained Model Name** : cifar10_1 |cuckoo_1 | Ember_2 | mnist_1 | mnist_2 | mnist_3 <br />
@@ -26,17 +25,9 @@ We describe the supported Datasets, Attacks and the pre-trained models provided 
   this parameter is optional , if mentioned, ProvMl will apply the attack on the dataset.
   (**note** : if attack is None and the folder input is set to adversarial it will throw an Error) <br />
   **Sample Commands :** <br />
-  > `py gen_activations.py mnist mnist_1  Adversarial FGSM` <br /> `py gen_activations.py mnist mnist_1 Ground_Truth  ` <br />
+  > `python gactivations_extractor.py mnist mnist_1 Adversarial FGSM` <br /> `python activations_extractor.py mnist mnist_1 Ground_Truth  ` <br />
 
-#### Activation File Format :
 
-The activations generation will save to the folder a set of CSV | TXT files ,each file represents the activations of a individual input throught the set model and using the attack if mentioned :
-
-- **File Name** : {label}-{prediction}\_{id in dataset} .txt |.csv
-- **File Content** : .txt files are used for Convolutional Neural network wher each node acitvaiton is represented by an ndarray
-  .csv files are used fro feedforward network where the ouput of The node is a float
-- `Validator.py`: offers a st of function to run verifications on the activations folder. such as compute_accuracy
-- `Accessor.py` : offers a set of functionalities that imports and parses the activations files into an array of activations Object. This Class also offer many parameters to allow acces using label , prediction or get all activations ..
 
 ## Adversarial Detection Model Training
 
