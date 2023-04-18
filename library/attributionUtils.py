@@ -1,7 +1,7 @@
 import torch
 from captum.attr import IntegratedGradients
 import torch.nn as nn
-import torch.nn.functional as F
+import random
 from keras.utils import to_categorical
 import matplotlib.pyplot as plt
 import numpy as np 
@@ -146,15 +146,16 @@ class KNN(NN):
 
         return winner
 
-def box_plot(ben,ben_,adv,adv_):
+def box_plot(ben,ben_,adv,adv_,expected_nb_nodes):
     #banign / dav in benign samples
     ben,adv = get_nodes_weight_per_label(1)
     #banign / dav in adversarail samples
     adv_,ben_ = get_nodes_weight_per_label(0)
-    case0 = 0
+    
     case1 = 0 
     case2 = 0
     case3 = 0
+    case4 = 0
     nb = 0 
     x = []
     while(nb <10):
@@ -195,7 +196,7 @@ def box_plot(ben,ben_,adv,adv_):
     plt.show()
 
 
-def get_nodes_weight_per_label(label,expected_nb_nodes,model):
+def get_nodes_weight_per_label(X,Y,label,expected_nb_nodes,model):
     negative_nodes = [[] for i in range(expected_nb_nodes)]
     positive_nodes = [[] for i in range(expected_nb_nodes)]
 
@@ -312,7 +313,7 @@ def scatter(adv,ben):
 
     plt.show()
 
-def get_nodes_impact_for_one_label(label):
+def get_nodes_impact_for_one_label(X_test, y_test, model, label,expected_nb_nodes):
     positive, negative = attribtuions_to_polarity(X_test,y_test,model,label)
 
 

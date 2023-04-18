@@ -234,7 +234,7 @@ def plotAcrossNodes(gt, metric, ben,adv,Node_range=10):#,data='mnist'):
     adv[1]=adv[1][mask]
     ben=ben[mask]        
     
-    print(len(X))
+    print('Number of Nodes: ',len(X))
     
     if len(adv)==2:
         plt.bar(X - 0.1, abs(adv[0] - gt) , 0.2, label = 'FGSM - GT',color ="red")
