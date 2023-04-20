@@ -17,7 +17,7 @@ We describe the supported Datasets, Attacks and the pre-trained models provided 
 
 - **Dataset Name**: cifar10 | mnist | cuckoo |ember <br />
 - **Pre-Trained Model Name** : cifar10_1 |cuckoo_1 | Ember_2 | mnist_1 | mnist_2 | mnist_3 <br />
-- **Folder** : Ground_Truth | Begnign | Adversarial <br />
+- **Folder** : Ground_Truth | Benign | Adversarial (It is required to use these exact folder names) <br />
   this parameter sets what folder will the generated activations be saved, the default file path is
   `folder/dataset_name/model_name/<attack>/`.
   (**note** : Make Sure to create the folder with the above path before running the generator)
@@ -25,7 +25,7 @@ We describe the supported Datasets, Attacks and the pre-trained models provided 
   this parameter is optional , if mentioned, ProvMl will apply the attack on the dataset.
   (**note** : if attack is None and the folder input is set to adversarial it will throw an Error) <br />
   **Sample Commands :** <br />
-  > `python gactivations_extractor.py mnist mnist_1 Adversarial FGSM` <br /> `python activations_extractor.py mnist mnist_1 Ground_Truth  ` <br />
+  > `python activations_extractor.py mnist mnist_1 Adversarial FGSM` <br /> `python activations_extractor.py mnist mnist_1 Ground_Truth  ` <br />
   
   The model activations of Ground truth, Test benign and adversarial data are stored in each respective folder. Check readme there. 
 
@@ -35,7 +35,7 @@ We describe the supported Datasets, Attacks and the pre-trained models provided 
  Use `Empirical_Characterization.ipynb` to compute the proposed graph-related metrics for empirical characterization.
 
 ---
-## Structured Characterization
+## Structured Characterization [THIS PART IS STILL NOT READY]
 
 ### Graph Feature learning model: training a model `graph_model` on the extracted graph data
 
