@@ -44,14 +44,13 @@ We describe the supported Datasets, Attacks and the pre-trained models provided 
 This step utilizes the activations extracted in the previous step, To Train a predefined model on the activations set use the CLI command with the following parameters: Dataset Name, Model Name and Attack
   (The Above arguments will just be used to locate the needed activations in the project folder).
   The command also expects the following arguments: <br />
-- Expected Number Of Nodes : this number represents the number of nodes to expect in the activations, this is a safe guard against activation extraction errors and will ignore the sampels that have more nodes that expected
 - Model Path : represents the path for the predefined .pt model <br/>
   (**note** : after training the model will be saved in the same file)
   The model will be trained across all samples in Ground_Truth , Adversarial and Begnign for a specific model/attack and for 30 epochs
 
   **Sample Commands :** <br />
 
-  > `py learn-graph.py mnist mnist_1 FGSM 420 ./ModelsFolder/mnist_1.pt` <br /> `py gen_activations.py cuckoo cuckoo_1 62 ./ModelsFolder/cifar10_1.pt  ` <br />
+  > `py learn-graph.py mnist mnist_1 FGSM ./ModelsFolder/mnist_1.pt` <br /> `py gen_activations.py cuckoo cuckoo_1 ./ModelsFolder/cifar10_1.pt  ` <br />
 
 
 ### Attribution: Perform ML explanation on the `graph_model` to identify relevant nodes
