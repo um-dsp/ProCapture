@@ -1,19 +1,28 @@
 # ProvML: Inference Provenance-Driven Characterization of Machine Learning in Adversarial Settings
 
-We describe the supported Datasets, Attacks and the pre-trained models provided in our code. <br />
+We describe the supported datasets, attacks and pre-trained models provided with our code. <br />
 
-- **Datasets** : CIFAR10 and MNIST are autimatically loaded throught keras. To test ProvML on malware data, download Cuckoo-Traces and Ember datasets and add them in the folder `./data/`. By default ProvML will look for them in that path<br />
-- **Pretrained Models** : we offer pretrained models: mnist_1 , mnist_2 , mnist_3 , cifar10_1 ,cuckoo_1 and ember_1 <br />
-  Models are availabe to donwload [here](https://drive.google.com/drive/folders/1a0kdq4waz8SXU9gThsUmKsR0YTSuaEWO?usp=share_link)
-  model.txt file has the metadata of each model
-- **Attacks** : ProvML supports the following attacks : <br />
-  Cifar10, Mnist => FGSM, PGD <br />
-  Cuckoo => Reverse first null n bits attack (CKO) <br />
-  Ember => Developed personalized attack (EMB) <br />
+- **Datasets**: MNIST and CIFAR10 are autimatically loaded via Keras. To test ProvML on malware data, you need to download the CuckooTraces and EMBER datasets and add them in the folder `./data/`. By default ProvML will look for them in that path<br />
 
-## Graph Extraction: Extraction Activations of a Neural Network model
+- **Pre-trained Models**: We offer pre-trained models: mnist_1 , mnist_2 , mnist_3 , cifar10_1 ,cuckoo_1 and ember_1 <br />
+  Models are availabe to download [here](https://drive.google.com/drive/folders/1a0kdq4waz8SXU9gThsUmKsR0YTSuaEWO?usp=share_link). Once downloaded to `ProvML/models/' directory, the `model.txt' file has the model architecture details  of each model.
+- **Attacks**: ProvML supports the following attacks : <br />
+  MNIST, CIFAR10: Fast Gradient Sign Method (FGSM), Projected Gradient Descent (PGD) <br />
+  CuckooTraces: Attack progressively flips up to first `n' 0 bits to 1 until it evades the model (we name this attack `CKO') <br />
+  EMBER => This attack progressively perturbs features within valid value ranges/options until the model changes its prediction from malware to benign (we call this attack `EMB') <br />
 
-- ` activations_extractor.py`: The first step for our characterization approach is to extract activations of the target model `model`. It takes the following parameters :
+
+### Downloading ProvML and Installing Dependencies 
+```$ git clone https://github.com/um-dsp/ProvML.git ```
+
+```$ cd ProvML ```
+
+```$ pip install -r requirements.txt ```
+***
+
+## Inference Activation Graph Extraction
+
+- ` activations_extractor.py`: The first step for our characterization approach is to extract activations of the target model `model`. It takes the following parameters in the given order:
 
 - **Dataset Name**: cifar10 | mnist | cuckoo |ember <br />
 - **Pre-Trained Model Name** : cifar10_1 |cuckoo_1 | Ember_2 | mnist_1 | mnist_2 | mnist_3 <br />
