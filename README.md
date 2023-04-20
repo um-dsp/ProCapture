@@ -48,7 +48,7 @@ We describe the supported datasets, attacks and pre-trained models provided with
 
 ### Empirical Characterization:
  
- Use `Empirical_Characterization.ipynb` to compute the proposed graph-related metrics for empirical characterization.
+ Use [Empirical_Characterization.ipynb](/Empirical_Characterization.ipynb) to compute the proposed graph-related metrics for empirical characterization.
 
 ---
 ### Structured Characterization [THIS PART IS STILL NOT READY]
