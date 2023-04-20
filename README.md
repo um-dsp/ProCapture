@@ -1,4 +1,4 @@
-# ProvML: Inference Provenance-Driven Characterization of Machine Learning in Adversarial Settings
+# ProvML: Inference Provenance-Driven Characterization of Machine Learning in Benign and Adversarial Settings
 
 We describe the supported datasets, attacks and pre-trained models provided with our code. <br />
 
@@ -6,8 +6,9 @@ We describe the supported datasets, attacks and pre-trained models provided with
 
 - **Datasets**: MNIST and CIFAR10 are autimatically loaded via Keras. To test ProvML on malware data, you need to download the [CuckooTraces](link here) and [EMBER] (link here) datasets and add them in the folder `./data/`. By default ProvML will look for them in that path<br />
 
-- **Pre-trained Models**: We offer pre-trained models: mnist_1 , mnist_2 , mnist_3 , cifar10_1 ,cuckoo_1 and ember_1 <br />
-  Models are availabe to download [here](https://drive.google.com/drive/folders/1a0kdq4waz8SXU9gThsUmKsR0YTSuaEWO?usp=share_link). Once downloaded to 'ProvML/models/' directory, the 'model.txt' file has the model architecture details  of each model.
+- **Pre-trained Models**: We offer pre-trained models: mnist_1 , mnist_2, mnist_3, cifar10_1, cuckoo_1, and ember_1 <br />
+  These models are availabe to download [here](https://drive.google.com/drive/folders/1a0kdq4waz8SXU9gThsUmKsR0YTSuaEWO?usp=share_link). Once downloaded to 'ProvML/models/' directory, the 'model.txt' file has the model architecture details of each model.
+  
 - **Attacks**: ProvML supports the following attacks : <br />
   MNIST, CIFAR10: Fast Gradient Sign Method (FGSM), Projected Gradient Descent (PGD) <br />
   CuckooTraces: Attack progressively flips up to first n 0 bits to 1 until it evades the model (we name this attack 'CKO') <br />
