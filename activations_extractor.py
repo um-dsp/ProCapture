@@ -1,4 +1,4 @@
-from library.utils import get_dataset,get_model,generate_attack_tf, printProgressBar
+from library.utils import compute_accuracy_tf,get_dataset,get_model,generate_attack_tf, printProgressBar
 from library.Activations import Activations
 
 import numpy as np
@@ -39,7 +39,7 @@ evaluating the models
 supported_dataset = ['cifar10' ,'mnist', 'cuckoo','ember'] 
 supported_attacks = ['FGSM','CW','PGD',"CKO",'EMBER',None]
 pre_trained_models = ['cifar10_1','cuckoo_1','Ember_2','mnist_1','mnist_2','mnist_3']
-folder = ['Ground_Truth' , 'Begnign' ,'Adversarial']
+folder = ['Ground_Truth' , 'Benign' ,'Adversarial']
 def parseArgs():
     args= sys.argv
     dataset = args[1]
@@ -130,8 +130,15 @@ def generate_activations(X,Y,model,file_path):
 #Generates acivations for a given model and input and saves in corresponding folder
 def generate_and_save_activations(model,x,index,label,folder_name):
     #remove axis with shape 1
-    ac =  Activations.get_layers_activations(model,x)
+    ac =  get_layers_activations(model,x)
     prediction =np.argmax(model.predict(x,verbose=0)[0])
+    if(label.shape[0]!= 1):
+        label =np.argmax(label)
+    ## For adversarial activation extraction we are interested only in evasive samples
+    if folder_name.find('Adversarial') != -1:
+        if prediction==label: #skip extraction
+            #print("skipping extraction for unevasive sample")
+            return True
     activations = [item for sublist in ac for item in sublist]
     #print(np.array(activations[0][0]).shape)
 
@@ -150,8 +157,7 @@ def generate_and_save_activations(model,x,index,label,folder_name):
         arr = np.squeeze(arr)
         lst.append(arr)
    
-    if(label.shape[0]!= 1):
-        label =np.argmax(label)
+    
     
 
     a = Activations(index,label,prediction,lst)
@@ -171,7 +177,7 @@ if __name__ == "__main__":
 
 
     # Ground Truth -> We Use Train Data 
-    # Adersarial | Begnign -> We use Test Data
+    # Adersarial | Benign -> We use Test Data
     (X_train, y_train), (X_test, y_test) = get_dataset(dataset,True)
     if(folder == 'Ground_Truth'):
         X = X_train 
@@ -186,12 +192,14 @@ if __name__ == "__main__":
     
         
     if(attack):
+        X_adv=X.copy()
         ds = data_source.ArrayDataSource([X, Y])
         i=0
         batch_size=200
         for (batch_X, batch_y) in ds.batch_iterator(batch_size=batch_size):
-            print('Generating {} for bacth {}'.format(attack,i))
-            X[i*batch_size:(i+1)*batch_size] = generate_attack_tf(model,batch_X, batch_y,attack)
+            print('Generating {} from sample {} to {}'.format(attack,i*batch_size,(i+1)*batch_size-1))
+            X_adv[i*batch_size:(i+1)*batch_size] = generate_attack_tf(model,batch_X, batch_y,attack)
             i+=1
-
+        X=X_adv
+    #print('accuracy on all data: ',compute_accuracy_tf(model,X,Y))
     generate_activations(X,Y,model,save_path)

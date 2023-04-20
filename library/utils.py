@@ -23,11 +23,11 @@ def generate_attack_tf(model,x,y,attack):
     if(attack not in ['FGSM','CW','PGD',"CKO",'EMBER']):
         raise Exception("Attack not supported")
     if(attack== 'FGSM'):
-        x =  fast_gradient_method(model,x,eps=0.1,norm=np.inf,targeted=False)
+        x =  fast_gradient_method(model,x,eps=0.3,norm=np.inf,targeted=False)
     if(attack=='CW'):
         x = carlini_wagner_l2(model,x,targeted=False)
     if(attack=='PGD'):
-        x = projected_gradient_descent(model, x, 0.05, 0.01, 40, np.inf)
+        x = projected_gradient_descent(model, x, 0.3, 0.01, 40, np.inf)
     if(attack =='CKO'):
         adv = []
         for s in x :
@@ -151,9 +151,9 @@ def compute_accuracy_tf(model,X_dataset,Y_dataset):
     correct = 0
     for i,x in enumerate(X_dataset):
         x= x.reshape(-1,28,28)
-        x= generate_attack_tf(model,x)
+        #x= generate_attack_tf(model,x)
         pred = np.argmax(model.predict(x,verbose=0))
-        if(pred == Y_dataset[i]):
+        if(pred == Y_dataset[i].argmax()):
             correct+=1
     print(correct/Y_dataset.shape[0]*100)
   
