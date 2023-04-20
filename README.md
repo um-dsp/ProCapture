@@ -2,7 +2,9 @@
 
 We describe the supported datasets, attacks and pre-trained models provided with our code. <br />
 
-- **Datasets**: MNIST and CIFAR10 are autimatically loaded via Keras. To test ProvML on malware data, you need to download the CuckooTraces and EMBER datasets and add them in the folder `./data/`. By default ProvML will look for them in that path<br />
+### Datasets, Pre-trained Models, and Attacks:
+
+- **Datasets**: MNIST and CIFAR10 are autimatically loaded via Keras. To test ProvML on malware data, you need to download the [CuckooTraces](link here) and [EMBER] (link here) datasets and add them in the folder `./data/`. By default ProvML will look for them in that path<br />
 
 - **Pre-trained Models**: We offer pre-trained models: mnist_1 , mnist_2 , mnist_3 , cifar10_1 ,cuckoo_1 and ember_1 <br />
   Models are availabe to download [here](https://drive.google.com/drive/folders/1a0kdq4waz8SXU9gThsUmKsR0YTSuaEWO?usp=share_link). Once downloaded to `ProvML/models/' directory, the `model.txt' file has the model architecture details  of each model.
@@ -11,8 +13,9 @@ We describe the supported datasets, attacks and pre-trained models provided with
   CuckooTraces: Attack progressively flips up to first `n' 0 bits to 1 until it evades the model (we name this attack `CKO') <br />
   EMBER => This attack progressively perturbs features within valid value ranges/options until the model changes its prediction from malware to benign (we call this attack `EMB') <br />
 
+***
 
-### Downloading ProvML and Installing Dependencies 
+### Downloading ProvML and Installing Dependencies:
 ```$ git clone https://github.com/um-dsp/ProvML.git ```
 
 ```$ cd ProvML ```
@@ -25,19 +28,23 @@ We describe the supported datasets, attacks and pre-trained models provided with
 - ` activations_extractor.py`: The first step for our characterization approach is to extract activations of the target model `model`. It takes the following parameters in the given order:
 
 - **Dataset Name**: cifar10 | mnist | cuckoo |ember <br />
-- **Pre-Trained Model Name** : cifar10_1 |cuckoo_1 | Ember_2 | mnist_1 | mnist_2 | mnist_3 <br />
-- **Folder** : Ground_Truth | Benign | Adversarial (It is required to use these exact folder names) <br />
-  this parameter sets what folder will the generated activations be saved, the default file path is
+- **Pre-Trained Model Name**: cifar10_1 |cuckoo_1 | ember_1 | mnist_1 | mnist_2 | mnist_3 <br />
+- **Folder**: Ground_Truth | Benign | Adversarial (it is required to use these exact folder names). <br />
+  This parameter sets what folder will the generated activations be saved, the default file path is
   `folder/dataset_name/model_name/<attack>/`.
-  (**note** : Make Sure to create the folder with the above path before running the generator)
-- **Attack Name** : FGSM | CW | PGD |CKO |EMBER | None <br />
-  this parameter is optional , if mentioned, ProvMl will apply the attack on the dataset.
-  (**note** : if attack is None and the folder input is set to adversarial it will throw an Error) <br />
+  (**Note**: Make Sure to create the folder with the above path before running the activation generation)
+- **Attack Name**: FGSM | CW | PGD |CKO |EMBER | None <br />
+  this parameter is optional , if mentioned, ProvML will apply the attack on the dataset.
+  (**Note**: if attack is None and the folder input is set to adversarial it will throw an Error) <br />
   **Sample Commands :** <br />
-  > `python activations_extractor.py mnist mnist_1 Adversarial FGSM` <br /> `python activations_extractor.py mnist mnist_1 Ground_Truth  ` <br />
+    >  `python activations_extractor.py mnist mnist_1 Ground_Truth  ` <br />
+    >  `python activations_extractor.py mnist mnist_1 Benign  ` <br />
+    > `python activations_extractor.py mnist mnist_1 Adversarial FGSM` <br />
+    > `python activations_extractor.py cuckoo cuckoo_1 Adversarial CKO` <br />
+    > `python activations_extractor.py ember ember_1 Adversarial EMBER` <br /
   
-  The model activations of Ground truth, Test benign and adversarial data are stored in each respective folder. Check readme there. 
-
+  The model activations of ground truth, test benign and adversarial data are stored in each respective folder.
+***
 
 ## Empirical Characterization:
  
@@ -54,12 +61,13 @@ This step utilizes the activations extracted in the previous step, To Train a pr
   (The Above arguments will just be used to locate the needed activations in the project folder).
   The command also expects the following arguments: <br />
 - Model Path : represents the path for the predefined .pt model <br/>
-  (**note** : after training the model will be saved in the same file)
+  (**Note**: after training the model will be saved in the same file)
   The model will be trained across all samples in Ground_Truth , Adversarial and Begnign for a specific model/attack and for 30 epochs
 
-  **Sample Commands :** <br />
+  **Sample Commands:** <br />
 
-  > `py learn-graph.py mnist mnist_1 FGSM ./ModelsFolder/mnist_1.pt` <br /> `py gen_activations.py cuckoo cuckoo_1 ./ModelsFolder/cifar10_1.pt  ` <br />
+  > `py learn-graph.py mnist mnist_1 FGSM ./ModelsFolder/mnist_1.pt` <br />
+  >  `py gen_activations.py cuckoo cuckoo_1 ./ModelsFolder/cifar10_1.pt  ` <br />
 
 
 ### Attribution: Perform ML explanation on the `graph_model` to identify relevant nodes
