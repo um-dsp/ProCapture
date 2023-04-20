@@ -10,7 +10,7 @@ We describe the supported datasets, attacks and pre-trained models provided with
   Models are availabe to download [here](https://drive.google.com/drive/folders/1a0kdq4waz8SXU9gThsUmKsR0YTSuaEWO?usp=share_link). Once downloaded to `ProvML/models/' directory, the `model.txt' file has the model architecture details  of each model.
 - **Attacks**: ProvML supports the following attacks : <br />
   MNIST, CIFAR10: Fast Gradient Sign Method (FGSM), Projected Gradient Descent (PGD) <br />
-  CuckooTraces: Attack progressively flips up to first `n' 0 bits to 1 until it evades the model (we name this attack `CKO') <br />
+  CuckooTraces: Attack progressively flips up to first n 0 bits to 1 until it evades the model (we name this attack 'CKO') <br />
   EMBER => This attack progressively perturbs features within valid value ranges/options until the model changes its prediction from malware to benign (we call this attack `EMB') <br />
 
 ***
@@ -29,19 +29,19 @@ We describe the supported datasets, attacks and pre-trained models provided with
 
 - **Dataset Name**: cifar10 | mnist | cuckoo |ember <br />
 - **Pre-Trained Model Name**: cifar10_1 |cuckoo_1 | ember_1 | mnist_1 | mnist_2 | mnist_3 <br />
-- **Folder**: Ground_Truth | Benign | Adversarial (it is required to use these exact folder names). <br />
-  This parameter sets what folder will the generated activations be saved, the default file path is
-  `folder/dataset_name/model_name/<attack>/`.
+- **Folder**: Ground_Truth | Benign | Adversarial <br>
+   It is required to use these exact folder names. This parameter sets what folder will the generated activations be saved, the default file path is
+  `folder/dataset_name/model_name/<attack>/`. 
   (**Note**: Make Sure to create the folder with the above path before running the activation generation)
 - **Attack Name**: FGSM | CW | PGD |CKO |EMBER | None <br />
-  this parameter is optional , if mentioned, ProvML will apply the attack on the dataset.
+  This parameter is optional.  if specified, ProvML will apply the attack on the dataset.
   (**Note**: if attack is None and the folder input is set to adversarial it will throw an Error) <br />
   **Sample Commands :** <br />
     >  `python activations_extractor.py mnist mnist_1 Ground_Truth  ` <br />
     >  `python activations_extractor.py mnist mnist_1 Benign  ` <br />
     > `python activations_extractor.py mnist mnist_1 Adversarial FGSM` <br />
     > `python activations_extractor.py cuckoo cuckoo_1 Adversarial CKO` <br />
-    > `python activations_extractor.py ember ember_1 Adversarial EMBER` <br /
+    > `python activations_extractor.py ember ember_1 Adversarial EMBER` <br />
   
   The model activations of ground truth, test benign and adversarial data are stored in each respective folder.
 ***
