@@ -5,7 +5,7 @@ import os
 from keras.utils import to_categorical
 from keras.models import load_model
 import matplotlib.pyplot as plt
-from cleverhans.tf2.attacks.projected_gradient_descent import (projected_gradient_descent,)
+from cleverhans.tf2.attacks.projected_gradient_descent import projected_gradient_descent
 from cleverhans.tf2.attacks.carlini_wagner_l2 import carlini_wagner_l2
 #from cleverhans.tf2.attacks.spsa import spsa
 from cleverhans.tf2.attacks.fast_gradient_method import fast_gradient_method
@@ -146,17 +146,22 @@ def get_folder_name(attack,dataset):
         os.mkdir(folder)
     
     return folder
-
+'''
 def compute_accuracy_tf(model,X_dataset,Y_dataset):
+    from batchup import data_source
     correct = 0
-    for i,x in enumerate(X_dataset):
+    ds = data_source.ArrayDataSource([X_dataset,Y_dataset])
+    
+    batch_size=200
+    for x, y in ds.batch_iterator(batch_size=batch_size):
+    #for i,x in enumerate(X_dataset):
         x= x.reshape(-1,28,28)
         #x= generate_attack_tf(model,x)
         pred = np.argmax(model.predict(x,verbose=0))
-        if(pred == Y_dataset[i].argmax()):
+        if(pred == y.argmax()):
             correct+=1
     print(correct/Y_dataset.shape[0]*100)
-  
+ ''' 
 
 
     

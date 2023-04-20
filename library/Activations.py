@@ -52,17 +52,8 @@ class Activations :
     def save_cnn(self,activations_list,folder_name):
         layer = 0
         if not (os.path.exists(folder_name)):
-            #try:
             os.makedirs(folder_name)
-            #except:
-                #raise Exception("Not able to create {}. Please check path".format('./'+folder_name))
-                #sub_dir = os.path.join(*folder_name.split('/')[:-1])
-                #print('creating ',sub_dir)
-                #os.mkdir(sub_dir)
-                #os.mkdir(folder_name)
-                    
-                
-            
+     
         filename = str(self.label) + "_"+ str(self.prediction) +"-"+str(self.index)+'.txt'
         with open(folder_name+'/'+filename, 'a') as out:
             for i in activations_list :

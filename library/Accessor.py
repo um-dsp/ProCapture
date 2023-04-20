@@ -98,12 +98,12 @@ class Accessor :
         container = []
         current= 0
         for filename in os.listdir(self.folder):
-            current+=1
+            #current+=1
             if(current>limit): break
             if(current<start):continue
-            #purpose of this is t o shrink number of laoded activaitons to sub_ratio % (for faster loasd during research)
-            if( sub_ration != 0 and not current % sub_ration == 0):
-                continue
+            #purpose of this is to shrink number of laoded activaitons to sub_ratio % (for faster loasd during research)
+            #if( sub_ration != 0 and not current % sub_ration == 0):
+            #    continue
             f = os.path.join(self.folder, filename)
             index = filename[filename.index("-")+1:filename.index(".")] 
             predicted = filename[filename.index("_"):filename.index("-")] 
@@ -113,12 +113,15 @@ class Accessor :
                     activations_set = self.parse_csv_to_set(pd.read_csv(f))
             else :
                     activations_set = self.parse_txt_to_set(f,collapse)
-                   
+            #for layer_set in activations_set:
+            #    print(len(layer_set))
             container.append(Activations(index,label,predicted,activations_set))
+            current+=1
         if( len(container) ==0):
             print('No File was found for label %s'%(label))
             raise Exception()
         print('Loaded all activations for %s' %(self.folder))
+        
         return container
             
 
@@ -139,6 +142,7 @@ class Accessor :
     
     def parse_txt_to_set (self,file,collapse):
         activations_set = []
+        extracted_nodes = 0
         with open(file) as f:
             lines = f.readlines()
             if(len(lines) ==0):
@@ -150,19 +154,39 @@ class Accessor :
                     continue
                 if('Layer' in l):
                     start = l.find(':')
-                    end = l .find(';')
-                    layer = int(l[start+1:end]) 
+                    end = l.find(';')
+                    new_layer = int(l[start+1:end])
+                    if new_layer<layer:
+                        break
+                        #raise Exception('Found an already loaded layer in file {} !'.format(file))
+                    else:
+                        layer=new_layer
+                    ## Debugging code
+                    #if layer not in [-1,0]:
+                    #    print('{} nodes are extracted for layer {}'.format(extracted_nodes,layer-1))
+                    #    for layer_set in activations_set:
+                    #        print(len(layer_set))
                     activations_set.append([])
-                elif("Node" in l ):
-                    start = l.find(':')
-                    end = l .find(';')
-                    node = int(l[start+1:end])
-                    activations_set[layer].append([])
-                else :
+                    #print('extracting activations for layer',layer)
+                    #extracted_nodes = 0
+                #elif("Node" in l ) and layer != -1:
+                #    start = l.find(':')
+                #    end = l.find(';')
+                    #node = int(l[start+1:end])
+                    #activations_set[layer].append([])
+                elif ('[' in l) and layer != -1:
                     s = np.fromstring(l.strip('[]'),sep=',',dtype='float32')
                     if(collapse == "avg"):
                         s = np.average(s)
-                    activations_set[layer][node]= s 
+                    #activations_set[layer][node]= s 
+                    activations_set[layer].append(s) 
+                    extracted_nodes+=1
+            #if layer not in [-1,0]:
+            #    print('{} nodes are extracted for layer {}'.format(extracted_nodes,layer))
+            #    for layer_set in activations_set:
+            #        print(len(layer_set))
+            #print('Completed all lines')
+                
         return activations_set
         
 

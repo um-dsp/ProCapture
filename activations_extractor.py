@@ -1,11 +1,14 @@
-from library.utils import compute_accuracy_tf,get_dataset,get_model,generate_attack_tf, printProgressBar
+from library.utils import get_dataset,get_model,generate_attack_tf, printProgressBar
 from library.Activations import Activations
+from library.train import evaluate
 
 import numpy as np
 import sys
 from batchup import data_source
 import pandas as pd
 from keras import backend as K
+#from keras.utils import to_categorical
+import tensorflow as tf
 
 '''
 get_dataset() in utils would return a dataset of your choice, 
@@ -112,14 +115,15 @@ def generate_activations(X,Y,model,file_path):
         else : y = Y[i]
 
 
-        #Reshape needed for K backendl ogits extractions
+        #Reshape needed for K backend logits extractions
         x = np.expand_dims(x,axis= 0)
         #generate and save activations nd return if sucessfull prediction or not
         if(generate_and_save_activations(model,x,i,y,file_path)):
+            '''accuracy should be 100% for benign activations and 0% for adversarial ones'''
             correct_predictions+=1
-
+        #break
         #Print the accuracy so far to monitor hidden layer extraction
-        if(counter %100 ==0):
+        if(counter %50 ==0):
             print(f'accuracy so far : {correct_predictions/counter*100} %')
 
         printProgressBar(i + 1, X.shape[0], prefix = 'Progress:', suffix = 'Complete', length = 50)
@@ -129,8 +133,12 @@ def generate_activations(X,Y,model,file_path):
 
 #Generates acivations for a given model and input and saves in corresponding folder
 def generate_and_save_activations(model,x,index,label,folder_name):
-    #remove axis with shape 1
+    '''We generate activations on for evasive adversarial samples
+    and correctly predicted benign samples'''
+    
     ac =  get_layers_activations(model,x)
+    #print(ac)
+    #print(len(ac))
     prediction =np.argmax(model.predict(x,verbose=0)[0])
     if(label.shape[0]!= 1):
         label =np.argmax(label)
@@ -138,8 +146,19 @@ def generate_and_save_activations(model,x,index,label,folder_name):
     if folder_name.find('Adversarial') != -1:
         if prediction==label: #skip extraction
             #print("skipping extraction for unevasive sample")
+            return False
+    else:
+        if prediction!=label: #skip extraction
+            #print("skipping extraction for naturally evasive sample")
             return True
+        
+    
+    #extracting arrays of each layer's node
     activations = [item for sublist in ac for item in sublist]
+    #for arr in activations:
+    #     print(arr.shape)
+    #print(activations)
+    #print(len(activations))
     #print(np.array(activations[0][0]).shape)
 
     #For string label translated to dummy categories need to format label to string to put in file name
@@ -157,7 +176,11 @@ def generate_and_save_activations(model,x,index,label,folder_name):
         arr = np.squeeze(arr)
         lst.append(arr)
    
+    #print(len(lst))
+    #print(lst)
     
+    #for arr in lst:
+    #     print(arr.shape)
     
 
     a = Activations(index,label,prediction,lst)
@@ -199,7 +222,12 @@ if __name__ == "__main__":
         for (batch_X, batch_y) in ds.batch_iterator(batch_size=batch_size):
             print('Generating {} from sample {} to {}'.format(attack,i*batch_size,(i+1)*batch_size-1))
             X_adv[i*batch_size:(i+1)*batch_size] = generate_attack_tf(model,batch_X, batch_y,attack)
+            #evaluate(model,X_adv[i*batch_size:(i+1)*batch_size],tf.convert_to_tensor(batch_y))
             i+=1
         X=X_adv
+    
+    #print(tf.math.argmax(tf.convert_to_tensor(Y),axis=1))
+    #print(tf.math.argmax(model(X),axis=1))
+    evaluate(model,X,tf.convert_to_tensor(Y))
     #print('accuracy on all data: ',compute_accuracy_tf(model,X,Y))
     generate_activations(X,Y,model,save_path)

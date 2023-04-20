@@ -55,24 +55,17 @@ def get_categoriztion_mapping(X,Y):
     Y = torch.tensor(Y)
     print(f'Label check {label_check} => {cat_label}')
 
-def adversarial_detection_set(act,label,expected_nb_nodes):
+def adversarial_detection_set(act,label):
     # Converts dlattned activations to a set :  X = [activation1,activation2,......,activation2] and Y [Begnign, Benign,....,Benign]
     X= []
     Y = []
-    outlier_counter = 0
     for x in act:
+        #for layer in x.get_activations_set():
+        #    print(len(layer))
+        X.append(x.flatten())
+        Y.append(label)
 
-        x.set_layer_range(1,float('+inf'))
-
-        if(len(x.flatten()) != expected_nb_nodes ):
-            outlier_counter+=1
-            continue  
-        X.append(torch.tensor(x.flatten()))
-        Y.append(torch.tensor(label))
-    
-    print(f'[GRAPH LEARN] [SET GENERATION] Ignored {outlier_counter} Samples')
-
-    return X,Y
+    return torch.tensor(X),torch.tensor(Y)
 
 
 def randomize_tensor(tensor):
