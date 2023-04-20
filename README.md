@@ -50,7 +50,7 @@ This step utilizes the activations extracted in the previous step, To Train a pr
 
   **Sample Commands :** <br />
 
-  > `py learn-graph.py mnist mnist_1 FGSM ./ModelsFolder/mnist_1.pt` <br /> `py gen_activations.py cuckoo cuckoo_1 62 ./ModelsFolder/cifar10_1.pt  ` <br />
+  > `py learn-graph.py mnist mnist_1 FGSM ./ModelsFolder/mnist_1.pt` <br /> `py gen_activations.py cuckoo cuckoo_1 ./ModelsFolder/cifar10_1.pt  ` <br />
 
 
 ### Attribution: Perform ML explanation on the `graph_model` to identify relevant nodes
