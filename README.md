@@ -23,7 +23,7 @@ We describe the supported datasets, attacks and pre-trained models provided with
 ```$ pip install -r requirements.txt ```
 ***
 
-## Inference Activation Graph Extraction
+### Inference Activation Graph Extraction:
 
 - ` activations_extractor.py`: The first step for our characterization approach is to extract activations of the target model `model`. It takes the following parameters in the given order:
 
@@ -46,14 +46,14 @@ We describe the supported datasets, attacks and pre-trained models provided with
   The model activations of ground truth, test benign and adversarial data are stored in each respective folder.
 ***
 
-## Empirical Characterization:
+### Empirical Characterization:
  
  Use `Empirical_Characterization.ipynb` to compute the proposed graph-related metrics for empirical characterization.
 
 ---
-## Structured Characterization [THIS PART IS STILL NOT READY]
+### Structured Characterization [THIS PART IS STILL NOT READY]
 
-### Graph Feature learning model: training a model `graph_model` on the extracted graph data
+#### Graph Feature learning model: training a model `graph_model` on the extracted graph data
 
 ` train_on_graph.py`: The Second step: We train another model called `graph_model` that learns the NN graph (activations) of the target model `model`. This model should be also stored should be initiated and stored in a .pt file <br />
 
@@ -70,7 +70,7 @@ This step utilizes the activations extracted in the previous step, To Train a pr
   >  `py gen_activations.py cuckoo cuckoo_1 ./ModelsFolder/cifar10_1.pt  ` <br />
 
 
-### Attribution: Perform ML explanation on the `graph_model` to identify relevant nodes
+#### Attribution: Perform ML explanation on the `graph_model` to identify relevant nodes
 
 - ` gen_attributions.py`: this file explains how to transform generated activations to dataset and train an torch adversarial detection model. ` attributionUtils.py` holds different predefined architecture that cover all the dataset we research and produce satisfactory performance.
   ` Attributions :` in the same file we showcase the steps to generate the attributions of the models on a batch of input,
