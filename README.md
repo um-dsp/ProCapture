@@ -42,7 +42,7 @@ We describe the supported datasets, attacks and pre-trained models provided with
     >  `python activations_extractor.py mnist mnist_1 Benign  ` <br />
     > `python activations_extractor.py mnist mnist_1 Adversarial FGSM` <br />
     > `python activations_extractor.py cuckoo cuckoo_1 Adversarial CKO` <br />
-    > `python activations_extractor.py ember ember_1 Adversarial EMBER` <br />
+    > `python activations_extractor.py ember ember_1 Adversarial EMB` <br />
   
   The model activations of ground truth, test benign and adversarial data are stored in each respective folder.
 ***
