@@ -43,7 +43,9 @@ We describe the supported datasets, attacks and pre-trained models provided with
     > `python activations_extractor.py mnist mnist_1 Adversarial FGSM` <br />
     > `python activations_extractor.py cuckoo cuckoo_1 Adversarial CKO` <br />
     > `python activations_extractor.py ember ember_1 Adversarial EMB` <br />
-  
+  To extract Adversarial activations on training data (Ground_Truth), we use: <br />
+    >  `python activations_extractor.py mnist mnist_1 Ground_Truth FGSM ` <br />
+   This command is specifically needed to train graph_model later on.
   The model activations of ground truth, test benign and adversarial data are stored in each respective folder.
 ***
 
@@ -56,14 +58,14 @@ We describe the supported datasets, attacks and pre-trained models provided with
 
 #### Graph Feature learning model: training a model `graph_model` on the extracted graph data
 
-` train_on_graph.py`: The Second step: We train another model called `graph_model` that learns the NN graph (activations) of the target model `model`. This model should be also stored should be initiated and stored in a .pt file <br />
+` train_on_graph.py`: We train another model called `graph_model` that learns the NN graph (activations) of the target model `model`. This model should be also stored should be initiated and stored in a .pt file <br />
 
-This step utilizes the activations extracted in the previous step, To Train a predefined model on the activations set use the CLI command with the following parameters: Dataset Name, Model Name and Attack
+This step utilizes the activations extracted in the previous step, To Train and test a predefined model on the activations set use the CLI command with the following parameters: Dataset Name, Model Name and Attack
   (The Above arguments will just be used to locate the needed activations in the project folder).
   The command also expects the following arguments: <br />
 - Model Path : represents the path for the predefined .pt model <br/>
   (**Note**: after training the model will be saved in the same file)
-  The model will be trained across all samples in Ground_Truth , Adversarial and Begnign for a specific model/attack and for 30 epochs
+  The model will be trained  Ground_Truth benign and FGSM data, and tested on Benign and FGSM test data.
 
   **Sample Commands:** <br />
 
