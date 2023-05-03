@@ -1,7 +1,6 @@
-import numpy as np 
 from keras.datasets import mnist
 from keras.datasets import cifar10
-import os
+
 from keras.utils import to_categorical
 from keras.models import load_model
 import matplotlib.pyplot as plt
@@ -9,37 +8,41 @@ from cleverhans.tf2.attacks.projected_gradient_descent import projected_gradient
 from cleverhans.tf2.attacks.carlini_wagner_l2 import carlini_wagner_l2
 #from cleverhans.tf2.attacks.spsa import spsa
 from cleverhans.tf2.attacks.fast_gradient_method import fast_gradient_method
-import pandas as pd
-from sklearn import model_selection
+import tensorflow as tf
 #from pandas import get_dummies
 import ember
 import torch
-
-
+import os
+import pandas as pd
+import numpy as np 
+from sklearn import model_selection
 #device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 def generate_attack_tf(model,x,y,attack):
 
     if(attack not in ['FGSM','CW','PGD',"CKO",'EMBER']):
         raise Exception("Attack not supported")
+        
+    #The attack requires the model to ouput the logits
+    logits_model = tf.keras.Model(model.input,model.layers[-1].output)
     if(attack== 'FGSM'):
-        x =  fast_gradient_method(model,x,eps=0.3,norm=np.inf,targeted=False)
+        x_adv =  fast_gradient_method(logits_model,x,0.3,norm=np.inf,targeted=False)
     if(attack=='CW'):
-        x = carlini_wagner_l2(model,x,targeted=False)
+        x_adv = carlini_wagner_l2(model,x,targeted=False)
     if(attack=='PGD'):
-        x = projected_gradient_descent(model, x, 0.3, 0.01, 40, np.inf)
+        x_adv = projected_gradient_descent(model, x, 0.3, 0.01, 40, np.inf)
     if(attack =='CKO'):
         adv = []
         for s in x :
             adv.append(reverse_bit_attack(s,500))
         x = np.array(adv)
-    if(attack == "EMBER"):
+    if(attack == "EMBER_att"):
         adv = []
         for s in x :
             adv.append(attack_Ember(s))
-        x = np.array(adv)
+        x_adv = np.array(adv)
     print(f'Generated attacks {attack}')
-    return x
+    return x_adv
 
     
 
@@ -65,6 +68,8 @@ def get_dataset(dataset_name, categorical=False):
         (X_train, Y_train), (X_test, Y_test)  = mnist.load_data()
         X_train = X_train.astype('float32')
         X_test = X_test.astype('float32')
+        X_train = X_train / 255.0
+        X_test = X_test/ 255.0
     if(dataset_name == "cifar10"):
         (X_train, Y_train), (X_test, Y_test)  = cifar10.load_data()
         X_train = X_train.astype('float32')
@@ -225,16 +230,19 @@ def plotAcrossPredictions(gt, metric, ben=None,adv=None,Pred_range=10,data='mnis
     plt.savefig('./Results/'+data+'/'+metric+'.pdf')
     plt.show()
     
-def plotAcrossNodes(gt, metric, ben,adv,Node_range=10,data='mnist',label=0):#,data='mnist'): 
-    plt.figure(figsize=(50,20))
+def plotAcrossNodes(gt, metric, ben,adv,Node_range=10,data='mnist',label=0,masking=False,dist=False):#,data='mnist'): 
+    #plt.figure(figsize=(50,20))
     X = np.arange(Node_range)
     mask=[]
     
-    for i in range(Node_range):
-        if gt[i]<0.6 or ben[i]<0.6 or adv[0][i]<0.6 or adv[1][i]<0.6:
-            mask.append(False)
-        else:
-            mask.append(True)
+    if masking:
+        for i in range(Node_range):
+            if gt[i]<masking or ben[i]<masking or adv[0][i]<masking or adv[1][i]<masking:
+                mask.append(False)
+            else:
+                mask.append(True)
+    else:
+        mask=[True]*Node_range
             
     X=X[mask]
     gt=gt[mask]
@@ -244,22 +252,99 @@ def plotAcrossNodes(gt, metric, ben,adv,Node_range=10,data='mnist',label=0):#,da
     
     print('Number of Nodes: ',len(X))
     
-    if len(adv)==2:
-        plt.bar(X - 0.1, abs(adv[0] - gt) , 0.2, label = 'FGSM - GT',color ="red")
-        plt.bar(X , abs(adv[1] - gt), 0.2 , label = 'PGD - GT',color ="orange")
-        
-        #plt.bar(X+ 0.2 , gt, 0.2, label = 'GroundTruth',color="grey")
-        
-        plt.bar(X+0.1 , ben, 0.2, label = 'Benign- GT',color="green")
+    if dist:
+        if len(adv)==2:
+            plt.bar(X - 0.1, abs(adv[0] - gt) , 0.2, label = 'FGSM - GT',color ="red")
+            plt.bar(X , abs(adv[1] - gt), 0.2 , label = 'PGD - GT',color ="orange")
+            
+            #plt.bar(X+ 0.2 , gt, 0.2, label = 'GroundTruth',color="grey")
+            
+            plt.bar(X+0.1 , ben, 0.2, label = 'Benign- GT',color="green")
+        else:
+            plt.bar(X - 0.1, abs(adv-gt), 0.2, label = 'adv - GT',color ="red")
+            #plt.bar(X - 0.2, gt, 0.2, label = 'GroundTruth',color="grey")
+            
+            plt.bar(X , abs(ben-gt), 0.2, label = 'Benign - GT',color="green")
     else:
-        plt.bar(X - 0.1, abs(adv-gt), 0.2, label = 'adv - GT',color ="red")
-        #plt.bar(X - 0.2, gt, 0.2, label = 'GroundTruth',color="grey")
-        
-        plt.bar(X , abs(ben-gt), 0.2, label = 'Benign - GT',color="green")
+        if len(adv)==2:
+            plt.bar(X - 0.2, adv[0], 0.2, label = 'FGSM',color ="red")
+            plt.bar(X , adv[1], 0.2, label = 'PGD',color ="orange")
+            
+            plt.bar(X+ 0.2 , gt, 0.2, label = 'GroundTruth',color="grey")
+            plt.bar(X+0.4 , ben, 0.2, label = 'Benign',color="green")
+        else:
+            plt.bar(X - 0.2, adv[0], 0.2, label = 'adv',color ="red")
+            plt.bar(X - 0.2, gt, 0.2, label = 'GroundTruth',color="grey")
+            plt.bar(X , ben, 0.2, label = 'Benign',color="green")
 
     plt.xticks(X,rotation = 90,fontsize=5)
     plt.xlabel("Nodes")
     plt.ylabel(metric)
+    #ymin = np.min([np.min(adv[0]),np.min(adv[1]),np.min(ben), np.min(gt)])
+    #ymax = np.max([np.max(adv[0]),np.max(adv[1]),np.max(ben),np.max(gt)])
+    #print(ymin, ymax)
+    #plt.ylim([ymin,ymax])
+    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    if not (os.path.exists('./Results/'+data+'/'+metric)):
+        os.makedirs('./Results/'+data+'/'+metric)
+    plt.savefig('./Results/'+data+'/'+metric+'/pred='+str(label)+'.pdf')
+    plt.show()
+    
+    
+def plotAcrossLayers(gt, metric, ben,adv,layer_range=10,data='mnist',label=0,masking=False,dist=False):#,data='mnist'): 
+    #plt.figure(figsize=(50,20))
+    X = np.arange(layer_range)
+    mask=[]
+    
+    if masking:
+        for i in range(layer_range):
+            if gt[i]<masking or ben[i]<masking or adv[0][i]<masking or adv[1][i]<masking:
+                mask.append(False)
+            else:
+                mask.append(True)
+    else:
+        mask=[True]*layer_range
+            
+    X=X[mask]
+    gt=gt[mask]
+    adv[0]=adv[0][mask]
+    adv[1]=adv[1][mask]
+    ben=ben[mask]        
+    
+    print('Number of Layers: ',len(X))
+    
+    if dist:
+        if len(adv)==2:
+            plt.bar(X - 0.1, abs(adv[0] - gt) , 0.2, label = 'FGSM - GT',color ="red")
+            plt.bar(X , abs(adv[1] - gt), 0.2 , label = 'PGD - GT',color ="orange")
+            
+            #plt.bar(X+ 0.2 , gt, 0.2, label = 'GroundTruth',color="grey")
+            
+            plt.bar(X+0.1 , ben, 0.2, label = 'Benign- GT',color="green")
+        else:
+            plt.bar(X - 0.1, abs(adv-gt), 0.2, label = 'adv - GT',color ="red")
+            #plt.bar(X - 0.2, gt, 0.2, label = 'GroundTruth',color="grey")
+            
+            plt.bar(X , abs(ben-gt), 0.2, label = 'Benign - GT',color="green")
+    else:
+        if len(adv)==2:
+            plt.bar(X - 0.2, adv[0], 0.2, label = 'FGSM',color ="red")
+            plt.bar(X , adv[1], 0.2, label = 'PGD',color ="orange")
+            
+            plt.bar(X+ 0.2 , gt, 0.2, label = 'GroundTruth',color="grey")
+            plt.bar(X+0.4 , ben, 0.2, label = 'Benign',color="green")
+        else:
+            plt.bar(X - 0.2, adv[0], 0.2, label = 'adv',color ="red")
+            plt.bar(X - 0.2, gt, 0.2, label = 'GroundTruth',color="grey")
+            plt.bar(X , ben, 0.2, label = 'Benign',color="green")
+
+    plt.xticks(X)#,rotation = 90,fontsize=5)
+    plt.xlabel("Layers")
+    plt.ylabel(metric)
+    #ymin = np.min([np.min(adv[0]),np.min(adv[1]),np.min(ben), np.min(gt)])
+    #ymax = np.max([np.max(adv[0]),np.max(adv[1]),np.max(ben),np.max(gt)])
+    #print(ymin, ymax)
+    #plt.ylim([ymin,ymax])
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     if not (os.path.exists('./Results/'+data+'/'+metric)):
         os.makedirs('./Results/'+data+'/'+metric)
@@ -267,7 +352,7 @@ def plotAcrossNodes(gt, metric, ben,adv,Node_range=10,data='mnist',label=0):#,da
     plt.show()
     
 def plotDiff(FGSM_diff,PGD_diff,adv_diff,Node_range=10,data='mnist',label=0):#,data='mnist'): 
-    plt.figure(figsize=(50,20))
+    #plt.figure(figsize=(50,20))
     X = np.arange(Node_range)
     
     

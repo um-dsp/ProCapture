@@ -1,16 +1,66 @@
 import numpy as np
 
+def sort_by_index(act):
+    
+    ind = [i.index for i in act]
+    sorted_act=[x for _, x in sorted(zip(ind, act))]
+    
+    #for elt in sorted_act:
+    #    print(elt.index)
+    
+    return sorted_act
 
+def Average_act_weight_per_layer(act):
+    
+    
+    nb_layers = act[0].get_nb_layers()
+    print(nb_layers)
+    avg=[]
+    for i in range(nb_layers):
+        avg_i=0
+        for elt in act:
+            avg_i+=np.mean(elt.activations_set[i])
+        avg.append(avg_i/len(act))
+        
+    #print(avg)
+            
+    return avg
+
+def Average_act_weight_per_node(act):
+    
+    
+    nb_nodes = act[0].get_nb_nodes()
+    
+    avg=[]
+    for i in range(nb_nodes):
+        avg_i=0
+        for elt in act:
+            avg_i+=elt.flatten()[i]
+        avg.append(avg_i/len(act))
+        
+    #print(avg)
+            
+    return avg
 
 def avg_act_diff(act1,act2,nb_sample=1000):
     '''This function computes the difference between activation weights of two sets 
     of activations across all samples 'nb_samples'''
+    
+    
+    
     nb_sample=np.min([len(act1),len(act2),nb_sample])
     for i in range(nb_sample):
+        #print("sample {} index is:".format(i))
+        #print(act1[i].index)
+        #print(act2[i].index)
+        flat1 = act1[i].flatten()
+        flat2 = act2[i].flatten()
+        if len(flat1) != len(flat2):
+            continue
         if i==0:
-            diff=abs(np.subtract(np.array(act1[i].flatten()),np.array(act2[i].flatten())))
+            diff=abs(np.subtract(np.array(flat1),np.array(flat2)))
         else:
-            diff = diff+abs(np.subtract(np.array(act1[i].flatten()),np.array(act2[i].flatten())))
+            diff = diff+abs(np.subtract(np.array(flat1),np.array(flat2)))
     #print(diff)
     return (diff/nb_sample).tolist()
 

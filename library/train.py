@@ -169,171 +169,7 @@ class Deep(nn.Module):
         x = self.sigmoid(self.output(x))
         return x
     
-class NeuralNetMnist_1(nn.Module):
-    '''Feature extraction model for mnist1'''
-    
-    def __init__(self):
 
-        super(NeuralNetMnist_1, self).__init__()
-        self.conv1 = nn.Conv1d( 2,64,kernel_size =3)
-        self.conv2 = nn.Conv1d( 64,64,kernel_size =3)
-        self.conv3= nn.Conv1d(64,1,kernel_size =3)
-
-        self.mp = nn.MaxPool1d(kernel_size=2)
-        self.drop = nn.Dropout(0.4)
-        self.flat = nn.Flatten()
-        self.fc1 = nn.Linear(599 , 2)
-        self.fc2 = nn.Linear(2, 2)
-        self.sigmoid = nn.Sigmoid()
-
-    def forward(self,x):
-        x=self.conv1(x)
-        x=F.relu(x)
-        x=self.conv2(x)
-        x=F.relu(x) 
-        x=self.conv3(x)
-        x=F.relu(x) 
-        x= self.mp(x)
-        x = self.drop(x)
-        x = self.flat(x)
-        x = self.fc1(x)
-        x = F.relu(x)
-        x = self.fc2(x)
-        output = self.sigmoid(x)
-        #output = F.log_softmax(x, dim=1)
-        
-        return output
-
-class NeuralNetMnist_2(nn.Module):
-    '''Feature extraction model for mnist2'''
-    def __init__(self):
-
-        super(NeuralNetMnist_2, self).__init__()
-        self.conv1 = nn.Conv1d( 1,64,kernel_size =4)
-        self.conv2= nn.Conv1d(64,32,kernel_size =4)
-        self.conv3= nn.Conv1d(32,2,kernel_size =3)
-
-        self.mp = nn.MaxPool1d(kernel_size=2)
-        self.drop = nn.Dropout(0.4)
-        self.flat = nn.Flatten()
-        self.fc1 = nn.Linear(193 , 2)
-        self.fc2 = nn.Linear(2, 2)
-
-    def forward(self,x):
-        x=self.conv1(x)
-        x=F.relu(x)
-        x=self.conv2(x)
-        x=F.relu(x) 
-        x=self.conv3(x)
-        x=F.relu(x)
-        x= self.mp(x)
-        x = self.drop(x)
-        x = self.flat(x)
-        x = self.fc1(x)
-        x = F.relu(x)
-        x = self.fc2(x)
-        output = F.log_softmax(x, dim=1)
-        
-        return output
-
-        
-class NeuralNetCuckoo_1(nn.Module):
-    '''Feature extraction model for Cuckoo_1'''
-    def __init__(self):
-
-        super(NeuralNetCuckoo_1, self).__init__()
-        self.conv1 = nn.Conv1d( 1,64,kernel_size =4)
-        self.conv2 = nn.Conv1d( 64,64,kernel_size =4)
-        self.conv3= nn.Conv1d(64,1,kernel_size =4)
-
-        self.mp = nn.MaxPool1d(kernel_size=2)
-        self.drop = nn.Dropout(0.4)
-        self.flat = nn.Flatten()
-        self.fc1 = nn.Linear(27 , 2)
-        self.fc2 = nn.Linear(2, 2)
-
-    def forward(self,x):
-        x=self.conv1(x)
-        x=F.relu(x)
-        x=self.conv2(x)
-        x=F.relu(x) 
-        x=self.conv3(x)
-        x=F.relu(x) 
-        x= self.mp(x)
-        x = self.drop(x)
-        x = self.flat(x)
-        x = self.fc1(x)
-        x = F.relu(x)
-        x = self.fc2(x)
-        output = F.log_softmax(x, dim=1)
-        
-        return output
-
-class NeuralNetMnist_3(nn.Module):
-    '''Feature extraction model for mnist3'''
-    def __init__(self):
-
-        super(NeuralNetMnist_3, self).__init__()
-        self.conv1 = nn.Conv1d( 1,64,kernel_size =4)
-        self.conv2 = nn.Conv1d( 64,64,kernel_size =4)
-        self.conv3= nn.Conv1d(64,1,kernel_size =4)
-
-        self.mp = nn.MaxPool1d(kernel_size=2)
-        self.drop = nn.Dropout(0.4)
-        self.flat = nn.Flatten()
-        self.fc1 = nn.Linear(64 , 2)
-        self.fc2 = nn.Linear(2, 2)
-
-    def forward(self,x):
-        x=self.conv1(x)
-        x=F.relu(x)
-        x=self.conv2(x)
-        x=F.relu(x) 
-        x=self.conv3(x)
-        x=F.relu(x) 
-        x= self.mp(x)
-        x = self.drop(x)
-        x = self.flat(x)
-        x = self.fc1(x)
-        x = F.relu(x)
-        x = self.fc2(x)
-        output = F.log_softmax(x, dim=1)
-        
-        return output
-
-
-
-class NeuralNetCifar_10(nn.Module):
-    '''Feature extraction model for cifar10'''
-    def __init__(self):
-
-        super(NeuralNetCifar_10, self).__init__()
-        self.conv1 = nn.Conv1d( 1,64,kernel_size =4)
-        self.conv2 = nn.Conv1d( 64,64,kernel_size =4)
-        self.conv3= nn.Conv1d(64,1,kernel_size =4)
-
-        self.mp = nn.MaxPool1d(kernel_size=2)
-        self.drop = nn.Dropout(0.4)
-        self.flat = nn.Flatten()
-        self.fc1 = nn.Linear(1952 , 2)
-        self.fc2 = nn.Linear(2, 2)
-
-    def forward(self,x):
-        x=self.conv1(x)
-        x=F.relu(x)
-        x=self.conv2(x)
-        x=F.relu(x) 
-        x=self.conv3(x)
-        x=F.relu(x) 
-        x= self.mp(x)
-        x = self.drop(x)
-        x = self.flat(x)
-        x = self.fc1(x)
-        x = F.relu(x)
-        x = self.fc2(x)
-        output = F.log_softmax(x, dim=1)
-        
-        return output
     
 def compute_mismatch(model,X_test,Y_test):
     ones= 0
@@ -390,11 +226,13 @@ def train_Detection_Model (X,Y):
 
     torch.save(model, './advDetectionModels/torch_Cifar10_2.pt')
 '''
-def train_on_activations(X,Y,model_name,model_path):
+def train_on_activations(X_train,Y_train,X_test,Y_test,model_name,model_path):
     
     if os.path.exists(model_path):
         model =torch.load(model_path)
     else:
+        model=Deep(X_train.shape[1])
+        '''
         if model_name=='cifar10_1':
             model = NeuralNetCifar_10()
         elif model_name=='Ember_2 ':
@@ -408,13 +246,15 @@ def train_on_activations(X,Y,model_name,model_path):
             model = NeuralNetMnist_3
         elif model_name=='cuckoo_1':
             model = NeuralNetCuckoo_1
+        '''
 
     #Y = to_categorical(Y)
     optimizer = optim.Adam(model.parameters(),lr=0.0001)
     #criterion = nn.CrossEntropyLoss()
     criterion = nn.BCELoss() 
 
-    X_train, X_test, y_train, y_test = train_test_split(X,Y ,random_state=104, test_size=0.25, shuffle=True)
+# shuffling training data
+    X_train, _, y_train, _ = train_test_split(X_train,Y_train ,random_state=104, test_size=0, shuffle=True)
     if torch.cuda.is_available():
         model=model.cuda()
         
@@ -426,7 +266,7 @@ def train_on_activations(X,Y,model_name,model_path):
     #print(f'Y_test len {y_test.shape}')
 
     n_epoch = 30 # number of epochs to run
-    batch_size = 2  # size of each batch
+    batch_size = 200  # size of each batch
     batch_start = torch.arange(0, len(X_train), batch_size)
     epoch=1
     
@@ -445,21 +285,14 @@ def train_on_activations(X,Y,model_name,model_path):
                 # take a batch
                 x = X_train[start:start+batch_size]
                 y = y_train[start:start+batch_size]
-                #print(x.shape)
-                #x=torch.tensor(x[None, :])
+                
                 if torch.cuda.is_available():
                     x=x.cuda()
                     y=y.cuda()
                 
     
                 # Forward pass
-                outputs = tf.Tensor(tf.transpose(model(x).detach())[0])
-                
-                #outputs = torch.squeeze(outputs)
-                #print(torch.argmax(outputs),torch.argmax(y))
-                print(outputs,y)
-                print(outputs.shape)
-                print(y.shape)
+                outputs = model(x)[:,0]#.detach()[0]
                 loss = criterion(outputs, y)
                 # Backward and optimize
                 optimizer.zero_grad()
@@ -474,7 +307,7 @@ def train_on_activations(X,Y,model_name,model_path):
         # evaluate accuracy at end of each epoch
         model.eval()
         y_pred = model(X_test)
-        acc = (y_pred.round() == y_test).float().mean()
+        acc = (y_pred.round() == Y_test).float().mean()
         acc = float(acc)
         if acc > best_acc:
             best_acc = acc
@@ -483,6 +316,6 @@ def train_on_activations(X,Y,model_name,model_path):
     # restore and save model
     model.load_state_dict(best_weights)
     torch.save(model, 'model_path')   
-    print(f' Best Accuracy : {best_acc} Saved to {model_path}')
+    print(f' Best Accuracy : {best_acc*100}% Saved to {model_path}')
 
     return model

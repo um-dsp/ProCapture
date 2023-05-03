@@ -40,29 +40,29 @@ evaluating the models
 '''
 
 supported_dataset = ['cifar10' ,'mnist', 'cuckoo','ember'] 
-supported_attacks = ['FGSM','CW','PGD',"CKO",'EMBER',None]
+supported_attacks = ['FGSM','CW','PGD',"CKO",'EMBER_att',None]
 pre_trained_models = ['cifar10_1','cuckoo_1','Ember_2','mnist_1','mnist_2','mnist_3']
 folder = ['Ground_Truth' , 'Benign' ,'Adversarial']
 def parseArgs():
     args= sys.argv
     dataset = args[1]
     if( dataset not in supported_dataset):
-        raise ValueError(f'ProvMl only Supports {supported_dataset}')
+        raise ValueError(f'ProvML only Supports {supported_dataset}')
         
     model_name = args[2]
     if(model_name not in pre_trained_models ):
-        raise ValueError(f'ProvMl only Supports {pre_trained_models}')
+        raise ValueError(f'ProvML only Supports {pre_trained_models}')
         
 
     folder = args[3]
     if(folder not in folder):
-        raise ValueError(f"ProMl save folder options are {folder}")
+        raise ValueError(f"ProvML save folder options are {folder}")
 
     # Optional Attack argument, if None no attack will be performed on the input
     if (len(args)==5 ):
         attack = args[4]
         if(attack not in supported_attacks):
-          raise ValueError(f'ProvMl only Supports {supported_attacks}')
+          raise ValueError(f'ProvML only Supports {supported_attacks}')
     else :
         attack = None
 
@@ -143,7 +143,8 @@ def generate_and_save_activations(model,x,index,label,folder_name):
     if(label.shape[0]!= 1):
         label =np.argmax(label)
     ## For adversarial activation extraction we are interested only in evasive samples
-    if folder_name.find('Adversarial') != -1:
+    if any(adv in folder_name for adv in ['Adversarial','FGSM','PGD','CW','CKO','EMBER_att']):
+    
         if prediction==label: #skip extraction
             #print("skipping extraction for unevasive sample")
             return False
@@ -211,7 +212,7 @@ if __name__ == "__main__":
 
 
     model = get_model(model_name)
-    
+    evaluate(model,X,tf.convert_to_tensor(Y))
     
         
     if(attack):
@@ -225,7 +226,7 @@ if __name__ == "__main__":
             #evaluate(model,X_adv[i*batch_size:(i+1)*batch_size],tf.convert_to_tensor(batch_y))
             i+=1
         X=X_adv
-    
+        #evaluate(model,X_adv,tf.convert_to_tensor(Y))
     #print(tf.math.argmax(tf.convert_to_tensor(Y),axis=1))
     #print(tf.math.argmax(model(X),axis=1))
     evaluate(model,X,tf.convert_to_tensor(Y))
