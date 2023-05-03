@@ -46,8 +46,8 @@ We describe the supported datasets, attacks and pre-trained models provided with
    
  To extract Adversarial activations on training data (Ground_Truth), we use: <br />
     >  `python activations_extractor.py mnist mnist_1 Ground_Truth FGSM ` <br />
-This command is specifically needed to train graph_model later on. <br />
-The model activations of ground truth, test benign and adversarial data are stored in each respective folder.
+This command is specifically needed to train graph_model later on. <br /> <br />
+The model activations of ground truth, test benign and adversarial data are stored in each respective folder in text files named as [true label]_[predicted label]_[index]. Each file contains the values of every node in every layer of the model for that specific sample. 
 ***
 
 ### Empirical Characterization:
