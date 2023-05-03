@@ -43,10 +43,11 @@ We describe the supported datasets, attacks and pre-trained models provided with
     > `python activations_extractor.py mnist mnist_1 Adversarial FGSM` <br />
     > `python activations_extractor.py cuckoo cuckoo_1 Adversarial CKO` <br />
     > `python activations_extractor.py ember ember_1 Adversarial EMB` <br />
-  To extract Adversarial activations on training data (Ground_Truth), we use: <br />
+   
+ To extract Adversarial activations on training data (Ground_Truth), we use: <br />
     >  `python activations_extractor.py mnist mnist_1 Ground_Truth FGSM ` <br />
-   This command is specifically needed to train graph_model later on.
-  The model activations of ground truth, test benign and adversarial data are stored in each respective folder.
+This command is specifically needed to train graph_model later on. <br />
+The model activations of ground truth, test benign and adversarial data are stored in each respective folder.
 ***
 
 ### Empirical Characterization:
