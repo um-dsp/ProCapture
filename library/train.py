@@ -253,8 +253,8 @@ def train_on_activations(X_train,Y_train,X_test,Y_test,model_name,model_path):
     #criterion = nn.CrossEntropyLoss()
     criterion = nn.BCELoss() 
 
-# shuffling training data
-    X_train, _, y_train, _ = train_test_split(X_train,Y_train ,random_state=104, test_size=0, shuffle=True)
+    # shuffling training data
+    X_train, _, y_train, _ = train_test_split(X_train,Y_train ,random_state=104, test_size=1, shuffle=True)
     if torch.cuda.is_available():
         model=model.cuda()
         
@@ -263,7 +263,7 @@ def train_on_activations(X_train,Y_train,X_test,Y_test,model_name,model_path):
     #print(f'X_train len {X_train.shape}')
     #print(f'Y_train len {y_train.shape}')
     #print(f'X_test len {X_test.shape}')
-    #print(f'Y_test len {y_test.shape}')
+    #print(f'Y_test len {Y_test.shape}')
 
     n_epoch = 30 # number of epochs to run
     batch_size = 200  # size of each batch

@@ -67,11 +67,12 @@ if __name__ == "__main__":
     print('Shape of testing ben activations:',X_ben_test.shape)
     
     print('We sample equal number of adversarial and benign data ...')
-    shape_min = np.min(X_adv_train.shape[0],X_ben_train.shape[0])
+    
+    shape_min = np.min([X_adv_train.shape[0],X_ben_train.shape[0]])
     X_train = torch.cat((X_adv_train[:shape_min],X_ben_train[:shape_min]))# + X_gt
     Y_train= torch.cat((Y_adv_train[:shape_min], Y_ben_train[:shape_min]))# + Y_gt
     
-    shape_min = np.min(X_adv_test.shape[0],X_ben_test.shape[0])
+    shape_min = np.min([X_adv_test.shape[0],X_ben_test.shape[0]])
     X_test = torch.cat((X_adv_test[:shape_min],X_ben_test[:shape_min]))# + X_gt
     Y_test= torch.cat((Y_adv_test[:shape_min], Y_ben_test[:shape_min]))# + Y_gt
     #print('Shape of all activations:',X.shape)
