@@ -17,6 +17,7 @@ import tensorflow as tf
 import numpy as np
 import os
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler 
 import torch
 import torch.optim as optim
 import tqdm
@@ -153,13 +154,19 @@ def train_ember():
 class Deep(nn.Module):
     def __init__(self,nb_nodes):
         super().__init__()
-        self.layer1 = nn.Linear(nb_nodes, 60)
+        self.layer1 = nn.Linear(nb_nodes, 256)
         self.act1 = nn.ReLU()
-        self.layer2 = nn.Linear(60, 60)
+        self.layer2 = nn.Sequential( 
+            nn.Dropout(), 
+            nn.Linear(256, 128))
         self.act2 = nn.ReLU()
-        self.layer3 = nn.Linear(60, 60)
+        self.layer3 = nn.Sequential( 
+            nn.Dropout(),
+            nn.Linear(128, 64))
         self.act3 = nn.ReLU()
-        self.output = nn.Linear(60, 1)
+        self.output = nn.Sequential( 
+            nn.Dropout(),
+            nn.Linear(64, 1))
         self.sigmoid = nn.Sigmoid()
  
     def forward(self, x):
@@ -170,6 +177,29 @@ class Deep(nn.Module):
         return x
     
 
+
+class BinaryClassification(nn.Module):
+    def __init__(self,nb_nodes):
+        super(BinaryClassification, self).__init__()
+        
+        self.layer_1 = nn.Linear(nb_nodes, 64) 
+        self.layer_2 = nn.Linear(64, 64)
+        self.layer_out = nn.Linear(64, 1) 
+        
+        self.relu = nn.ReLU()
+        self.dropout = nn.Dropout(p=0.1)
+        self.batchnorm1 = nn.BatchNorm1d(64)
+        self.batchnorm2 = nn.BatchNorm1d(64)
+        
+    def forward(self, inputs):
+        x = self.relu(self.layer_1(inputs))
+        x = self.batchnorm1(x)
+        x = self.relu(self.layer_2(x))
+        x = self.batchnorm2(x)
+        x = self.dropout(x)
+        x = torch.sigmoid(self.layer_out(x))
+        
+        return x
     
 def compute_mismatch(model,X_test,Y_test):
     ones= 0
@@ -226,12 +256,24 @@ def train_Detection_Model (X,Y):
 
     torch.save(model, './advDetectionModels/torch_Cifar10_2.pt')
 '''
+
+def binary_acc(y_pred, y_test):
+    #y_pred_tag = torch.round(torch.sigmoid(y_pred))
+    y_pred_tag = torch.round(y_pred)
+    
+    correct_results_sum = (y_pred_tag == y_test).sum().float()
+    acc = correct_results_sum/y_test.shape[0]
+    acc = torch.round(acc * 100)
+    
+    return acc
+
 def train_on_activations(X_train,Y_train,X_test,Y_test,model_name,model_path):
     
     if os.path.exists(model_path):
+        print('loading existing model ...')
         model =torch.load(model_path)
     else:
-        model=Deep(X_train.shape[1])
+        model=BinaryClassification(X_train.shape[1])
         '''
         if model_name=='cifar10_1':
             model = NeuralNetCifar_10()
@@ -249,16 +291,23 @@ def train_on_activations(X_train,Y_train,X_test,Y_test,model_name,model_path):
         '''
 
     #Y = to_categorical(Y)
-    optimizer = optim.Adam(model.parameters(),lr=0.0001)
+    optimizer = optim.Adam(model.parameters(),lr=0.001)
     #criterion = nn.CrossEntropyLoss()
     criterion = nn.BCELoss() 
+    #criterion = nn.BCEWithLogitsLoss()
 
     # shuffling training data
     X_train, _, y_train, _ = train_test_split(X_train,Y_train ,random_state=104, test_size=1, shuffle=True)
+    # Standersize data
+    #scaler = StandardScaler()
+    #X_train = scaler.fit_transform(X_train)
+    #X_test = scaler.transform(X_test)
+    
     if torch.cuda.is_available():
         model=model.cuda()
         
-        
+    X_test=torch.Tensor(X_test)
+    Y_test=torch.Tensor(Y_test)  
     #print('[Graph MODEL TRAINING]')
     #print(f'X_train len {X_train.shape}')
     #print(f'Y_train len {y_train.shape}')
@@ -266,31 +315,45 @@ def train_on_activations(X_train,Y_train,X_test,Y_test,model_name,model_path):
     #print(f'Y_test len {Y_test.shape}')
 
     n_epoch = 30 # number of epochs to run
-    batch_size = 200  # size of each batch
+    batch_size = 100#00  # size of each batch
     batch_start = torch.arange(0, len(X_train), batch_size)
     epoch=1
     
     # Hold the best model
     best_acc = - np.inf   # init to negative infinity
     best_weights = None
-    
     while(epoch < n_epoch):
         model.train()
         
-        with tqdm.tqdm(batch_start, unit="batch", mininterval=0, disable=True) as bar:
+        with tqdm.tqdm(batch_start, unit="batch") as bar:
             bar.set_description(f"Epoch {epoch}")
             for start in bar:
-         
+                
                 
                 # take a batch
                 x = X_train[start:start+batch_size]
                 y = y_train[start:start+batch_size]
+                if x.shape[0]==1:
+                    continue
+                x=torch.Tensor(x)
+                y=torch.Tensor(y)
                 
                 if torch.cuda.is_available():
                     x=x.cuda()
                     y=y.cuda()
                 
-    
+                optimizer.zero_grad()
+                
+                #print(type(x))
+                y_pred = model(x)
+                
+                loss = criterion(y_pred, y.unsqueeze(1))
+                #acc = binary_acc(y_pred, y.unsqueeze(1))
+                
+                loss.backward()
+                optimizer.step()
+                
+                '''
                 # Forward pass
                 outputs = model(x)[:,0]#.detach()[0]
                 loss = criterion(outputs, y)
@@ -300,22 +363,25 @@ def train_on_activations(X_train,Y_train,X_test,Y_test,model_name,model_path):
                 optimizer.step()
                 # print progress
                 acc = (outputs.round() == y).float().mean()
+                '''
                 bar.set_postfix(
                     loss=float(loss),
-                    acc=float(acc)
+                    #train_acc=float(acc)
                 )
         # evaluate accuracy at end of each epoch
         model.eval()
         y_pred = model(X_test)
-        acc = (y_pred.round() == Y_test).float().mean()
+        acc = binary_acc(y_pred, Y_test.unsqueeze(1))#(y_pred.round() == Y_test).float().mean()
         acc = float(acc)
+        print('Current test accuracy: ',float(acc))
         if acc > best_acc:
             best_acc = acc
             best_weights = copy.deepcopy(model.state_dict())
         epoch+=1
+        
     # restore and save model
     model.load_state_dict(best_weights)
-    torch.save(model, 'model_path')   
-    print(f' Best Accuracy : {best_acc*100}% Saved to {model_path}')
+    torch.save(model, model_path)   
+    print(f' Best Accuracy : {best_acc}% Saved to {model_path}')
 
     return model

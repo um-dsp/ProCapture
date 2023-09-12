@@ -37,12 +37,17 @@ def attribtuions_to_polarity(X_test,y_test,model,target_label):
         index+=1
     return positive,negative
 
-def get_attributes (sample,model,label):
-        sample = torch.reshape(sample,(1,1,sample.shape[0]))
-        ig = IntegratedGradients(model)
-        attribution = ig.attribute(sample, target=label)
-        a= attribution[0][0]
-        return a
+def get_attributes (data,model):
+    
+    #print(label.item())
+    #print(data.shape)
+    #sample = torch.reshape(sample,(1,1,sample.shape[0]))
+    #print(sample.shape)
+    ig = IntegratedGradients(model)
+    attribution = ig.attribute(data, target=0)
+    print(attribution.shape)
+    #a= attribution[0][0]
+    return attribution
 
 
 
@@ -189,17 +194,25 @@ def box_plot(ben,ben_,adv,adv_,expected_nb_nodes):
     plt.show()
 
 
-def get_nodes_weight_per_label(X,Y,label,expected_nb_nodes,model):
-    negative_nodes = [[] for i in range(expected_nb_nodes)]
-    positive_nodes = [[] for i in range(expected_nb_nodes)]
-
-    for index,input in enumerate(X):
-        if(Y[index][1] != label) : continue
-        attributes = get_attributes(input,model,label)
-        for i,x in enumerate(attributes) :
-            if(x>0): positive_nodes[i].append(input[i])
-            if(x<0): negative_nodes[i].append(input[i])
-    return positive_nodes,negative_nodes
+def get_nodes_data(X,attributes):
+    
+    nb_nodes = X.shape[1]
+    nodes_weights = [[] for i in range(nb_nodes)]
+    nodes_avg_weights = []
+    nodes_atts = [[] for i in range(nb_nodes)]
+    nodes_avg_atts = []
+    
+    # Iterating the nodes of the target model
+    for N in range(nb_nodes):
+        # Iterating all samples
+        for i,att in enumerate(attributes):
+            # Store the weight (activation) of Node N corresponding to sample i
+            nodes_weights[N].append(X[i][N])
+            # Store the attribute of Node N corresponding to sample i
+            nodes_atts[N].append(attributes[i][N])
+        nodes_avg_weights.append(np.mean(nodes_weights[N]))
+        nodes_avg_atts.append(np.mean(nodes_atts[N]))  
+    return nodes_weights,nodes_atts, nodes_avg_weights, nodes_avg_atts
 
 def get_avg_number_of_nodes_per_state(label,model,X,Y):
     pos = 0

@@ -8,7 +8,7 @@ import numpy as np
 supported_dataset = ['cifar10' ,'mnist', 'cuckoo','ember'] 
 supported_attacks = ['FGSM','CW','PGD',"CKO",'EMBER',None]
 pre_trained_models = ['cifar10_1','cuckoo_1','Ember_2','mnist_1','mnist_2','mnist_3']
-folder = ['groundTruth' , 'begnign' ,'adversarial']
+folder = ['groundTruth' , 'benign' ,'adversarial']
 
 def parse_args():
     args= sys.argv
@@ -23,7 +23,7 @@ def parse_args():
         
     attack = args[3]
     if(attack not in supported_attacks):
-          raise ValueError(f'ProvML only Supports {supported_attacks}')   
+        raise ValueError(f'ProvML only Supports {supported_attacks}')   
 
     #expected_nb_nodes = int(args[4])
 
@@ -44,13 +44,13 @@ if __name__ == "__main__":
     train_adv_accessor = Accessor('./Ground_Truth/'+dataset+'/FGSM/' +model_name +'/')
     
     print('Loading Benign training activations...')
-    train_benign_act = train_benign_accessor.get_all(limit=5000)
+    train_benign_act = train_benign_accessor.get_all()#limit=100)
     print('Loading Adversarial training activations...')
-    train_adv_act = train_adv_accessor.get_all(limit=5000)
+    train_adv_act = train_adv_accessor.get_all()#limit=100)
     print('Loading Benign testing activations...')
-    test_benign_act = test_benign_accessor.get_all(limit=1000)
+    test_benign_act = test_benign_accessor.get_all()#limit=10)
     print('Loading Adversarial testing activations...')
-    test_adv_act = test_adv_accessor.get_all(limit=1000)
+    test_adv_act = test_adv_accessor.get_all()#limit=10)
     #gt_sample_act = ground_truth_accessor.get_all()
 
 

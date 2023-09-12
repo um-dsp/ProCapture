@@ -3,11 +3,13 @@ import torch.nn.functional as F
 from library.Accessor import *
 import numpy as np 
 from sklearn.model_selection import train_test_split
-from library.attributionUtils import NeuralNetMnist_1,NeuralNetMnist_2,NeuralNetMnist_3, NeuralNetEmber, NeuralNetCuckoo_1, NeuralNetCifar_10
+#from library.attributionUtils import NeuralNetMnist_1,NeuralNetMnist_2,NeuralNetMnist_3, NeuralNetEmber, NeuralNetCuckoo_1, NeuralNetCifar_10
 from library.attributionUtils import attribtuions_to_polarity,predict_torch,compute_accuracy_torch
 from library.attributionUtils import get_attributes,adversarial_detection_set
 from library.utils import normalize,dispersation_index
 from library.Activations import Activations
+from library.train import binary_acc
+from sklearn.preprocessing import StandardScaler 
 
 
 
@@ -74,29 +76,49 @@ def stats(attributes):
     return pos >neg
 
 def multiply_attributed_with_input(X,Y,model):
+   
+    '''
+    X: set of samples with the same label 0 or 1
+    Y: is the set of labels
+    
+    '''
+   
     s = []
     
-    for index,input in enumerate(X):
-        label = Y[index]
-        prediction = predict_torch(model,input).item()
-        # filter to only correct prediction
-        if( prediction != label): continue
-        attributes = get_attributes(input,model,prediction)           
-        # find indexes of attributes that are below the thresshhold
-        #indexes_to_remove = get_items_below_threshhold(attributes,0.01)
-        
-        #remove those indexes from attribtuions and from input { Considered as noise}
-        #attributes = remove_element_with_indexes(attributes,indexes_to_remove)
-        #input = remove_element_with_indexes(input,indexes_to_remove)
     
-        #multiply  attributes with input
-        
-        attributes = np.absolute(attributes)
-        mul = np.multiply(attributes,input)
+    
+    if torch.cuda.is_available():
+        model=model.cuda()
+    
+    model.eval()
+    X =torch.Tensor(X)
+    Y=torch.Tensor(Y)
+    y_pred = model(X)
+    
+    y_preds = torch.round(y_pred)
+    #label = Y.unsqueeze(1)[0]
+    #for index, x in enumerate(X):
+       
+    #prediction = y_preds[index]
+    
+    # filter to only correct prediction
+    #if( prediction != label): continue
+    
+    attributes = get_attributes(X,model)#,label)           
+    # find indexes of attributes that are below the thresshhold
+    #indexes_to_remove = get_items_below_threshhold(attributes,0.01)
+    
+    #remove those indexes from attribtuions and from input { Considered as noise}
+    #attributes = remove_element_with_indexes(attributes,indexes_to_remove)
+    #input = remove_element_with_indexes(input,indexes_to_remove)
 
-        s.append(mul)
-        printProgressBar(index, len(X), prefix = 'Progress:', suffix = 'Complete', length = 50)
-    return s
+    #multiply  attributes with input
+    
+    mul = np.multiply(np.absolute(attributes),X)
+
+    #s.append(mul)
+    #printProgressBar(index, len(X), prefix = 'Progress:', suffix = 'Complete', length = 50)
+    return mul, attributes
 
 def number_of_active_nodes(set):
     threshold = 0.0001
