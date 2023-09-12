@@ -55,7 +55,7 @@ The model activations of ground truth, test benign and adversarial data are stor
  Use [Empirical_Characterization.ipynb](/Empirical_Characterization.ipynb) to compute the proposed graph-related metrics for empirical characterization.
 
 ---
-### Structured Characterization [THIS PART IS STILL NOT READY]
+### Structured Characterization
 
 #### Graph Feature learning model: training a model `graph_model` on the extracted graph data
 
@@ -64,9 +64,8 @@ The model activations of ground truth, test benign and adversarial data are stor
 This step utilizes the activations extracted in the previous step, To Train and test a predefined model on the activations set use the CLI command with the following parameters: Dataset Name, Model Name and Attack
   (The Above arguments will just be used to locate the needed activations in the project folder).
   The command also expects the following arguments: <br />
-- Model Path : represents the path for the predefined .pt model <br/>
-  (**Note**: after training the model will be saved in the same file)
-  The model will be trained  Ground_Truth benign and FGSM data, and tested on Benign and FGSM test data.
+- Model Path : represents the path to save the feature extraction model that is trained to seperate activations of benign and adversarial samples <br/>
+  (**Note**: We have pre-trained models on Ground_Truth benign and FGSM data, and tested on Benign and FGSM test data.
 
   **Sample Commands:** <br />
 
@@ -74,7 +73,7 @@ This step utilizes the activations extracted in the previous step, To Train and 
   > `python train_on_graph.py mnist mnist_1 FGSM ./models/mnist_1.pt` <br />
 
 
-#### Attribution: Perform ML explanation on the `graph_model` to identify relevant nodes
+#### Attribution: Perform ML explanation on the `graph_model` to identify relevant nodes [Still not ready]
 
 - ` gen_attributions.py`: this file explains how to transform generated activations to dataset and train an torch adversarial detection model. ` attributionUtils.py` holds different predefined architecture that cover all the dataset we research and produce satisfactory performance.
   ` Attributions :` in the same file we showcase the steps to generate the attributions of the models on a batch of input,
