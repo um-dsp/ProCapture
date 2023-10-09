@@ -39,13 +39,12 @@ def attribtuions_to_polarity(X_test,y_test,model,target_label):
 
 def get_attributes (data,model):
     
-    #print(label.item())
-    #print(data.shape)
-    #sample = torch.reshape(sample,(1,1,sample.shape[0]))
-    #print(sample.shape)
+    
+    #if torch.cuda.is_available():
+    #    cuda=True
     ig = IntegratedGradients(model)
-    attribution = ig.attribute(data, target=0)
-    print(attribution.shape)
+    attribution, delta = ig.attribute(data, target=0, internal_batch_size=100, n_steps=50, return_convergence_delta=True)
+    print("For n_steps = 50, delta is ", delta )
     #a= attribution[0][0]
     return attribution
 
@@ -210,8 +209,8 @@ def get_nodes_data(X,attributes):
             nodes_weights[N].append(X[i][N])
             # Store the attribute of Node N corresponding to sample i
             nodes_atts[N].append(attributes[i][N])
-        nodes_avg_weights.append(np.mean(nodes_weights[N]))
-        nodes_avg_atts.append(np.mean(nodes_atts[N]))  
+        nodes_avg_weights.append(torch.mean(torch.Tensor(nodes_weights[N])))
+        nodes_avg_atts.append(torch.mean(torch.Tensor(nodes_atts[N])))
     return nodes_weights,nodes_atts, nodes_avg_weights, nodes_avg_atts
 
 def get_avg_number_of_nodes_per_state(label,model,X,Y):

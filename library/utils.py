@@ -77,13 +77,14 @@ def get_dataset(dataset_name, categorical=False):
         X_train = X_train / 255.0
         X_test = X_test/ 255.0
     if(dataset_name =="cuckoo"):
-        df = pd.read_csv("./data/cuckoo.csv")
+        df = pd.read_csv("./data/cuckoo.csv",encoding='iso-8859-1')
+        df.drop(['Samples'],axis=1,inplace=True) # dropping the name of each row
         df_train=df.drop(['Target'],axis=1)
         df_train.fillna(0)
         df['Target'].fillna('Benign',inplace = True)    
         X= df_train.values
         Y=df['Target'].values
-        X_train, X_test, Y_train, Y_test = model_selection.train_test_split(X, Y, test_size=0.2, random_state=7)
+        X_train, X_test, Y_train, Y_test = model_selection.train_test_split(X, Y, test_size=0.33, random_state=7)
     if(dataset_name == 'ember'):
         X_train, Y_train, X_test, Y_test = ember.read_vectorized_features("./data/ember2018/")
     
@@ -231,7 +232,7 @@ def plotAcrossPredictions(gt, metric, ben=None,adv=None,Pred_range=10,data='mnis
     plt.show()
     
 def plotAcrossNodes(gt, metric, ben,adv,Node_range=10,data='mnist',label=0,masking=False,dist=False):#,data='mnist'): 
-    #plt.figure(figsize=(50,20))
+    plt.figure(figsize=(50,20))
     X = np.arange(Node_range)
     mask=[]
     
@@ -292,7 +293,7 @@ def plotAcrossNodes(gt, metric, ben,adv,Node_range=10,data='mnist',label=0,maski
     
     
 def plotAcrossLayers(gt, metric, ben,adv,layer_range=10,data='mnist',label=0,masking=False,dist=False):#,data='mnist'): 
-    #plt.figure(figsize=(50,20))
+    plt.figure(figsize=(50,20))
     X = np.arange(layer_range)
     mask=[]
     
@@ -352,7 +353,7 @@ def plotAcrossLayers(gt, metric, ben,adv,layer_range=10,data='mnist',label=0,mas
     plt.show()
     
 def plotDiff(FGSM_diff,PGD_diff,adv_diff,Node_range=10,data='mnist',label=0):#,data='mnist'): 
-    #plt.figure(figsize=(50,20))
+    plt.figure(figsize=(50,20))
     X = np.arange(Node_range)
     
     

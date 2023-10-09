@@ -82,42 +82,30 @@ def multiply_attributed_with_input(X,Y,model):
     Y: is the set of labels
     
     '''
-   
     s = []
     
     
-    
+    X = torch.Tensor(X)
+    Y = torch.Tensor(Y)
+
     if torch.cuda.is_available():
         model=model.cuda()
-    
+        X=X.cuda()
+        Y=Y.cuda()
+
     model.eval()
-    X =torch.Tensor(X)
-    Y=torch.Tensor(Y)
     y_pred = model(X)
     
     y_preds = torch.round(y_pred)
-    #label = Y.unsqueeze(1)[0]
-    #for index, x in enumerate(X):
-       
-    #prediction = y_preds[index]
     
-    # filter to only correct prediction
-    #if( prediction != label): continue
-    
-    attributes = get_attributes(X,model)#,label)           
-    # find indexes of attributes that are below the thresshhold
-    #indexes_to_remove = get_items_below_threshhold(attributes,0.01)
-    
-    #remove those indexes from attribtuions and from input { Considered as noise}
-    #attributes = remove_element_with_indexes(attributes,indexes_to_remove)
-    #input = remove_element_with_indexes(input,indexes_to_remove)
+    attributes = get_attributes(X,model)
 
     #multiply  attributes with input
-    
-    mul = np.multiply(np.absolute(attributes),X)
+    #if torch.cuda.is_available():
+    #    attributes=attributes.cuda()
+    mul = torch.matmul(torch.abs(attributes).float(),X.T.float())
+    #np.multiply(np.absolute(attributes),X)
 
-    #s.append(mul)
-    #printProgressBar(index, len(X), prefix = 'Progress:', suffix = 'Complete', length = 50)
     return mul, attributes
 
 def number_of_active_nodes(set):

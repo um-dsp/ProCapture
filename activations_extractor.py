@@ -67,7 +67,7 @@ def parseArgs():
         attack = None
 
   
-    if(not attack and folder =="adversarial"):
+    if(not attack and folder =="Adversarial"):
       raise ValueError('cannot save adversarial checkpoint without Attack Input')
 
   
@@ -212,7 +212,10 @@ if __name__ == "__main__":
 
 
     model = get_model(model_name)
-    evaluate(model,X,tf.convert_to_tensor(Y))
+    print(X.shape)
+    print(Y.shape)
+    print(model.inputs)
+    evaluate(model,tf.convert_to_tensor(X[:,:1549].astype('float32')),tf.convert_to_tensor(Y[:,:1549].astype('float32')))
     
         
     if(attack):

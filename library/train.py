@@ -370,6 +370,9 @@ def train_on_activations(X_train,Y_train,X_test,Y_test,model_name,model_path):
                 )
         # evaluate accuracy at end of each epoch
         model.eval()
+        if torch.cuda.is_available():
+            X_test=X_test.cuda()
+            Y_test = Y_test.cuda()
         y_pred = model(X_test)
         acc = binary_acc(y_pred, Y_test.unsqueeze(1))#(y_pred.round() == Y_test).float().mean()
         acc = float(acc)
