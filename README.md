@@ -1,4 +1,4 @@
-# ProvML: Inference Provenance-Driven Characterization of Machine Learning in Benign and Adversarial Settings
+# DeepProv: Adversarial Characterization of Deep Neural Networks via Inference Provenance Graphs
 
 We describe the supported datasets, attacks and pre-trained models provided with our code. <br />
 
