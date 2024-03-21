@@ -61,6 +61,8 @@ The model activations of ground truth, test benign and adversarial data are stor
 ---
 ### Structured Characterization
 
+ Use [Structured_Characterization.ipynb](/Structured_Characterization.ipynb) to compute the proposed graph-related metrics for empirical characterization.
+
 #### Graph Feature learning model: training a model `graph_model` on the extracted graph data
 
 ` train_on_graph.py`: We train another model called `graph_model` that learns the NN graph (activations) of the target model `model`. This model should be also stored should be initiated and stored in a .pt file <br />
