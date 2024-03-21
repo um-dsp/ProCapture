@@ -106,6 +106,7 @@ if __name__ == "__main__":
     mode="Saliency"
     folder="Ground_Truth_pth"
     """
+    print("Loading Attributions and Emperical metrics to select Nodes \n ###########################")
     if dataset=="mnist":
         attacks=["FGSM","PGD","APGD-DLR","square"]
     else:
@@ -215,7 +216,7 @@ if __name__ == "__main__":
         X_attacked=X_adv
         beta={j:9999999999 for j in range(len(selected_layers))}
     epsilon=0.05
-    
+    print("Computing Benign Distribution on the Selcted Nodes \n ###########################")
     layers_act,distribution_ben,layers_act_std,layer_dims=extract_ben_dist(model,X_train,Y_train,layer_dims,sample_bal=X_train_sample_bal[dataset])
     selected_act_vals=selec_act(selected_nodes,selected_layers,layers_act,layers_act_std,epsilon,bandwidth=0.1)
 
@@ -233,6 +234,7 @@ if __name__ == "__main__":
         X_test_all=X_test
         Y_test_all=Y_test    
     alpha_output={}
+    print("Robustness Enhancement Process \n ###########################")
     for layer_dim in layer_dims:
         alpha_output[layer_dim[1]]={}
     for alpha in [1.0]: 
@@ -342,7 +344,7 @@ if __name__ == "__main__":
     acc_all_ben,acc_all_adv=acc_ben,acc_adv
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
+    print("Combining the best actions seqauence between different layers \n ###########################")
     acc_on_adv= [alpha_output[selected_layer][alpha][1] for selected_layer in selected_layers]
     sorted_lists = sorted(zip(acc_on_adv,[j for j in range(len(acc_on_adv))]), key=lambda x: x[0],reverse=True)
     ind_layer=[[] for la in layer_dims ]
@@ -402,112 +404,8 @@ if __name__ == "__main__":
             acc_un_attacks.append(acc_adv)
         config_layers[permutation]=[layer_ind_dims,ben_distr]
         res_orders[permutation]=[acc_ben]+acc_un_attacks
+        print("Results on different attacks \n ###########################")
         print("studied attack : " ,attack)
         df=pd.DataFrame(data=[[permutation]+res_orders[permutation]],columns=["layers order","acc_ben"]+attacks)
         print(df)
 
-"""
-    alpha_output={}
-    for layer_dim in layer_dims:
-        alpha_output[layer_dim[1]]={}
-    for alpha in [1.0]: 
-        cumu_set_ind={}
-        set_ind={}
-        for layer_dim in layer_dims:
-            cumu_set_ind[layer_dim[1]]=[]
-            set_ind[layer_dim[1]]=[]
-        for selected_layer in selected_layers:
-            ov_ben=[]
-            ov_adv=[]
-            metrics=[]
-            trade_off=[]
-            effi_values=[]
-            for node in tqdm(selected_nodes[selected_layer]):
-                selected_act_vals[selected_layer][node]
-                specific_indices=[node]
-                layer_ind_dims=[specific_indices if la[1]==selected_layer else  [] for la in layer_dims  ]
-                for k in specific_indices:
-                    distribution_ben[selected_layer][k]=torch.Tensor(selected_act_vals[selected_layer][node])
-                update_values_l0= torch.tensor(distribution_ben[selected_layer], dtype=X_test[0].dtype, device=device)
-                ben_distr=[[] for la in layer_dims ]
-                ben_distr[list(selected_nodes.keys()).index(selected_layer)]=update_values_l0
-                model=load_DP_model(model_name,layer_ind_dims,ben_distr,alpha,beta)
-                X_adv,X,acc_ben,acc_adv=test_robustness(model,X_test,Y_test,attack,device,X_adv=X_attacked)
-                tr_off=acc_adv-acc_un_a#+acc_ben-acc_or
-                if tr_off>=-1 :
-                    trade_off.append(tr_off)
-                    set_ind[selected_layer].append(node)
-                    effi_values.append(selected_act_vals[selected_layer][node])
-                    #print(f'Progress alpha {alpha} : acc_ben {acc_ben} acc_under_att {acc_adv} node id {node}')
-                    ov_ben.append(acc_ben)
-                    ov_adv.append(acc_adv)
-                else:
-                    pass
-                    #print(f' layer {selected_layer} alpha {alpha}  acc_ben {acc_ben} acc_under_att {acc_adv} node id {node}')
-            
-            cumu_set_ind={}
-            for layer_dim in layer_dims:
-                cumu_set_ind[layer_dim[1]]=[]
-            ov_ben=[]
-            sorted_lists = sorted(zip(trade_off,set_ind[selected_layer],effi_values), key=lambda x: x[0],reverse=False)
-            set_ind[selected_layer]=[j[1] for j in sorted_lists]
-            trade_off=[j[0] for j in sorted_lists]
-            effi_values=[j[2] for j in sorted_lists]
-            ov_adv=[]
-            cum_eff_val=[]
-            acc_ben_or=acc_or
-            acc_under_att_or=acc_un_a
-            trade_off=[]
-            acc_ben_or=acc_or
-            sorted_actions=set_ind[selected_layer].copy()
-            sorted_vals=effi_values.copy()
-            for j in set_ind[selected_layer]:
-                stop=False
-                ov_adv=[]
-                ov_ben=[]
-                trade_off=[]
-                for i,node in enumerate(sorted_actions):
-                    specific_indices=cumu_set_ind[selected_layer].copy()+[node]
-                    specific_indices=list(torch.Tensor(specific_indices).unique().int().detach().numpy())
-                    layer_ind_dims=[specific_indices if la[1]==selected_layer else  [] for la in layer_dims  ]
-                    for k in specific_indices:
-                        distribution_ben[selected_layer][k]=torch.Tensor(effi_values[set_ind[selected_layer].index(k)])
-                    update_values_l0= torch.tensor(distribution_ben[selected_layer], dtype=X_test[0].dtype, device=device)
-                    ben_distr=[[] for la in layer_dims ]
-                    ben_distr[list(set_ind.keys()).index(selected_layer)]=update_values_l0
-                    model=load_DP_model(model_name,layer_ind_dims,ben_distr,alpha,beta)
-                    X_adv,X,acc_ben,acc_adv=test_robustness(model,X_test,Y_test,attack,device,X_adv=X_attacked)
-                    if ben_threshold==0:
-                        tr_off_n=acc_adv-acc_under_att_or#+acc_ben-acc_ben_or
-                    else:
-                        tr_off_n=acc_adv-acc_under_att_or+acc_ben-acc_ben_or
-                    if acc_ben>ben_threshold and acc_adv>=acc_under_att_or and tr_off_n>=-1:
-                        if acc_ben<=acc_or:
-                            acc_ben_or=acc_ben
-                        acc_under_att_or=acc_adv
-                        cumu_set_ind[selected_layer].append(node)
-                        print(f'dataset: {dataset} attack: {attack}--- Progress layer {selected_layer}  : acc_ben {acc_ben} acc_under_att {acc_adv} node id {node}')
-                        ov_ben.append(acc_ben)
-                        trade_off.append(tr_off_n)
-                        ov_adv.append(acc_adv)
-                        index=sorted_actions.index(node)
-                        sorted_actions.pop(index)
-                        sorted_vals.pop(index)
-                        stop=True
-                    else:
-                        pass
-                        trade_off.append(tr_off_n)
-                        ov_adv.append(acc_adv)
-                        ov_ben.append(acc_ben)
-                        #print(f'acc_ben {acc_ben} acc_under_att {acc_adv} node id {node}')
-                metrics.append([trade_off,ov_ben,ov_adv])
-                print(i,len(sorted_actions))
-                if (i+1==len(sorted_actions) and not(stop)) or i==0:
-                    break
-            layer_ind_dims[list(set_ind.keys()).index(selected_layer)]=cumu_set_ind[selected_layer]
-            ben_distr[list(set_ind.keys()).index(selected_layer)]=distribution_ben[selected_layer].to(device)
-            model=load_DP_model(model_name,layer_ind_dims,ben_distr,alpha,beta)
-            X_adv,X,acc_ben,acc_adv=test_robustness(model,X_test_all,Y_test_all,attack,device,X_adv=X_attacked)
-            print(f'{selected_layer} : acc_ben {acc_ben} acc_under_att {acc_adv}')
-            alpha_output[selected_layer][alpha]=[ov_ben,ov_adv,cumu_set_ind,set_ind,cum_eff_val,metrics,trade_off,distribution_ben]
-"""
