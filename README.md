@@ -58,18 +58,15 @@ The model activations of ground truth, test benign and adversarial data are stor
 
 #### Graph Neural Network Model: training a model `graph_model` on the extracted graph data
 
-` train_on_graph.py`: We train another model called `graph_model` that learns the NN graph (activations) of the target model `model`. This model should be also stored should be initiated and stored in a .pt file <br />
+` train_on_graph.py`: We train another model called `graph_model` that learns the GNN of the target model `model`. This model should be also stored should be initiated and stored in a .pth file <br />
 
-This step utilizes the activations extracted in the previous step, To Train and test a predefined model on the activations set use the CLI command with the following parameters: Dataset Name, Model Name and Attack
+ To Train and test a predefined model on the activations set use the CLI command with the following parameters: Dataset Name, Model Name and Attack
   (The Above arguments will just be used to locate the needed activations in the project folder).
   The command also expects the following arguments: <br />
 - Model Path : represents the path to save the feature extraction model that is trained to seperate activations of benign and adversarial samples <br/>
   (**Note**: We have pre-trained models on Ground_Truth benign and FGSM data, and tested on Benign and FGSM test data.
 
   **Sample Commands:** <br />
-This commands is specifically needed to train GNN later on. <br /> <br />
-    >  `python activations_extractor.py -dataset mnist -model_name mnist_1 -folder Ground_Truth_pth -model_type pytorch -task graph -stop 10` <br />
-    >  `python activations_extractor.py -dataset mnist -model_name mnist_1 -folder Ground_Truth_pth -model_type pytorch -task graph -attack FGSM -stop 10` <br />
 To train GNN and save it using the generated graphs use the following command :  <br /> <br />
    >  `python train_on_graph.py -dataset    mnist  -model_name    mnist_2 -folder Ground_Truth_pth -model_type pytorch -task graph -attack FGSM  -epochs 5 -save True` <br />
 
