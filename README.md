@@ -90,6 +90,6 @@ To explain the GNN and visualize the structred attributions of the graphs use th
 
  ***
 ### Robustness enhancement
-After generating the Structured and Emperical Characterization, you can generate the Robustness enhancement in the papaer using and example of the following commands br /> <br />
+After generating the Structured and Emperical Characterization, you can generate the Robustness enhancement in the papaer using an example of the following commands <br /> <br />
 Precise the attack , the dataset and the benign threshold for your models. 
     >  `python3 DeepProv.py -dataset ember  -model_name ember_1 -folder Ground_Truth_pth -attack EMBER  -expla_mode Saliency -ben_thresh 90 -attr_folder data/attributions_data/` <br />
