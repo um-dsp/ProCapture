@@ -86,7 +86,7 @@ To explain the GNN and visualize the structred attributions of the graphs use th
   - ` Attribution.py`: The thrid step: is to perform **Attributions** on the trained `graph_model`. This file should include a fucntion that takes as input a `graph_model` and `data_name`, the model should be imported automaticcaly from `Models/[data_name]/[[graph_model_name]`. Example: `Models/GNN_mnist_1_FGSM_pytorch.pth`
 ***
 ### Structured Characterization
- Use [Structured_Characterization.ipynb](/Structured_Characterization.ipynb) to compute the proposed graph-related metrics for empirical characterization.
+ Use [Structured_Characterization.ipynb](/Structured_Characterization.ipynb) to compute the proposed graph-related metrics for structured characterization.
 
  ***
 ### Robustness enhancement
