@@ -8,7 +8,7 @@ We describe the supported datasets, attacks and pre-trained models provided with
 - **Datasets**: MNIST is autimatically loaded via Keras. To test ProvML on malware data, you need to download the [CuckooTraces]([link here](https://drive.google.com/file/d/11GgjGVEXQAAz09J_T7sziJdS6vF14cwu/view?usp=sharing)) and [EMBER] ([link here](https://ember.elastic.co/ember_dataset_2018_2.tar.bz2)) datasets and add them in the folder `./data/`. By default ProvML will look for them in that path<br />
 
 - **Pre-trained Models**: We offer pre-trained models: mnist_1 , mnist_2, mnist_3, cuckoo_1, and ember_1 <br />
-  These models are availabe to download [here](https://drive.google.com/drive/folders/1a0kdq4waz8SXU9gThsUmKsR0YTSuaEWO?usp=share_link). Once downloaded to 'ProvML/models/' directory, the 'model.txt' file has the model architecture details of each model.
+  These models are availabe to download [here](https://drive.google.com/drive/folders/1vA1Xozi0RAqB43EAJ2a9HB32Ka89uCgN?usp=sharing). Once downloaded to 'ProvML/models/' directory, the 'model.txt' file has the model architecture details of each model.
   
 - **Attacks**: ProvML supports the following attacks : <br />
   MNIST: Fast Gradient Sign Method (FGSM), Projected Gradient Descent (PGD) Auto PGD  with DLR loss function (APGD-DLR) , Square <br />
