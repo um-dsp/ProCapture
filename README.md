@@ -36,7 +36,8 @@ We describe the supported datasets, attacks and pre-trained models provided with
   `folder/dataset_name/model_name/<attack>/`. 
   (**Note**: Make Sure to create the folder with the above path before running the activation generation)
 - **Attack Name**: FGSM | APGD-DLR | PGD |square|CKO |EMBER | None <br />
-  This parameter is optional.  if specified, ProvML will apply the attack on the dataset.
+ 
+    (**Note**:  This parameter is optional.  if specified, ProvML will apply the attack on the dataset. if attack is None and the folder input is set to adversarial it will throw an Error. -stop parameter is to precise the number of batchs of graph to generate (1000 graphs per batch) <br />
  - **tasks**: default is to get emperical characterization and graph for the extrating graphs from the model inputs.<br /> 
 
   (**Note**: if attack is None and the folder input is set to adversarial it will throw an Error. -stop parameter is to precise the number of batchs of graph to generate (1000 graphs per batch) <br />
