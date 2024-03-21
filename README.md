@@ -5,19 +5,19 @@ We describe the supported datasets, attacks and pre-trained models provided with
 ### Datasets, Pre-trained Models, and Attacks:
 
 
-- **Datasets**: MNIST is autimatically loaded via Keras. To test ProvML on malware data, you need to download the [CuckooTraces]([link here](https://drive.google.com/file/d/11GgjGVEXQAAz09J_T7sziJdS6vF14cwu/view?usp=sharing)) and [EMBER] ([link here](https://ember.elastic.co/ember_dataset_2018_2.tar.bz2)) datasets and add them in the folder `./data/`. By default ProvML will look for them in that path<br />
+- **Datasets**: MNIST is autimatically loaded via Keras. To test DeepProv on malware data, you need to download the [CuckooTraces]([link here](https://drive.google.com/file/d/11GgjGVEXQAAz09J_T7sziJdS6vF14cwu/view?usp=sharing)) and [EMBER] ([link here](https://ember.elastic.co/ember_dataset_2018_2.tar.bz2)) datasets and add them in the folder `./data/`. By default DeepProv will look for them in that path<br />
 
 - **Pre-trained Models**: We offer pre-trained models: mnist_1 , mnist_2, mnist_3, cuckoo_1, and ember_1 <br />
-  These models are availabe to download [here](https://drive.google.com/drive/folders/1vA1Xozi0RAqB43EAJ2a9HB32Ka89uCgN?usp=sharing). Once downloaded to 'ProvML/models/' directory, the 'model.txt' file has the model architecture details of each model.
+  These models are availabe to download [here](https://drive.google.com/drive/folders/1vA1Xozi0RAqB43EAJ2a9HB32Ka89uCgN?usp=sharing). Once downloaded to 'DeepProv/models/' directory, the 'model.txt' file has the model architecture details of each model.
   
-- **Attacks**: ProvML supports the following attacks : <br />
+- **Attacks**: Dee supports the following attacks : <br />
   MNIST: Fast Gradient Sign Method (FGSM), Projected Gradient Descent (PGD) Auto PGD  with DLR loss function (APGD-DLR) , Square <br />
   CuckooTraces: Attack progressively flips up to first n 0 bits to 1 until it evades the model (we name this attack 'CKO') <br />
   EMBER_att => This attack progressively perturbs features within valid value ranges/options until the model changes its prediction from malware to benign (we call this attack `EMBER') <br />
 
 ***
 
-### Downloading ProvML and Installing Dependencies:
+### Downloading DeepProv and Installing Dependencies:
 ```$ git clone https://github.com/um-dsp/DeepProv.git ```
 
 ```$ cd DeepProv ```
@@ -37,7 +37,7 @@ We describe the supported datasets, attacks and pre-trained models provided with
   (**Note**: Make Sure to create the folder with the above path before running the activation generation)
 - **Attack Name**: FGSM | APGD-DLR | PGD |square|CKO |EMBER | None <br />
  
-    (**Note**:  This parameter is optional.  if specified, ProvML will apply the attack on the dataset. if attack is None and the folder input is set to adversarial it will throw an Error. -stop parameter is to precise the number of batchs of graph to generate (1000 graphs per batch) <br />
+    (**Note**:  This parameter is optional.  if specified, DeepProv will apply the attack on the dataset. if attack is None and the folder input is set to adversarial it will throw an Error. -stop parameter is to precise the number of batchs of graph to generate (1000 graphs per batch) <br />
  - **tasks**: default is to get emperical characterization and graph for the extrating graphs from the model inputs.<br /> 
 
   (**Note**: if attack is None and the folder input is set to adversarial it will throw an Error. -stop parameter is to precise the number of batchs of graph to generate (1000 graphs per batch) <br />
