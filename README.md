@@ -75,8 +75,8 @@ To train GNN and save it using the generated graphs use the following command : 
 
 
 To explain the GNN and visualize the structred attributions of the graphs use the following commands : <br /> <br />
-  >  `python train_on_graph.py -dataset    mnist  -model_name    mnist_2 -folder Ground_Truth_pth -model_type pytorch -task GNN_explainer -model_path models/GNN_mnist_2_FGSM_pytorch -attack FGSM  -expla_mode Saliency -attr_folder /data/attributions_data/` <br />
-    >  `python train_on_graph.py -dataset    mnist  -model_name    mnist_2 -folder Ground_Truth_pth -model_type pytorch -task GNN_explainer -model_path models/GNN_mnist_2_FGSM_pytorch -expla_mode Saliency -attr_folder /data/attributions_data/ ` <br />
+  >  `python train_on_graph.py -dataset    mnist  -model_name    mnist_2 -folder Ground_Truth_pth -model_type pytorch -task GNN_explainer -model_path models/GNN_mnist_2_FGSM_pytorch -attack FGSM  -expla_mode Saliency -attr_folder data/attributions_data/` <br />
+    >  `python train_on_graph.py -dataset    mnist  -model_name    mnist_2 -folder Ground_Truth_pth -model_type pytorch -task GNN_explainer -model_path models/GNN_mnist_2_FGSM_pytorch -expla_mode Saliency -attr_folder data/attributions_data/ ` <br />
 
    
 #### Attribution: Perform ML explanation on the `graph_model` to identify relevant nodes [Still not ready]
@@ -90,3 +90,9 @@ To explain the GNN and visualize the structred attributions of the graphs use th
 ***
 ### Structured Characterization
  Use [Structured_Characterization.ipynb](/Structured_Characterization.ipynb) to compute the proposed graph-related metrics for empirical characterization.
+
+ ***
+### Robustness enhancement
+After generating the Structured and Emperical Characterization, you can generate the Robustness enhancement in the papaer using and example of the following commands br /> <br />
+Precise the attack , the dataset and the benign threshold for your models. 
+    >  `python3 DeepProv.py -dataset ember  -model_name ember_1 -folder Ground_Truth_pth -attack EMBER  -expla_mode Saliency -ben_thresh 90 -attr_folder data/attributions_data/` <br />
