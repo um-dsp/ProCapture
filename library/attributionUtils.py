@@ -2,10 +2,14 @@ import torch
 from captum.attr import IntegratedGradients
 import torch.nn as nn
 import random
+import os
 from keras.utils import to_categorical
 import matplotlib.pyplot as plt
+from torch_geometric.loader import DataLoader
 import numpy as np 
-from library.utils import dispersation_index
+import pickle
+from library.train import get_nodes_data_g
+from library.utils import dispersation_index,load_graph_data
 from sklearn.model_selection import train_test_split
 
 def attribtuions_to_polarity(X_test,y_test,model,target_label):
@@ -37,16 +41,32 @@ def attribtuions_to_polarity(X_test,y_test,model,target_label):
         index+=1
     return positive,negative
 
-def get_attributes (data,model):
-    
-    
-    #if torch.cuda.is_available():
-    #    cuda=True
-    ig = IntegratedGradients(model)
-    attribution, delta = ig.attribute(data, target=0, internal_batch_size=100, n_steps=50, return_convergence_delta=True)
-    print("For n_steps = 50, delta is ", delta )
-    #a= attribution[0][0]
-    return attribution
+def get_attributes (data,model,model_name="",nbr_batch=0,mode="",task="",attack=None,folder="",conv_exis=False,root_folder="attributions_data/"):
+    if task=="GNN_explainer" :
+        save_path=root_folder+mode+"/"+model[1]
+        if not (os.path.exists(save_path)):
+                os.makedirs(save_path)
+        if attack:
+            id="_attributes_"+attack
+        else:
+            id="_attributes_ben"
+        for nbr in range(nbr_batch):
+            data_ben=load_graph_data(data,model_name,attack=attack,folder=folder,nbr_l_batches=nbr)
+            data_ben=DataLoader(data_ben, batch_size=1, shuffle=False)
+            samples_attributes=get_nodes_data_g(data_ben,model[0],mode,conv_exis)
+            with open(save_path+'/batch_'+str(nbr)+id+'.pickle', 'wb') as handle:
+                pickle.dump(samples_attributes, handle, protocol=pickle.HIGHEST_PROTOCOL)
+            samples_attributes=[]
+    else :
+        #print(label.item())
+        #print(data.shape)
+        #sample = torch.reshape(sample,(1,1,sample.shape[0]))
+        #print(sample.shape)
+        ig = IntegratedGradients(model)
+        attribution = ig.attribute(data, target=0)
+        print(attribution.shape)
+        #a= attribution[0][0]
+        return attribution
 
 
 
@@ -209,8 +229,8 @@ def get_nodes_data(X,attributes):
             nodes_weights[N].append(X[i][N])
             # Store the attribute of Node N corresponding to sample i
             nodes_atts[N].append(attributes[i][N])
-        nodes_avg_weights.append(torch.mean(torch.Tensor(nodes_weights[N])))
-        nodes_avg_atts.append(torch.mean(torch.Tensor(nodes_atts[N])))
+        nodes_avg_weights.append(np.mean(nodes_weights[N]))
+        nodes_avg_atts.append(np.mean(nodes_atts[N]))  
     return nodes_weights,nodes_atts, nodes_avg_weights, nodes_avg_atts
 
 def get_avg_number_of_nodes_per_state(label,model,X,Y):
