@@ -5,13 +5,13 @@ We describe the supported datasets, attacks and pre-trained models provided with
 ### Datasets, Pre-trained Models, and Attacks:
 
 
-- **Datasets**: MNIST and CIFAR10 are autimatically loaded via Keras. To test ProvML on malware data, you need to download the [CuckooTraces]([link here](https://drive.google.com/file/d/11GgjGVEXQAAz09J_T7sziJdS6vF14cwu/view?usp=sharing)) and [EMBER] ([link here](https://ember.elastic.co/ember_dataset_2018_2.tar.bz2)) datasets and add them in the folder `./data/`. By default ProvML will look for them in that path<br />
+- **Datasets**: MNIST is autimatically loaded via Keras. To test ProvML on malware data, you need to download the [CuckooTraces]([link here](https://drive.google.com/file/d/11GgjGVEXQAAz09J_T7sziJdS6vF14cwu/view?usp=sharing)) and [EMBER] ([link here](https://ember.elastic.co/ember_dataset_2018_2.tar.bz2)) datasets and add them in the folder `./data/`. By default ProvML will look for them in that path<br />
 
-- **Pre-trained Models**: We offer pre-trained models: mnist_1 , mnist_2, mnist_3, cifar10_1, cuckoo_1, and ember_1 <br />
+- **Pre-trained Models**: We offer pre-trained models: mnist_1 , mnist_2, mnist_3, cuckoo_1, and ember_1 <br />
   These models are availabe to download [here](https://drive.google.com/drive/folders/1a0kdq4waz8SXU9gThsUmKsR0YTSuaEWO?usp=share_link). Once downloaded to 'ProvML/models/' directory, the 'model.txt' file has the model architecture details of each model.
   
 - **Attacks**: ProvML supports the following attacks : <br />
-  MNIST, CIFAR10: Fast Gradient Sign Method (FGSM), Projected Gradient Descent (PGD) Auto PGD  with DLR loss function (APGD-DLR) , Square <br />
+  MNIST: Fast Gradient Sign Method (FGSM), Projected Gradient Descent (PGD) Auto PGD  with DLR loss function (APGD-DLR) , Square <br />
   CuckooTraces: Attack progressively flips up to first n 0 bits to 1 until it evades the model (we name this attack 'CKO') <br />
   EMBER => This attack progressively perturbs features within valid value ranges/options until the model changes its prediction from malware to benign (we call this attack `EMB') <br />
 
@@ -29,8 +29,8 @@ We describe the supported datasets, attacks and pre-trained models provided with
 
 - ` activations_extractor.py`: The first step for our characterization approach is to extract activations of the target model `model`. It takes the following parameters in the given order:
 
-- **Dataset Name**: cifar10 | mnist | cuckoo |ember <br />
-- **Pre-Trained Model Name**: cifar10_1 |cuckoo_1 | ember_1 | mnist_1 | mnist_2 | mnist_3 <br />
+- **Dataset Name**:  mnist | cuckoo |ember <br />
+- **Pre-Trained Model Name**: cuckoo_1 | ember_1 | mnist_1 | mnist_2 | mnist_3 <br />
 - **Folder**: Ground_Truth | Benign | Adversarial <br>
    It is required to use these exact folder names. This parameter sets what folder will the generated activations be saved, the default file path is
   `folder/dataset_name/model_name/<attack>/`. 
@@ -43,16 +43,21 @@ We describe the supported datasets, attacks and pre-trained models provided with
     >   `python activations_extractor.py -dataset mnist -model_name mnist_1 -folder Ground_Truth_pth -model_type pytorch -task default` <br />
      >   ` python activations_extractor.py -dataset mnist -model_name mnist_1 -folder Benign_pth -model_type pytorch -task default` <br />
      >   ` python activations_extractor.py -dataset mnist -model_name mnist_1 -folder Benign_pth -model_type pytorch -task default -attack FGSM` <br />
-        
+ ***         
+The model activations of ground truth, test benign and adversarial data are stored in each respective folder in text files named as [true label]\_[predicted label]\_[index] (e.g., 0_0_150.txt). Each file contains the values of every node in every layer of the model for that specific sample.   
 
 This commands is specifically needed to train GNN later on. <br /> <br />
     >  `python activations_extractor.py -dataset mnist -model_name mnist_1 -folder Ground_Truth_pth -model_type pytorch -task graph -stop 10` <br />
     >  `python activations_extractor.py -dataset mnist -model_name mnist_1 -folder Ground_Truth_pth -model_type pytorch -task graph -attack FGSM -stop 10` <br />
 To train GNN and save it using the generated graphs use the following command :  <br /> <br />
    >  `python train_on_graph.py -dataset    mnist  -model_name    mnist_2 -folder Ground_Truth_pth -model_type pytorch -task graph -attack FGSM  -epochs 5 -save True` <br />
-    
-The model activations of ground truth, test benign and adversarial data are stored in each respective folder in text files named as [true label]\_[predicted label]\_[index] (e.g., 0_0_150.txt). Each file contains the values of every node in every layer of the model for that specific sample. 
-***
+
+
+To explain the GNN and visualize the structred attributions of the graphs use the following commands : <br /> <br />
+  >  `python train_on_graph.py -dataset    mnist  -model_name    mnist_2 -folder Ground_Truth_pth -model_type pytorch -task GNN_explainer -model_path models/GNN_mnist_2_FGSM_pytorch -attack FGSM  -expla_mode Saliency -attr_folder /data/attributions_data/` <br />
+    >  `python train_on_graph.py -dataset    mnist  -model_name    mnist_2 -folder Ground_Truth_pth -model_type pytorch -task GNN_explainer -model_path models/GNN_mnist_2_FGSM_pytorch -expla_mode Saliency -attr_folder /data/attributions_data/ ` <br />
+
+***          
 
 ### Empirical Characterization:
  
