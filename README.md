@@ -36,8 +36,9 @@ We describe the supported datasets, attacks and pre-trained models provided with
   `folder/dataset_name/model_name/<attack>/`. 
   (**Note**: Make Sure to create the folder with the above path before running the activation generation)
 - **Attack Name**: FGSM | APGD-DLR | PGD |square|CKO |EMBER | None <br />
- - **tasks**: default is to get emperical characterization and graph for the extrating graphs from the model inputs.<br /> 
   This parameter is optional.  if specified, ProvML will apply the attack on the dataset.
+ - **tasks**: default is to get emperical characterization and graph for the extrating graphs from the model inputs.<br /> 
+
   (**Note**: if attack is None and the folder input is set to adversarial it will throw an Error. -stop parameter is to precise the number of batchs of graph to generate (1000 graphs per batch) <br />
   **Sample Commands :** <br />
     >   `python activations_extractor.py -dataset mnist -model_name mnist_1 -folder Ground_Truth_pth -model_type pytorch -task default` <br />
