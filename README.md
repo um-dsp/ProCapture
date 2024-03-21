@@ -46,6 +46,27 @@ We describe the supported datasets, attacks and pre-trained models provided with
  ***         
 The model activations of ground truth, test benign and adversarial data are stored in each respective folder in text files named as [true label]\_[predicted label]\_[index] (e.g., 0_0_150.txt). Each file contains the values of every node in every layer of the model for that specific sample.   
 
+
+
+### Empirical Characterization:
+ 
+ Use [Empirical_Characterization.ipynb](/Empirical_Characterization.ipynb) to compute the proposed graph-related metrics for empirical characterization.
+
+---
+
+
+
+#### Graph Neural Network Model: training a model `graph_model` on the extracted graph data
+
+` train_on_graph.py`: We train another model called `graph_model` that learns the NN graph (activations) of the target model `model`. This model should be also stored should be initiated and stored in a .pt file <br />
+
+This step utilizes the activations extracted in the previous step, To Train and test a predefined model on the activations set use the CLI command with the following parameters: Dataset Name, Model Name and Attack
+  (The Above arguments will just be used to locate the needed activations in the project folder).
+  The command also expects the following arguments: <br />
+- Model Path : represents the path to save the feature extraction model that is trained to seperate activations of benign and adversarial samples <br/>
+  (**Note**: We have pre-trained models on Ground_Truth benign and FGSM data, and tested on Benign and FGSM test data.
+
+  **Sample Commands:** <br />
 This commands is specifically needed to train GNN later on. <br /> <br />
     >  `python activations_extractor.py -dataset mnist -model_name mnist_1 -folder Ground_Truth_pth -model_type pytorch -task graph -stop 10` <br />
     >  `python activations_extractor.py -dataset mnist -model_name mnist_1 -folder Ground_Truth_pth -model_type pytorch -task graph -attack FGSM -stop 10` <br />
@@ -57,35 +78,7 @@ To explain the GNN and visualize the structred attributions of the graphs use th
   >  `python train_on_graph.py -dataset    mnist  -model_name    mnist_2 -folder Ground_Truth_pth -model_type pytorch -task GNN_explainer -model_path models/GNN_mnist_2_FGSM_pytorch -attack FGSM  -expla_mode Saliency -attr_folder /data/attributions_data/` <br />
     >  `python train_on_graph.py -dataset    mnist  -model_name    mnist_2 -folder Ground_Truth_pth -model_type pytorch -task GNN_explainer -model_path models/GNN_mnist_2_FGSM_pytorch -expla_mode Saliency -attr_folder /data/attributions_data/ ` <br />
 
-***          
-
-### Empirical Characterization:
- 
- Use [Empirical_Characterization.ipynb](/Empirical_Characterization.ipynb) to compute the proposed graph-related metrics for empirical characterization.
-
----
-### Structured Characterization
-
- Use [Structured_Characterization.ipynb](/Structured_Characterization.ipynb) to compute the proposed graph-related metrics for empirical characterization.
-
-#### Graph Feature learning model: training a model `graph_model` on the extracted graph data
-
-` train_on_graph.py`: We train another model called `graph_model` that learns the NN graph (activations) of the target model `model`. This model should be also stored should be initiated and stored in a .pt file <br />
-
-This step utilizes the activations extracted in the previous step, To Train and test a predefined model on the activations set use the CLI command with the following parameters: Dataset Name, Model Name and Attack
-  (The Above arguments will just be used to locate the needed activations in the project folder).
-  The command also expects the following arguments: <br />
-- Model Path : represents the path to save the feature extraction model that is trained to seperate activations of benign and adversarial samples <br/>
-  (**Note**: We have pre-trained models on Ground_Truth benign and FGSM data, and tested on Benign and FGSM test data.
-
-  **Sample Commands:** <br />
-  To train a graph model and save it on given dataset:
-  > `python train_on_graph.py -dataset mnist  -model_name mnist_1 -attack FGSM  -model_path ./models/mnist_1.pt -task default` <br />
-    To train a GNN model and save it for a given dataset:
-  > `python train_on_graph.py -dataset mnist  -model_name mnist_1 -folder Ground_Truth_pth -model_type pytorch -task graph -attack PGD  -epochs 50 -save True` <br />
-    To generate the explanation attributes for a given GNN model
-     > `python train_on_graph.py -dataset mnist  -model_name mnist_1 -folder Benign_pth -model_type pytorch -task GNN_explainer -model_path models/GNN_mnist_1_FGSM_pytorch -expla_mode IntegratedGradients` <br /> 
-  
+   
 #### Attribution: Perform ML explanation on the `graph_model` to identify relevant nodes [Still not ready]
 
 - ` gen_attributions.py`: this file explains how to transform generated activations to dataset and train an torch adversarial detection model. ` attributionUtils.py` holds different predefined architecture that cover all the dataset we research and produce satisfactory performance.
@@ -93,5 +86,7 @@ This step utilizes the activations extracted in the previous step, To Train and 
   
  --- 
   
-  - ` Attribution.py`: The thrid step: is to perform **Attributions** on the trained `graph_model`. This file should include a fucntion that takes as input a `graph_model` and `data_name`, the model should be imported automaticcaly from `Models/[data_name]/[[graph_model_name]`. Example: `Models/MNIST/graph_MNIST.pth`
-
+  - ` Attribution.py`: The thrid step: is to perform **Attributions** on the trained `graph_model`. This file should include a fucntion that takes as input a `graph_model` and `data_name`, the model should be imported automaticcaly from `Models/[data_name]/[[graph_model_name]`. Example: `Models/GNN_mnist_1_FGSM_pytorch.pth`
+***
+### Structured Characterization
+ Use [Structured_Characterization.ipynb](/Structured_Characterization.ipynb) to compute the proposed graph-related metrics for empirical characterization.
