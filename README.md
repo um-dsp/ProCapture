@@ -18,9 +18,9 @@ We describe the supported datasets, attacks and pre-trained models provided with
 ***
 
 ### Downloading ProvML and Installing Dependencies:
-```$ git clone https://github.com/um-dsp/ProvML.git ```
+```$ git clone https://github.com/um-dsp/DeepProv.git ```
 
-```$ cd ProvML ```
+```$ cd DeepProv ```
 
 ```$ pip install -r requirements.txt ```
 ***
@@ -36,15 +36,21 @@ We describe the supported datasets, attacks and pre-trained models provided with
   `folder/dataset_name/model_name/<attack>/`. 
   (**Note**: Make Sure to create the folder with the above path before running the activation generation)
 - **Attack Name**: FGSM | APGD-DLR | PGD |square|CKO |EMBER | None <br />
+ - **tasks**: default is to get emperical characterization and graph for the extrating graphs from the model inputs.<br /> 
   This parameter is optional.  if specified, ProvML will apply the attack on the dataset.
-  (**Note**: if attack is None and the folder input is set to adversarial it will throw an Error) <br />
+  (**Note**: if attack is None and the folder input is set to adversarial it will throw an Error. -stop parameter is to precise the number of batchs of graph to generate (1000 graphs per batch) <br />
   **Sample Commands :** <br />
-    >  `python activations_extractor.py -dataset mnist -model_name mnist_1 -folder Ground_Truth_pth -model_type pytorch -task graph -attack FGSM` <br />
-    >   `python activations_extractor.py -dataset mnist -model_name mnist_1 -folder Benign_pth -model_type pytorch -task graph ` <br />
-    >   `python activations_extractor.py -dataset mnist -model_name mnist_1 -folder Adversarial_pth -model_type pytorch -task graph -attack FGSM` <br />
+    >   `python activations_extractor.py -dataset mnist -model_name mnist_1 -folder Ground_Truth_pth -model_type pytorch -task default` <br />
+     >   ` python activations_extractor.py -dataset mnist -model_name mnist_1 -folder Benign_pth -model_type pytorch -task default` <br />
+     >   ` python activations_extractor.py -dataset mnist -model_name mnist_1 -folder Benign_pth -model_type pytorch -task default -attack FGSM` <br />
+        
 
+This commands is specifically needed to train GNN later on. <br /> <br />
+    >  `python activations_extractor.py -dataset mnist -model_name mnist_1 -folder Ground_Truth_pth -model_type pytorch -task graph -stop 10` <br />
+    >  `python activations_extractor.py -dataset mnist -model_name mnist_1 -folder Ground_Truth_pth -model_type pytorch -task graph -attack FGSM -stop 10` <br />
+To train GNN and save it using the generated graphs use the following command :  <br /> <br />
+   >  `python train_on_graph.py -dataset    mnist  -model_name    mnist_2 -folder Ground_Truth_pth -model_type pytorch -task graph -attack FGSM  -epochs 5 -save True` <br />
     
-This command is specifically needed to train graph_model later on. <br /> <br />
 The model activations of ground truth, test benign and adversarial data are stored in each respective folder in text files named as [true label]\_[predicted label]\_[index] (e.g., 0_0_150.txt). Each file contains the values of every node in every layer of the model for that specific sample. 
 ***
 
