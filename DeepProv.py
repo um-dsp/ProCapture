@@ -310,7 +310,11 @@ if __name__ == "__main__":
                         tr_off_n=acc_adv-acc_under_att_or#+acc_ben-acc_ben_or
                     else:
                         tr_off_n=acc_adv-acc_under_att_or+acc_ben-acc_ben_or
-                    if acc_ben>ben_threshold and acc_adv>=acc_under_att_or and tr_off_n>=0:
+                    if attack=="PGD":
+                    	val_bool=True
+                    else:
+                    	val_bool= acc_ben>ben_threshold and acc_adv>=acc_under_att_or and tr_off_n>=0
+                    if val_bool:
                         if acc_ben<=acc_or:
                             acc_ben_or=acc_ben
                         acc_under_att_or=acc_adv
