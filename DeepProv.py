@@ -210,7 +210,7 @@ if __name__ == "__main__":
     Y_test=torch.stack(Y)
     selected_layers=[" layer "+str(j) for j in range(len(layer_dims))]#possible values [" layer 0"...," layer n-1"]
     X_adv,X_test,acc_or,acc_un_a=test_robustness(model,X_test,Y_test,attack,device)
-    if dataset=="mnist":
+    if dataset=="mnist" and attack!="square":
         X_attacked=None
     else:
         X_attacked=X_adv
@@ -310,11 +310,7 @@ if __name__ == "__main__":
                         tr_off_n=acc_adv-acc_under_att_or#+acc_ben-acc_ben_or
                     else:
                         tr_off_n=acc_adv-acc_under_att_or+acc_ben-acc_ben_or
-                    if attack=="PGD":
-                    	val_bool=True and acc_ben>ben_threshold
-                    else:
-                    	val_bool= acc_ben>ben_threshold and acc_adv>=acc_under_att_or and tr_off_n>=0
-                    if val_bool:
+                    if acc_ben>ben_threshold and acc_adv>=acc_under_att_or and tr_off_n>=0:
                         if acc_ben<=acc_or:
                             acc_ben_or=acc_ben
                         acc_under_att_or=acc_adv
@@ -404,7 +400,10 @@ if __name__ == "__main__":
         model=load_DP_model(model_name,layer_ind_dims,ben_distr,alpha,beta)
         acc_un_attacks=[]
         for att in attacks:
-            X_adv,X,acc_ben,acc_adv=test_robustness(model,X_test_all,Y_test_all,att,device,X_adv=X_attacked)
+            if attack!="square":
+                X_adv,X,acc_ben,acc_adv=test_robustness(model,X_test_all,Y_test_all,att,device,X_adv=None)
+            else:
+                X_adv,X,acc_ben,acc_adv=test_robustness(model,X_test_all,Y_test_all,att,device,X_adv=X_attacked)
             acc_un_attacks.append(acc_adv)
         config_layers[permutation]=[layer_ind_dims,ben_distr]
         res_orders[permutation]=[acc_ben]+acc_un_attacks
