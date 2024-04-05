@@ -400,7 +400,7 @@ if __name__ == "__main__":
         model=load_DP_model(model_name,layer_ind_dims,ben_distr,alpha,beta)
         acc_un_attacks=[]
         for att in attacks:
-            if attack!="square":
+            if dataset="mnist" and attack!="square":
                 X_adv,X,acc_ben,acc_adv=test_robustness(model,X_test_all,Y_test_all,att,device,X_adv=None)
             else:
                 X_adv,X,acc_ben,acc_adv=test_robustness(model,X_test_all,Y_test_all,att,device,X_adv=X_attacked)
