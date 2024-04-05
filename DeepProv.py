@@ -402,6 +402,8 @@ if __name__ == "__main__":
         for att in attacks:
             if dataset=="mnist" and attack!="square":
                 X_adv,X,acc_ben,acc_adv=test_robustness(model,X_test_all,Y_test_all,att,device,X_adv=None)
+            elif attack=="square" and att!="square":
+                X_adv,X,acc_ben,acc_adv=test_robustness(model,X_test_all,Y_test_all,att,device,X_adv=None)
             else:
                 X_adv,X,acc_ben,acc_adv=test_robustness(model,X_test_all,Y_test_all,att,device,X_adv=X_attacked)
             acc_un_attacks.append(acc_adv)
