@@ -1,14 +1,14 @@
-# DeepProv:  Adversarial Characterization of Neural Networks via Inference Provenance Graphs
+# New_Name:  Adversarial Characterization of Neural Networks via Inference Provenance Graphs
 
 We describe the supported datasets, attacks and pre-trained models provided with our code. <br />
 
 ### Datasets, Pre-trained Models, and Attacks:
 
 
-- **Datasets**: MNIST is autimatically loaded via Keras. To test DeepProv on malware data, you need to download the [CuckooTraces]([link here](https://drive.google.com/file/d/11GgjGVEXQAAz09J_T7sziJdS6vF14cwu/view?usp=sharing)) and [EMBER] ([link here](https://ember.elastic.co/ember_dataset_2018_2.tar.bz2)) datasets and add them in the folder `./data/`. By default DeepProv will look for them in that path<br />
+- **Datasets**: MNIST is autimatically loaded via Keras. To test New_Name on malware data, you need to download the [CuckooTraces]([link here](https://drive.google.com/file/d/11GgjGVEXQAAz09J_T7sziJdS6vF14cwu/view?usp=sharing)) and [EMBER] ([link here](https://ember.elastic.co/ember_dataset_2018_2.tar.bz2)) datasets and add them in the folder `./data/`. By default New_Name will look for them in that path<br />
 
 - **Pre-trained Models**: We offer pre-trained models: mnist_1 , mnist_2, mnist_3, cuckoo_1, and ember_1 <br />
-  These models are availabe to download [here](https://drive.google.com/drive/folders/1vA1Xozi0RAqB43EAJ2a9HB32Ka89uCgN?usp=sharing). Once downloaded to 'DeepProv/models/' directory, the 'model.txt' file has the model architecture details of each model.
+  These models are availabe to download [here](https://drive.google.com/drive/folders/1vA1Xozi0RAqB43EAJ2a9HB32Ka89uCgN?usp=sharing). Once downloaded to 'New_Name/models/' directory, the 'model.txt' file has the model architecture details of each model.
   
 - **Attacks**: Dee supports the following attacks : <br />
   MNIST: Fast Gradient Sign Method (FGSM), Projected Gradient Descent (PGD) Auto PGD  with DLR loss function (APGD-DLR) , Square <br />
@@ -17,10 +17,10 @@ We describe the supported datasets, attacks and pre-trained models provided with
 
 ***
 
-### Downloading DeepProv and Installing Dependencies:
-```$ git clone https://github.com/um-dsp/DeepProv.git ```
+### Downloading New_Name and Installing Dependencies:
+```$ git clone https://github.com/um-dsp/New_Name.git ```
 
-```$ cd DeepProv ```
+```$ cd New_Name ```
 
 ```$ pip install -r requirements.txt ```
 ***
@@ -37,7 +37,7 @@ We describe the supported datasets, attacks and pre-trained models provided with
   (**Note**: Make Sure to create the folder with the above path before running the activation generation)
 - **Attack Name**: FGSM | APGD-DLR | PGD |square|CKO |EMBER | None <br />
  
-    (**Note**:  This parameter is optional.  if specified, DeepProv will apply the attack on the dataset. if attack is None and the folder input is set to adversarial it will throw an Error. -stop parameter is to precise the number of batchs of graph to generate (1000 graphs per batch) <br />
+    (**Note**:  This parameter is optional.  if specified, New_Name will apply the attack on the dataset. if attack is None and the folder input is set to adversarial it will throw an Error. -stop parameter is to precise the number of batchs of graph to generate (1000 graphs per batch) <br />
  - **tasks**: default is to get emperical characterization and graph for the extrating graphs from the model inputs.<br /> 
 
   (**Note**: if attack is None and the folder input is set to adversarial it will throw an Error. -stop parameter is to precise the number of batchs of graph to generate (1000 graphs per batch) <br />
@@ -94,4 +94,4 @@ To explain the GNN and visualize the structred attributions of the graphs use th
 ### Robustness enhancement
 After generating the Structured and Emperical Characterization, you can generate the Robustness enhancement in the papaer using an example of the following commands <br /> <br />
 Precise the attack , the dataset and the benign threshold for your models. 
-    >  `python3 DeepProv.py -dataset ember  -model_name ember_1 -folder Ground_Truth_pth -attack EMBER  -expla_mode Saliency -ben_thresh 90 -attr_folder data/attributions_data/` <br />
+    >  `python3 main.py -dataset ember  -model_name ember_1 -folder Ground_Truth_pth -attack EMBER  -expla_mode Saliency -ben_thresh 90 -attr_folder data/attributions_data/` <br />
