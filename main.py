@@ -344,7 +344,7 @@ if __name__ == "__main__":
     acc_all_ben,acc_all_adv=acc_ben,acc_adv
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    print("Combining the best actions seqauence between different layers \n ###########################")
+    print("Combining the best actions sequence between different layers \n ###########################")
     acc_on_adv= [alpha_output[selected_layer][alpha][1] for selected_layer in selected_layers]
     sorted_lists = sorted(zip(acc_on_adv,[j for j in range(len(acc_on_adv))]), key=lambda x: x[0],reverse=True)
     ind_layer=[[] for la in layer_dims ]
